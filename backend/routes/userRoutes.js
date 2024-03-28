@@ -11,20 +11,24 @@ router.get("/view/:id", async (req, res) => {
   }
 });
 
-router.post("/update", async (req, res) => {
+router.post("/update/:id", async (req, res) => {
   try {
-    const id = req.body.id;
+    const id = req.params.id;
     const name = req.body.name;
     const description = req.body.description;
     const linkedin = req.body.linkedin;
     const facebook = req.body.facebook;
     const instagram = req.body.instagram;
-    const userRef = await db.collection("users").doc(id).update({
+    const twitter = req.body.twitter;
+    const image = req.body.image;
+    const userRef = await db.collection("user").doc(id).update({
       name,
       description,
       linkedin,
       facebook,
       instagram,
+      twitter,
+      image
     });
     res.send(userRef);
   } catch (error) {
