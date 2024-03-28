@@ -44,7 +44,7 @@ const firebase = initializeApp(firebaseConfig);
 const db = getFirestore(firebase);
 const firebaseAuth = getAuth(firebase);
 
-app.use(router, store);
+app.use(router).use(store);
 app.provide("firebaseAuth", firebaseAuth);
 app.provide("firebase", firebase);
 app.provide("db", db);

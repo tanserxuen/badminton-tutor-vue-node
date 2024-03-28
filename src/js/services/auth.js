@@ -7,6 +7,7 @@ async function signup(email, password) {
       email,
       password,
     });
+    await logout();
     return response;
   } catch (error) {
     return error;

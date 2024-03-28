@@ -26,12 +26,28 @@
 <script>
 import { signup } from "../js/services/auth.js";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 
 export default {
   setup() {
     const email = ref("");
     const password = ref("");
-    const submitForm = () => signup(email.value, password.value);
+    const router = useRouter();
+    const submitForm = () =>
+      signup(email.value, password.value)
+        .then((response) => {
+          console.log(response.data.code !== undefined);
+          if (response.data.code !== undefined) {
+            throw new Error(response.data.code);
+          } else {
+            console.log("Signed up");
+            //logout before signin
+            router.push({ name: "SignIn" });
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     return { email, password, submitForm };
   },
 };

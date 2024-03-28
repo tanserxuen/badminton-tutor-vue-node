@@ -1,10 +1,7 @@
 const express = require("express");
-// const bodyParser = require('body-parser');
-// const authRouter = require('./backend/middleware/auth');
 const cors = require("cors");
-
-//import the 'routes' file
 var indexRouter = require("./backend/routes");
+require("./backend/config/firebaseStore");
 
 const app = express();
 const port = 3000;
@@ -16,14 +13,11 @@ app.use(
     credentials: true, // Allow cookies to be sent with requests
   })
 );
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use(express.json());
-// app.use('/auth', authRouter);
 app.use("/", indexRouter);
+global.currentUser = null;
 
 app.listen(port, () => console.log(`Server is running on port ${port}`));
-
-// module.exports = app;

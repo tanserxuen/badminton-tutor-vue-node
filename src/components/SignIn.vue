@@ -47,9 +47,11 @@ export default {
           if (response.data.code !== undefined) {
             throw new Error(response.data.code);
           }else{
-            console.log("Signed in");
+            console.log("Signed in", response.data.uid);
             store.commit("setCurrentUser", response.data);
             console.log({ currentUser: store.getters.getCurrentUser });
+            store.dispatch("fetchUserDetails", response.data.uid);
+            console.log({ currentUserDetails: store.getters.getCurrentUserDetails });
             router.push({ name: "DashBoard" });
           }
         })

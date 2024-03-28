@@ -1,18 +1,10 @@
-//
-const firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-  databaseURL: "https://badmintonposecounter-default-rtdb.firebaseio.com",
-  projectId: "badmintonposecounter",
-  storageBucket: "badmintonposecounter.appspot.com",
-  messagingSenderId: "1083314634615",
-  appId: "1:1083314634615:web:df7a622543dad315d26b72",
-  measurementId: "G-X3X9RWL768"
-};
-
 const express = require("express");
 const router = express.Router();
+const { FieldValue } = require("firebase-admin/firestore");
+const userJsonTemplate = require("../config/userJson");
+require("dotenv").config();
 const { initializeApp } = require("firebase/app");
+const firebaseConfig = require("../config/firebaseConfig");
 const firebaseApp = initializeApp(firebaseConfig);
 const {
   getAuth,
@@ -22,18 +14,34 @@ const {
   updatePassword,
   signOut,
 } = require("firebase/auth");
+
 const auth = getAuth(firebaseApp);
 
 router.post("/signup", async (req, res) => {
   const { email, password } = req.body;
   try {
+    //create user in firebase auth
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
       password
     );
     const user = userCredential.user;
-    res.send(auth);
+    //create user details in firestore
+    const id = user.uid;
+    const userJson = {
+      id,
+      email,
+      password,
+      created_at: FieldValue.serverTimestamp(),
+      ...userJsonTemplate,
+    };
+    const usersDb = db.collection("user");
+    const response = await usersDb.doc(id).set(userJson);
+    res.send({
+      user: user,
+      response: response,
+    });
   } catch (error) {
     res.send(error);
   }
@@ -48,7 +56,8 @@ router.post("/login", async (req, res) => {
       password
     );
     const user = userCredential.user;
-    res.send(user);
+    global.currentUser = user;
+    res.send(global.currentUser);
   } catch (error) {
     res.send(error);
   }
@@ -57,6 +66,7 @@ router.post("/login", async (req, res) => {
 router.post("/logout", async (req, res) => {
   try {
     await signOut(auth);
+    global.currentUser = null;
     res.send("Logged out");
   } catch (error) {
     res.send;
