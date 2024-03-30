@@ -2,22 +2,22 @@
   <header>
     <nav>
       <div class="nav-logo">Badminton Tutor</div>
-      <div class="nav-links">
+      <div>
         <template v-if="!isAuthenticated">
-          <router-link class="navbar-item" to="/signup">Register</router-link>
-          <router-link class="navbar-item" to="/signin">Sign In</router-link>
-          <router-link class="navbar-item" to="/reset-password"
+          <router-link class="font-medium text-blue-600 dark:text-blue-500 hover:underline" to="/signup">Register</router-link>
+          <router-link class="font-medium text-blue-600 dark:text-blue-500 hover:underline" to="/signin">Sign In</router-link>
+          <router-link class="font-medium text-blue-600 dark:text-blue-500 hover:underline" to="/reset-password"
             >Reset Password</router-link
           >
         </template>
         <template v-else>
-          <router-link class="navbar-item" to="/dashboard"
+          <router-link class="font-medium text-blue-600 dark:text-blue-500 hover:underline" to="/dashboard"
             >Dashboard</router-link
           >
-          <router-link class="navbar-item" to="/profile"
+          <router-link class="font-medium text-blue-600 dark:text-blue-500 hover:underline" to="/profile"
             >View Profile</router-link
           >
-          <button @click="logoutUser">Log Out</button>
+          <button @click="logoutUser" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Log Out</button>
         </template>
       </div>
     </nav>

@@ -1,6 +1,10 @@
 <template>
   <div>
-    <h1>Update Password</h1>
+    <h1
+      class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl"
+    >
+      Update Password
+    </h1>
 
     <template v-if="error">
       <p class="error">{{ error }}</p>
@@ -30,7 +34,12 @@
       :value="confirmPassword"
       @input="(event) => (confirmPassword = event.target.value)"
     />
-    <button @click="submitForm">Update Password</button>
+    <button
+      class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+      @click="submitForm"
+    >
+      Update Password
+    </button>
   </div>
 </template>
 

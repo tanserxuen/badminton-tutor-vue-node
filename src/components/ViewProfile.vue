@@ -1,10 +1,10 @@
 <template>
   <div>
-    <h1>Profile</h1>
-    <router-link class="navbar-item" to="/update-password"
+    <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl">Profile</h1>
+    <router-link class="font-medium text-blue-600 dark:text-blue-500 hover:underline" to="/update-password"
       >Update Password</router-link
     >
-    <router-link class="navbar-item" to="/update-profile"
+    <router-link class="font-medium text-blue-600 dark:text-blue-500 hover:underline" to="/update-profile"
       >Update Profile</router-link
     >
     <p>View your profile here</p>

@@ -1,6 +1,10 @@
 <template>
   <div>
-    <h1>Sign Up</h1>
+    <h1
+      class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl"
+    >
+      Sign Up
+    </h1>
 
     <template v-if="error">
       <p class="error">{{ error }}</p>
@@ -12,10 +16,12 @@
       name="email"
       placeholder="Email"
       :value="email"
-      @input="(event) => {
+      @input="
+        (event) => {
           email = event.target.value;
           error = null;
-        }"
+        }
+      "
       required
     />
     <label for="password">Password</label>
@@ -24,13 +30,20 @@
       name="password"
       placeholder="Password"
       :value="password"
-      @input="(event) => {
+      @input="
+        (event) => {
           password = event.target.value;
           error = null;
-        }"
+        }
+      "
       required
     />
-    <button @click="submitForm">Sign Up</button>
+    <button
+      @click="submitForm"
+      class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+    >
+      Sign Up
+    </button>
   </div>
 </template>
 
