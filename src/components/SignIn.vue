@@ -1,54 +1,56 @@
 <template>
-  <div>
-    <h1
-      class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl"
-    >
-      Sign in
-    </h1>
+  <div class="bg-[#fffcf9]">
+    <div class="main-container">
+      <h1 class="auth-page__heading">Sign In</h1>
 
-    <template v-if="error">
-      <div
-        class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
-        role="alert"
-      >
-        {{ error }}
-      </div>
-    </template>
+      <template v-if="error">
+        <div
+          class="error-text"
+          role="alert"
+        >
+          {{ error }}
+        </div>
+      </template>
 
-    <label for="email">Email</label>
-    <input
-      type="text"
-      name="email"
-      placeholder="Email"
-      :value="email"
-      @input="
-        (event) => {
-          email = event.target.value;
-          error = null;
-        }
-      "
-      required
-    />
-    <label for="password">Password</label>
-    <input
-      type="password"
-      name="password"
-      placeholder="Password"
-      :value="password"
-      @input="
-        (event) => {
-          password = event.target.value;
-          error = null;
-        }
-      "
-      required
-    />
-    <button
-      @click="submitForm"
-      class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-    >
-      Sign in
-    </button>
+      <label for="email" class="auth-page__label">Email</label>
+      <input
+        type="text"
+        name="email"
+        placeholder="Email"
+        class="auth-page__input"
+        :value="email"
+        @input="
+          (event) => {
+            email = event.target.value;
+            error = null;
+          }
+        "
+        required
+      />
+      <label for="password" class="auth-page__label">Password</label>
+      <input
+        type="password"
+        name="password"
+        placeholder="Password"
+        class="auth-page__input"
+        :value="password"
+        @input="
+          (event) => {
+            password = event.target.value;
+            error = null;
+          }
+        "
+        required
+      />
+      <button @click="submitForm" class="auth-page__submit-button">
+        Sign in
+      </button>
+
+      <p class="auth-page__link">
+        <router-link to="/signup">Register</router-link>
+        <router-link to="/reset-password">Forget Password</router-link>
+      </p>
+    </div>
   </div>
 </template>
 

@@ -1,14 +1,14 @@
 <template>
   <header>
     <nav>
-      <div class="nav-logo">Badminton Tutor</div>
+      <!-- <div class="nav-logo">Badminton Tutor</div> -->
       <div>
         <template v-if="!isAuthenticated">
-          <router-link class="font-medium text-blue-600 dark:text-blue-500 hover:underline" to="/signup">Register</router-link>
+          <!-- <router-link class="font-medium text-blue-600 dark:text-blue-500 hover:underline" to="/signup">Register</router-link>
           <router-link class="font-medium text-blue-600 dark:text-blue-500 hover:underline" to="/signin">Sign In</router-link>
           <router-link class="font-medium text-blue-600 dark:text-blue-500 hover:underline" to="/reset-password"
             >Reset Password</router-link
-          >
+          > -->
         </template>
         <template v-else>
           <router-link class="font-medium text-blue-600 dark:text-blue-500 hover:underline" to="/dashboard"
