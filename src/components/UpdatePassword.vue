@@ -1,6 +1,11 @@
 <template>
   <div>
     <h1>Update Password</h1>
+
+    <template v-if="error">
+      <p class="error">{{ error }}</p>
+    </template>
+
     <label for="old-password">Old Password</label>
     <input
       type="password"
@@ -39,13 +44,15 @@ export default {
     const oldPassword = ref("");
     const newPassword = ref("");
     const confirmPassword = ref("");
+    const error = ref(null);
+
     const currentUser = computed(() => store.getters.getCurrentUser);
     const submitForm = () => {
       if (newPassword.value !== confirmPassword.value) {
-        console.error("Passwords do not match");
+        error.value = "Passwords do not match";
         return;
       } else if (newPassword.value == oldPassword.value) {
-        console.error("New password cannot be the same as the old password");
+        error.value = "New password cannot be the same as the old password";
         return;
       }
       console.log(currentUser.value.email, newPassword.value);
@@ -55,11 +62,12 @@ export default {
             console.log("Password updated");
           }
         })
-        .catch((error) => {
-          console.error(error);
+        .catch((e) => {
+          error.value = e;
+          console.error(e);
         });
     };
-    return { oldPassword, newPassword, confirmPassword, submitForm };
+    return { oldPassword, newPassword, confirmPassword, submitForm, error };
   },
 };
 </script>

@@ -1,13 +1,21 @@
 <template>
   <div>
     <h1>Sign Up</h1>
+
+    <template v-if="error">
+      <p class="error">{{ error }}</p>
+    </template>
+
     <label for="email">Email</label>
     <input
       type="text"
       name="email"
       placeholder="Email"
       :value="email"
-      @input="(event) => (email = event.target.value)"
+      @input="(event) => {
+          email = event.target.value;
+          error = null;
+        }"
       required
     />
     <label for="password">Password</label>
@@ -16,7 +24,10 @@
       name="password"
       placeholder="Password"
       :value="password"
-      @input="(event) => (password = event.target.value)"
+      @input="(event) => {
+          password = event.target.value;
+          error = null;
+        }"
       required
     />
     <button @click="submitForm">Sign Up</button>
@@ -33,6 +44,8 @@ export default {
     const email = ref("");
     const password = ref("");
     const router = useRouter();
+    const error = ref(null);
+
     const submitForm = () =>
       signup(email.value, password.value)
         .then((response) => {
@@ -45,10 +58,11 @@ export default {
             router.push({ name: "SignIn" });
           }
         })
-        .catch((error) => {
-          console.error(error);
+        .catch((e) => {
+          error.value = e;
+          console.error(e);
         });
-    return { email, password, submitForm };
+    return { email, password, submitForm, error };
   },
 };
 </script>

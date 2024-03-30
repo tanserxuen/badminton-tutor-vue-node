@@ -3,7 +3,7 @@
     <h1>Sign in</h1>
 
     <template v-if="error">
-      <p>{{ error }}</p>
+      <p class="error">{{ error }}</p>
     </template>
 
     <label for="email">Email</label>
@@ -12,7 +12,12 @@
       name="email"
       placeholder="Email"
       :value="email"
-      @input="(event) => (email = event.target.value)"
+      @input="
+        (event) => {
+          email = event.target.value;
+          error = null;
+        }
+      "
       required
     />
     <label for="password">Password</label>
@@ -21,7 +26,12 @@
       name="password"
       placeholder="Password"
       :value="password"
-      @input="(event) => (password = event.target.value)"
+      @input="
+        (event) => {
+          password = event.target.value;
+          error = null;
+        }
+      "
       required
     />
     <button @click="submitForm">Sign in</button>
@@ -39,6 +49,7 @@ export default {
     const router = useRouter();
     const email = ref("");
     const password = ref("");
+    const error = ref(null);
 
     const submitForm = () =>
       signin(email.value, password.value)
@@ -46,19 +57,22 @@ export default {
           console.log(response.data.code !== undefined);
           if (response.data.code !== undefined) {
             throw new Error(response.data.code);
-          }else{
+          } else {
             console.log("Signed in", response.data.uid);
             store.commit("setCurrentUser", response.data);
             console.log({ currentUser: store.getters.getCurrentUser });
             store.dispatch("fetchUserDetails", response.data.uid);
-            console.log({ currentUserDetails: store.getters.getCurrentUserDetails });
+            console.log({
+              currentUserDetails: store.getters.getCurrentUserDetails,
+            });
             router.push({ name: "DashBoard" });
           }
         })
-        .catch((error) => {
-          console.error(error);
+        .catch((e) => {
+          error.value = e;
+          console.error(e);
         });
-    return { email, password, submitForm };
+    return { email, password, submitForm, error };
   },
 };
 </script>

@@ -22,7 +22,7 @@ async function signin(email, password) {
     });
     return response;
   } catch (error) {
-    console.log(error);
+    return(error);
   }
 }
 
