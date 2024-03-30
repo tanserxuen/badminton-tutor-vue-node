@@ -7,9 +7,9 @@ import { getAuth } from "firebase/auth";
 import { createRouter, createWebHistory } from "vue-router";
 import routes from "./js/routes";
 import store from "./js/store";
+import "./assets/css/style.css";
 
 const app = createApp(App);
-
 
 const router = createRouter({
   history: createWebHistory(),
@@ -27,7 +27,6 @@ const axiosInstance = axios.create({
     "Access-Control-Allow-Private-Network": true,
   },
 });
-
 
 const firebaseConfig = {
   apiKey: "AIzaSyAgtqxNm9C9fH1FmIjmBgTMSz5i1xJJgAU",
