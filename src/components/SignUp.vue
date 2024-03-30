@@ -3,7 +3,7 @@
     <div class="main-container">
       <h1 class="auth-page__heading">Sign Up</h1>
 
-      <template v-if="error">
+      <template v-if="error-text">
         <p class="error">{{ error }}</p>
       </template>
 

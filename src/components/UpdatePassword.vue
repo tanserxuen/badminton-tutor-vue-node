@@ -1,45 +1,50 @@
 <template>
-  <div>
+  <div class="bg-[#fffcf9]">
+    <div class="main-container">
     <h1
-      class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl"
+      class="auth-page__heading"
     >
       Update Password
     </h1>
 
-    <template v-if="error">
+    <template v-if="error-text">
       <p class="error">{{ error }}</p>
     </template>
 
-    <label for="old-password">Old Password</label>
+    <label for="old-password" class="auth-page__label">Old Password</label>
     <input
       type="password"
       name="old-password"
       placeholder="Old Password"
+        class="auth-page__input"
       :value="oldPassword"
       @input="(event) => (oldPassword = event.target.value)"
     />
-    <label for="new-password">New Password</label>
+    <label for="new-password" class="auth-page__label">New Password</label>
     <input
       type="password"
       name="new-password"
       placeholder="New Password"
+        class="auth-page__input"
       :value="newPassword"
       @input="(event) => (newPassword = event.target.value)"
     />
-    <label for="confirm-password">Confirm Password</label>
+    <label for="confirm-password" class="auth-page__label">Confirm Password</label>
     <input
       type="password"
       name="confirm-password"
       placeholder="Confirm Password"
+        class="auth-page__input"
       :value="confirmPassword"
       @input="(event) => (confirmPassword = event.target.value)"
     />
     <button
-      class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
       @click="submitForm"
+      class="auth-page__submit-button"
     >
       Update Password
     </button>
+  </div>
   </div>
 </template>
 
