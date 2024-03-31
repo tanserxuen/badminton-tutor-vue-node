@@ -1,7 +1,14 @@
 <template>
   <div id="app">
     <AppHeader />
-    <router-view :key="$route.fullPath"></router-view>
+    <div class="p-4 sm:ml-64" v-if="isAuthenticated">
+      <div class="p-4">
+        <router-view :key="$route.fullPath"></router-view>
+      </div>
+    </div>
+    <div v-else>
+      <router-view :key="$route.fullPath"></router-view>
+    </div>
   </div>
 </template>
 
