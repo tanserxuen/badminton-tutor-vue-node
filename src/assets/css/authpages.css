@@ -1,4 +1,4 @@
-.main-container {
+.auth_main-container {
   /* overflow: hidden; */
   width: 360px;
   height: 90vh;
@@ -7,8 +7,8 @@
   margin-bottom: 0;
 }
 
-.main-container,
-.main-container * {
+.auth_main-container,
+.auth_main-container * {
   box-sizing: border-box;
 }
 

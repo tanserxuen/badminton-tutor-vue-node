@@ -1,6 +1,6 @@
 <template>
   <div class="bg-[#fffcf9]">
-    <div class="main-container">
+    <div class="auth_main-container">
     <h1
       class="auth-page__heading"
     >

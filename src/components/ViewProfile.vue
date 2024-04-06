@@ -1,5 +1,40 @@
 <template>
-  <div>
+  <div class="container mx-auto px-4 py-10">
+    <div class="profile">
+      <span class="profile__name">{{ userDetails.name }}</span>
+      <img src="images/logo.png" alt="" class="profile__avatar" />
+      <!-- <span class="styling"></span> -->
+      <span class="profile__description">{{ userDetails.description }}</span>
+      <div class="profile_details">
+        <div class="profile_details__text1">Posts</div>
+        <div class="profile_details__text2">Followers</div>
+        <div class="profile_details__text3">Following</div>
+        <div class="profile_details__numbers1">{{ userDetails.noOfPosts }}</div>
+        <div class="profile_details__numbers2">
+          {{ userDetails.noOfFollowers }}
+        </div>
+        <div class="profile_details__numbers3">
+          {{ userDetails.noOfFollowing }}
+        </div>
+      </div>
+
+      <div class="profile__settings">
+        <span class="profile__settings_title">Settings</span>
+        <div class="profile__settings_bar">
+          <router-link to="/update-password">Update Password</router-link>
+          <i class="fas fa-chevron-right"></i>
+        </div>
+        <div class="profile__settings_bar">
+          <router-link to="/update-profile">Update Profile</router-link>
+          <i class="fas fa-chevron-right"></i>
+        </div>
+      </div>
+    </div>
+    <!-- <div v-if="userDetails">
+      <pre>userDetails {{ userDetails }}</pre>
+    </div> -->
+  </div>
+  <!-- <div>
     <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl">Profile</h1>
     <router-link class="font-medium text-blue-600 dark:text-blue-500 hover:underline" to="/update-password"
       >Update Password</router-link
@@ -9,10 +44,7 @@
     >
     <p>View your profile here</p>
 
-    <div v-if="userDetails">
-      <pre>userDetails {{ userDetails }}</pre>
-    </div>
-  </div>
+  </div> -->
 </template>
 
 <script>
@@ -28,4 +60,115 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.profile,
+.profile__settings {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.profile {
+  align-items: center;
+  max-width: 360px;
+  margin: auto;
+}
+
+.profile__settings {
+  width: -webkit-fill-available;
+}
+
+.profile__settings_bar {
+  margin-block: 1rem;
+  padding-inline: 1.5rem;
+  padding-block: 0.5rem;
+  background: red;
+  border-radius: 0.325rem;
+}
+.profile__settings_title {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.profile__avatar {
+  border-radius: 50%;
+  background: red;
+  margin-block: 40px;
+}
+
+.styling {
+  position: relative;
+}
+
+.styling::after,
+.styling::before {
+  content: "";
+  position: absolute;
+  background: red;
+  width: 300px;
+  height: 300px;
+  z-index: 1;
+}
+
+.styling::before {
+  /* background: blue;
+  width: 200px;
+  height: 200px;
+  transform: rotate(-35deg); */
+  top: -140px;
+  transform: rotate(-35deg);
+}
+
+.styling::after {
+  transform: rotate(35deg);
+  top: -140px;
+  left: -300px;
+}
+
+.profile_details {
+  display: grid;
+  grid-template-areas:
+    "text1 text2 text3"
+    "numbers1 numbers2 numbers3";
+  row-gap: 1rem;
+  column-gap: 2rem;
+  text-align: center;
+  margin-block: 40px;
+}
+
+.profile_details__text1 {
+  grid-area: text1;
+}
+
+.profile_details__text2 {
+  grid-area: text2;
+}
+
+.profile_details__text3 {
+  grid-area: text3;
+}
+
+.profile_details__numbers1 {
+  grid-area: numbers1;
+}
+
+.profile_details__numbers2 {
+  grid-area: numbers2;
+}
+
+.profile_details__numbers3 {
+  grid-area: numbers3;
+}
+
+.profile_details__numbers1,
+.profile_details__numbers2,
+.profile_details__numbers3 {
+  font-size: 4.5rem;
+  font-weight: 600;
+}
+
+.profile__name,
+.profile__description {
+  font-size: large;
+}
+</style>
