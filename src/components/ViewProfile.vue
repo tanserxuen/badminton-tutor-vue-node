@@ -1,5 +1,6 @@
 <template>
   <div class="container mx-auto px-4 py-10">
+    <h2 class="base-page__heading">Profile</h2>
     <div class="profile">
       <span class="profile__name">{{ userDetails.name }}</span>
       <img src="images/logo.png" alt="" class="profile__avatar" />
@@ -82,7 +83,7 @@ export default {
   margin-block: 1rem;
   padding-inline: 1.5rem;
   padding-block: 0.5rem;
-  background: red;
+  background: white;
   border-radius: 0.325rem;
 }
 .profile__settings_title {
@@ -92,11 +93,11 @@ export default {
 
 .profile__avatar {
   border-radius: 50%;
-  background: red;
+  background: white;
   margin-block: 40px;
 }
 
-.styling {
+/* .styling {
   position: relative;
 }
 
@@ -104,17 +105,13 @@ export default {
 .styling::before {
   content: "";
   position: absolute;
-  background: red;
+  background: white;
   width: 300px;
   height: 300px;
   z-index: 1;
-}
+} 
 
 .styling::before {
-  /* background: blue;
-  width: 200px;
-  height: 200px;
-  transform: rotate(-35deg); */
   top: -140px;
   transform: rotate(-35deg);
 }
@@ -123,7 +120,7 @@ export default {
   transform: rotate(35deg);
   top: -140px;
   left: -300px;
-}
+} */
 
 .profile_details {
   display: grid;
@@ -150,21 +147,24 @@ export default {
 
 .profile_details__numbers1 {
   grid-area: numbers1;
+  font-family: var(--default-font-family);
 }
 
 .profile_details__numbers2 {
   grid-area: numbers2;
+  font-family: var(--default-font-family);
 }
 
 .profile_details__numbers3 {
   grid-area: numbers3;
+  font-family: var(--default-font-family);
 }
 
 .profile_details__numbers1,
 .profile_details__numbers2,
 .profile_details__numbers3 {
   font-size: 4.5rem;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .profile__name,

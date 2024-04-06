@@ -43,7 +43,6 @@ h1.auth-page__heading {
   font-weight: 600;
   line-height: 29px;
   position: relative;
-  text-align: left;
   white-space: nowrap;
   display: block;
   margin-top: 35px;
@@ -63,6 +62,26 @@ input.auth-page__input {
   margin-right: 0;
   margin-bottom: 20px;
   width: 100%;
+}
+input.auth-page__input:disabled {
+  display: block;
+  background: gray;
+  border-radius: 5px;
+  border-top-color: rgb(165 161 160);
+  border-bottom-width: 2.5px;
+  border-top-width: thin;
+  margin-top: 5px;
+  margin-left: 0;
+  margin-right: 0;
+  margin-bottom: 20px;
+  width: 100%;
+  cursor: no-drop;
+}
+
+input.auth-page__input-disabled:focus {
+  border:0;
+  outline:0;
+  box-shadow: none;
 }
 
 button.auth-page__submit-button {

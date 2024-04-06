@@ -1,10 +1,8 @@
 <template>
   <div id="app">
     <AppHeader />
-    <div class="sm:ml-64" v-if="isAuthenticated" style="background: #FFF2E0">
-      <div>
-        <router-view :key="$route.fullPath"></router-view>
-      </div>
+    <div class="sm:ml-64" v-if="isAuthenticated" style="background: #fff2e0;min-height:100vh">
+      <router-view :key="$route.fullPath"></router-view>
     </div>
     <div v-else>
       <router-view :key="$route.fullPath"></router-view>

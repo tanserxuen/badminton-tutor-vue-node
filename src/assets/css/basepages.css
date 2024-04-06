@@ -1,0 +1,14 @@
+h2.base-page__heading {
+  color: #434240;
+  font-family: var(--default-font-family);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 29px;
+  position: relative;
+  text-align: left;
+  white-space: nowrap;
+  display: block;
+  margin-top: 35px;
+  margin-bottom: 80px;
+  margin-left: 50px;
+}
