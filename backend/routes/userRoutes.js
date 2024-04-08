@@ -1,5 +1,13 @@
 const express = require("express");
 const router = express.Router();
+// const fileupload = require("express-fileupload");
+const {
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+  getStorage,
+  uploadBytes,
+} = require("firebase/storage");
 
 router.get("/view/:id", async (req, res) => {
   try {
@@ -20,7 +28,21 @@ router.post("/update/:id", async (req, res) => {
     const facebook = req.body.facebook;
     const instagram = req.body.instagram;
     const twitter = req.body.twitter;
-    const image = req.body.image;
+    if (!req.files) {
+      res.send("File was not found");
+      return;
+    }
+    const image = req.files?.image;
+    const metadata = {
+      contentType: image?.mimetype,
+    };
+
+    const storageRef = ref(storage, "Posts/" + image?.name);
+    let imagePath = null;
+
+    await uploadBytes(storageRef, image, metadata);
+    imagePath = await getDownloadURL(storageRef);
+
     const userRef = await db.collection("user").doc(id).update({
       name,
       description,
@@ -28,7 +50,7 @@ router.post("/update/:id", async (req, res) => {
       facebook,
       instagram,
       twitter,
-      image
+      image: imagePath,
     });
     res.send(userRef);
   } catch (error) {

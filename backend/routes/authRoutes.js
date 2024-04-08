@@ -3,19 +3,14 @@ const router = express.Router();
 const { FieldValue } = require("firebase-admin/firestore");
 const userJsonTemplate = require("../config/userJson");
 require("dotenv").config();
-const { initializeApp } = require("firebase/app");
-const firebaseConfig = require("../config/firebaseConfig");
-const firebaseApp = initializeApp(firebaseConfig);
 const {
-  getAuth,
+  // getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
   updatePassword,
   signOut,
 } = require("firebase/auth");
-
-const auth = getAuth(firebaseApp);
 
 router.post("/signup", async (req, res) => {
   const { email, password } = req.body;

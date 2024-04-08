@@ -1,8 +1,13 @@
 <template>
   <div class="container px-4 py-10">
-      <h2 class="base-page__heading">Update Profile</h2>
-      <div class="mx-auto" style="max-width: 360px">
-        <label class="auth-page__label" for="name">Email</label>
+    <h2 class="base-page__heading">Update Profile</h2>
+    <form
+      class="mx-auto"
+      style="max-width: 360px"
+      encType="multipart/form-data"
+      @submit.prevent="submitForm"
+    >
+      <label class="auth-page__label" for="name">Email</label>
       <input
         class="auth-page__input"
         :value="store.state?.currentUserDetails?.email"
@@ -69,20 +74,28 @@
         @input="(event) => (formData.twitter = event.target.value)"
         required
       />
-      <label class="auth-page__label" for="image">Image</label>
-      <input
-        type="text"
-        name="image"
-        placeholder="Image"
-        :value="formData.image"
-        class="auth-page__input"
-        @input="(event) => (formData.image = event.target.value)"
-        required
-      />
-      <button @click="submitForm" class="auth-page__submit-button">
-        Update Profile
-      </button>
+      <div class="flex items-center space-x-6">
+        <div class="shrink-0">
+          <img
+            ref="avatar_preview"
+            class="h-32 w-32 object-cover rounded-full"
+            :src="formData.image"
+            alt="Current profile photo"
+          />
+        </div>
+        <label class="block">
+          <span class="sr-only">Choose profile photo</span>
+          <input
+            ref="fileInput"
+            type="file"
+            name="image"
+            @change="uploadImage"
+            class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100"
+          />
+        </label>
       </div>
+      <button class="auth-page__submit-button">Update Profile</button>
+    </form>
   </div>
 </template>
 
@@ -90,14 +103,26 @@
 import UserService from "@/js/services/user";
 import { computed, onMounted, reactive } from "vue";
 import { useStore } from "vuex";
-import { useRouter } from "vue-router";
+// import { useRouter } from "vue-router";
 
 export default {
   setup() {
     const store = useStore();
-    const router = useRouter();
+    // const router = useRouter();
     const formData = reactive({});
     const userDetails = computed(() => store.state?.currentUserDetails ?? "");
+    // const fileInput = ref(null);
+
+    const uploadImage = (e) => {
+      const image = e.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(image);
+      reader.onload = () => {
+        formData.image = reader.result;
+        // this.$refs.avatar_preview.src = reader.result;
+      };
+    };
+
     const submitForm = () => {
       try {
         UserService.update(userDetails.value.id, {
@@ -110,7 +135,7 @@ export default {
           image: formData.image,
         })
           .then(() => {
-            router.push({ name: "Profile" });
+            // router.push({ name: "Profile" });
           })
           .catch((error) => {
             throw new Error(error);
@@ -143,6 +168,7 @@ export default {
       formData,
       submitForm,
       store,
+      uploadImage,
     };
   },
 };

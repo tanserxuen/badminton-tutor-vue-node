@@ -1,7 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 var indexRouter = require("./backend/routes");
-require("./backend/config/firebaseStore");
+require("./backend/config/firestoreSetup");
+require("./backend/config/firebaseSetup");
+const fileupload = require("express-fileupload");
 
 const app = express();
 const port = 3000;
@@ -13,7 +15,7 @@ app.use(
     credentials: true, // Allow cookies to be sent with requests
   })
 );
-app.use(express.json());
+app.use(fileupload({ safeFileNames: true, preserveExtension: true }));
 app.use(express.urlencoded({ extended: false }));
 
 app.use(express.json());

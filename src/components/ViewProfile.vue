@@ -3,7 +3,7 @@
     <h2 class="base-page__heading">Profile</h2>
     <div class="profile">
       <span class="profile__name">{{ userDetails.name }}</span>
-      <img src="images/logo.png" alt="" class="profile__avatar" />
+      <img :src="userDetails.image" alt="" class="profile__avatar" />
       <!-- <span class="styling"></span> -->
       <span class="profile__description">{{ userDetails.description }}</span>
       <div class="profile_details">
