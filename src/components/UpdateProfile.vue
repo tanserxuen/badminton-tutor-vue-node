@@ -103,12 +103,12 @@
 import UserService from "@/js/services/user";
 import { computed, onMounted, reactive } from "vue";
 import { useStore } from "vuex";
-// import { useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 
 export default {
   setup() {
     const store = useStore();
-    // const router = useRouter();
+    const router = useRouter();
     const formData = reactive({});
     const userDetails = computed(() => store.state?.currentUserDetails ?? "");
     // const fileInput = ref(null);
@@ -135,7 +135,7 @@ export default {
           image: formData.image,
         })
           .then(() => {
-            // router.push({ name: "Profile" });
+            router.push({ name: "Profile" });
           })
           .catch((error) => {
             throw new Error(error);
