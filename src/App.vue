@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <AppHeader />
+    <SideBar />
     <div class="sm:ml-64" v-if="isAuthenticated" style="background: #fff2e0;min-height:100vh">
       <router-view :key="$route.fullPath"></router-view>
     </div>
@@ -13,12 +13,12 @@
 <script>
 import { onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
-import AppHeader from "./components/AppHeader.vue";
+import SideBar from "./components/SideBar.vue";
 import store from "./js/store";
 
 export default {
   components: {
-    AppHeader,
+    SideBar,
   },
   setup() {
     const isAuthenticated = computed(() => store.getters.isAuthenticated);

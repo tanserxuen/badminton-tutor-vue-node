@@ -6,6 +6,10 @@ import DashBoard from "../components/DashBoard.vue";
 import UpdatePassword from "../components/UpdatePassword.vue";
 import ResetPassword from "../components/ResetPassword.vue";
 import PoseCounter from "../components/PoseCounter.vue";
+import PostsIndex from "../components/PostsIndex.vue";
+import PostView from "../components/PostView.vue";
+import PostCreate from "../components/PostCreate.vue";
+import ConnectionIndex from "../components/ConnectionIndex.vue";
 
 const routes = [
   { path: "/signin", name:"SignIn", component: () => SignIn },
@@ -16,6 +20,10 @@ const routes = [
   { path: "/update-password", name:"UpdatePassword", component: () => UpdatePassword },
   { path: "/reset-password", name:"ResetPassword", component: () => ResetPassword },
   { path: "/pose-counter", name:"PoseCounter", component: () => PoseCounter },
+  { path: "/posts", name:"PostsIndex", component: () => PostsIndex },
+  { path: "/post/:index", name:"PostView", component: () => PostView, props: true },
+  { path: "/post-create", name:"PostCreate", component: () => PostCreate },
+  { path: "/connects-index", name:"ConnectionIndex", component: () => ConnectionIndex },
 ];
 
 export default routes;

@@ -78,6 +78,7 @@ export default {
             store.commit("setCurrentUser", response.data);
             console.log({ currentUser: store.getters.getCurrentUser });
             store.dispatch("fetchUserDetails", response.data.uid);
+            store.dispatch("fetchPosts", response.data.uid);
             console.log({
               currentUserDetails: store.getters.getCurrentUserDetails,
             });
