@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 // const fileupload = require("express-fileupload");
+const { FieldValue } = require("firebase-admin/firestore");
 const {
   ref,
   uploadBytesResumable,
@@ -60,6 +61,49 @@ router.post("/get-connects", async (req, res) => {
   }
 });
 
+router.post("/update-connects", async (req, res) => {
+  try {
+    const { userId, targetUserId, newStatus, oldStatus } = req.body;
+    console.log({ userId, targetUserId, newStatus, oldStatus });
+    // const statuses = ["connect","requesting", "requests", "follower", "following"];
+    const userRef = db.collection("user");
+    if (oldStatus == "connect" && newStatus == "requesting") {
+      await userRef.doc(userId).update({
+        connect: FieldValue.arrayRemove(targetUserId),
+        requesting: FieldValue.arrayUnion(targetUserId),
+      });
+      await userRef.doc(targetUserId).update({
+        connect: FieldValue.arrayUnion(userId),
+        requests: FieldValue.arrayUnion(userId),
+      });
+      console.log('oldStatus=="connect"&&newStatus=="requesting"');
+    } else if (oldStatus == "requesting" && newStatus == "following") {
+      await userRef.doc(userId).update({
+        requesting: FieldValue.arrayRemove(targetUserId),
+        following: FieldValue.arrayUnion(targetUserId),
+      });
+      await userRef.doc(targetUserId).update({
+        requests: FieldValue.arrayRemove(userId),
+        follower: FieldValue.arrayUnion(userId),
+      });
+      console.log('oldStatus=="requesting"&&newStatus=="following"');
+    } else if (oldStatus == "requests" && newStatus == "follower") {
+      await userRef.doc(userId).update({
+        requests: FieldValue.arrayRemove(targetUserId),
+        follower: FieldValue.arrayUnion(targetUserId),
+      });
+      await userRef.doc(targetUserId).update({
+        requesting: FieldValue.arrayRemove(userId),
+        following: FieldValue.arrayUnion(userId),
+      });
+      console.log('oldStatus=="requests"&&newStatus=="follower"');
+    }
+    res.send(response);
+  } catch (error) {
+    res.send(error);
+  }
+});
+
 router.get("/view/:id", async (req, res) => {
   try {
     const userRef = db.collection("user").doc(req.params.id);
@@ -107,12 +151,12 @@ router.post("/update/:id", async (req, res) => {
       instagram,
       twitter,
       // image: imagePath,
-      image
+      image,
     });
     res.send(userRef);
     // res.send({imagePath});
   } catch (error) {
-    res.send({error});
+    res.send({ error });
   }
 });
 

@@ -22,12 +22,35 @@
     </ul>
     <!--tab displays -->
     <div>
-      <template v-if="userTypes[activeTab.toLowerCase()].length">
-        <ul v-for="user in userTypes[activeTab.toLowerCase()]" :key="user.id">
-          <li>
-            {{ user.name }} {{ user.id }} <button>{{ activeTab }}</button>
-          </li>
-        </ul>
+      <template v-if="userTypes[activeTab].length">
+        <div
+          v-for="user in userTypes[activeTab]"
+          :key="user.id"
+          class="p-4 pb-0"
+        >
+          <div class="w-full">
+            <div
+              class="border border-gray-100 bg-white rounded p-4 flex flex-col justify-between leading-normal"
+            >
+              <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                  <img
+                    class="w-10 h-10 rounded-full mr-4"
+                    src="../assets/images/logo.png"
+                    :alt="user.name"
+                  />
+                  <div class="text-sm">
+                    <p class="text-gray-900 leading-none">{{ user.name }}</p>
+                    <p class="text-gray-600">{{ user.created_at }}</p>
+                  </div>
+                </div>
+                <button @click="changeStatus(activeTab, user.id)">
+                  {{ getDisplayWord(activeTab) }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </template>
       <template v-else>
         <p>No users found</p>
@@ -45,11 +68,11 @@ export default {
   setup() {
     const store = useStore();
     const statuses = [
-      "Connect", //all available users
-      "Requesting", //users that I requested to connect
-      "Requests", //users that requested to connect me
-      "Follower", //users that follow me
-      "Following", //users that I follow
+      "connect", //all available users
+      "requesting", //users that I requested to connect
+      "requests", //users that requested to connect me
+      "follower", //users that follow me
+      "following", //users that I follow
     ];
     const activeTab = ref(statuses[0]);
     // const users = ref([]);
@@ -62,6 +85,44 @@ export default {
       follower: [],
       following: [],
     });
+
+    const getDisplayWord = (status) => {
+      switch (status) {
+        case "connect":
+          return "Connect";
+        case "requesting":
+          return "Cancel Request";
+        case "requests":
+          return "Accept";
+        case "follower":
+          return "Follow Back";
+        case "following":
+          return "Unfollow";
+        default:
+          return "Connect";
+      }
+    };
+
+    const changeStatus = (activeTab, targetUserId) => {
+      // to check current logic first below enabling more functions
+      if (activeTab == "follower" || activeTab == "following") return;
+      const oldStatusIndex = statuses.indexOf(activeTab);
+      const newStatus = statuses[oldStatusIndex + 1];
+      console.log({
+        userId: userDetails.value?.id,
+        targetUserId,
+        newStatus: newStatus,
+        oldStatus: activeTab,
+      });
+      UserService.updateConnects({
+        userId: userDetails.value.id,
+        targetUserId,
+        newStatus,
+        oldStatus: activeTab,
+      }).then((response) => {
+        console.log(response);
+      });
+    };
 
     onMounted(() => {
       UserService.getConnects(userDetails.value.id).then((response) => {
@@ -78,11 +139,16 @@ export default {
     return {
       activeTab,
       statuses,
-      // users,
+      changeStatus,
       userTypes,
+      getDisplayWord,
     };
   },
 };
 </script>
 
-<style></style>
+<style scoped>
+a[href] {
+  text-transform: capitalize;
+}
+</style>

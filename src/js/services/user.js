@@ -41,4 +41,13 @@ async function getConnects(userId) {
   }
 }
 
-export default { update, index, getConnects };
+async function updateConnects(data){
+  try {
+    const response = await axios.post(`http://localhost:3000/user/update-connects`, data);
+    return response;
+  } catch (error) {
+    return error;
+  }
+}
+
+export default { update, index, getConnects, updateConnects };
