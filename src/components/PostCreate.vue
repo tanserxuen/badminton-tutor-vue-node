@@ -54,7 +54,7 @@
 <script>
 import { computed, reactive } from "vue";
 import { useStore } from "vuex";
-import UserService from "@/js/services/user";
+import PostService from "@/js/services/post.js";
 
 export default {
   setup() {
@@ -77,7 +77,7 @@ export default {
 
     const submitForm = () => {
       try {
-        UserService.createPost({
+        PostService.createPost({
           userId: userDetails.value.id,
           userName: userDetails.value.name,
           ...formData,

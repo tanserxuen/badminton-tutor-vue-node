@@ -28,20 +28,25 @@ router.post("/update/:id", async (req, res) => {
     const facebook = req.body.facebook;
     const instagram = req.body.instagram;
     const twitter = req.body.twitter;
-    if (!req.files) {
-      res.send("File was not found");
-      return;
-    }
-    const image = req.files?.image;
-    const metadata = {
-      contentType: image?.mimetype,
-    };
+    const image = req.body.image;
+    // res.send(req.files)
+    // if (!req.files) {
+    //   res.send("File was not found");
+    //   return;
+    // }
+    // const image = req.files?.image;
+    // const metadata = {
+    //   contentType: image?.mimetype,
+    // };
 
-    const storageRef = ref(storage, "Posts/" + image?.name);
-    let imagePath = null;
+    // const storageRef = ref(storage, "Posts/" + image?.name);
+    // storageRef.putString(image, 'data_url').then((snapshot) => {
+    //   console.log('Uploaded a data_url string!');
+    // });
+    // let imagePath = null;
 
-    await uploadBytes(storageRef, image, metadata);
-    imagePath = await getDownloadURL(storageRef);
+    // await uploadBytes(storageRef, image, metadata);
+    // imagePath = await getDownloadURL(storageRef);
 
     const userRef = await db.collection("user").doc(id).update({
       name,
@@ -50,11 +55,13 @@ router.post("/update/:id", async (req, res) => {
       facebook,
       instagram,
       twitter,
-      image: imagePath,
+      // image: imagePath,
+      image
     });
     res.send(userRef);
+    // res.send({imagePath});
   } catch (error) {
-    res.send(error);
+    res.send({error});
   }
 });
 

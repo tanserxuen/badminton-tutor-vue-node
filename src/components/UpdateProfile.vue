@@ -134,8 +134,10 @@ export default {
           twitter: formData.twitter,
           image: formData.image,
         })
-          .then(() => {
+          .then((response) => {
+            if(response.status === 200) {
             router.push({ name: "Profile" });
+            }
           })
           .catch((error) => {
             throw new Error(error);

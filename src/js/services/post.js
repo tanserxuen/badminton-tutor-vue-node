@@ -9,14 +9,18 @@ async function getUserPosts() {
   }
 }
 
-async function createPost({ userId, title, description, image }) {
+async function createPost({ userId, title, description, image, userName }) {
   try {
-    const response = await axios.post("http://localhost:3000/post/create", {
-      userId,
-      title,
-      description,
-      image,
-    });
+    const response = await axios.post(
+      "http://localhost:3000/post/create",
+      {
+        userId,
+        title,
+        description,
+        image,
+        userName
+      },
+    );
     return response;
   } catch (error) {
     return error;
