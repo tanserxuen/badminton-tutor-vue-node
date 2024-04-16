@@ -33,6 +33,7 @@ router.get("/", async (req, res) => {
 router.post("/create", async (req, res) => {
   try {
     const userId = req.body.userId;
+    const userName = req.body.userName;
     const title = req.body.title;
     const description = req.body.description;
     const image = req.body.image;
@@ -46,6 +47,7 @@ router.post("/create", async (req, res) => {
         title,
         image,
         description,
+        userName,
         created_at: FieldValue.serverTimestamp(),
         ...postJsonTemplate,
       })

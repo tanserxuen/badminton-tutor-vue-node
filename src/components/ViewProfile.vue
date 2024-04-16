@@ -95,6 +95,9 @@ export default {
   border-radius: 50%;
   background: white;
   margin-block: 40px;
+  width: 250px;
+  height: 250px;
+  object-fit: cover;
 }
 
 /* .styling {

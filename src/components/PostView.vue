@@ -1,5 +1,8 @@
 <template>
   <div class="">
+    <button v-if="!isConnection">
+      <router-link to="/post-edit">Edit Post</router-link>
+    </button>
     <div class="bg-white border rounded-sm max-w-md mx-auto">
       <div class="flex items-center px-4 py-3">
         <img
@@ -12,7 +15,7 @@
           }}</span>
         </div>
       </div>
-      <img :src="post?.image" :alt="post?.image" />
+      <img :src="post?.image" :alt="post?.image" class="post-image" />
       <div class="flex items-center justify-between mx-4 mt-3 mb-2">
         <div class="flex gap-5">
           <i
@@ -185,5 +188,12 @@ export default {
 
 .fa-heart {
   font-size: 26px;
+}
+
+img.post-image {
+  max-height: 70vh;
+  width: -webkit-fill-available;
+  object-fit: cover;
+  min-height: 250px;
 }
 </style>

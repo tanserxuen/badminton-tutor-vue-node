@@ -9,6 +9,7 @@ import PoseCounter from "../components/PoseCounter.vue";
 import PostsIndex from "../components/PostsIndex.vue";
 import PostView from "../components/PostView.vue";
 import PostCreate from "../components/PostCreate.vue";
+import PostEdit from "../components/PostEdit.vue";
 import ConnectionIndex from "../components/ConnectionIndex.vue";
 
 const routes = [
@@ -23,7 +24,8 @@ const routes = [
   { path: "/posts", name:"PostsIndex", component: () => PostsIndex },
   { path: "/post/:index", name:"PostView", component: () => PostView, props: true },
   { path: "/post-create", name:"PostCreate", component: () => PostCreate },
-  { path: "/connects-index", name:"ConnectionIndex", component: () => ConnectionIndex },
+  { path: "/post-edit", name:"PostEdit", component: () => PostEdit },
+  { path: "/feeds", name:"FeedsIndex", component: () => FeedsIndex },
 ];
 
 export default routes;
