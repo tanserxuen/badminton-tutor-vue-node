@@ -4,8 +4,7 @@ node_modules
 
 
 # local env files
-.env.local
-.env.*.local
+.env
 
 # Log files
 npm-debug.log*
@@ -23,3 +22,4 @@ pnpm-debug.log*
 *.sw?
 
 badmintonposecounter-8a231abc9956.json
+.env
