@@ -10,7 +10,10 @@ import PostsIndex from "../components/PostsIndex.vue";
 import PostView from "../components/PostView.vue";
 import PostCreate from "../components/PostCreate.vue";
 import PostEdit from "../components/PostEdit.vue";
+import FeedsIndex from "../components/FeedsIndex.vue";
 import ConnectionIndex from "../components/ConnectionIndex.vue";
+import FeedbackHistory from "../components/FeedbackHistory.vue";
+import DetailedAnalytics from "../components/DetailedAnalytics.vue";
 
 const routes = [
   { path: "/signin", name:"SignIn", component: () => SignIn },
@@ -26,6 +29,9 @@ const routes = [
   { path: "/post-create", name:"PostCreate", component: () => PostCreate },
   { path: "/post-edit", name:"PostEdit", component: () => PostEdit },
   { path: "/feeds", name:"FeedsIndex", component: () => FeedsIndex },
+  { path: "/connection", name:"ConnectionIndex", component: () => ConnectionIndex },
+  { path: "/feedback-history", name:"FeedbackHistory", component: () => FeedbackHistory },
+  { path: "/detailed-analytics", name:"DetailedAnalytics", component: () => DetailedAnalytics },
 ];
 
 export default routes;

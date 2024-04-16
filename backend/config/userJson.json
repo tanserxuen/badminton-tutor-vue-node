@@ -14,5 +14,9 @@
   "noOfPosts": 0,
   "updatedWeekNumber": 6,
   "image": "",
-  "analytics": {}
+  "analytics": {},
+  "follower": [],
+  "following": [],
+  "requests":[],
+  "requesting":[]
 }

@@ -9,6 +9,57 @@ const {
   uploadBytes,
 } = require("firebase/storage");
 
+router.get("/", async (req, res) => {
+  try {
+    const userRef = db.collection("user");
+    const response = await userRef.get();
+    res.send(response.docs.map((doc) => doc.data()));
+  } catch (error) {
+    res.send(error);
+  }
+});
+
+router.post("/get-connects", async (req, res) => {
+  try {
+    const userRef = db.collection("user");
+    const response = await userRef.doc(req.body.userId).get();
+    const user = await response.data();
+    const results = await Promise.all([
+      userRef
+        .where("id", "not-in", [
+          ...user.following,
+          ...user.follower,
+          ...user.requests,
+          ...user.requesting,
+          user.id, //exclude the current user
+        ])
+        .get(), //get other available connects
+      user.following.length
+        ? userRef.where("id", "in", user.following).get()
+        : [],
+      user.follower.length
+        ? userRef.where("id", "in", user.follower).get()
+        : [],
+      user.requests.length
+        ? userRef.where("id", "in", user.requests).get()
+        : [],
+      user.requesting.length
+        ? userRef.where("id", "in", user.requesting).get()
+        : [],
+    ]);
+    res.send({
+      connect: results[0]?.docs?.map((doc) => doc.data()) ?? [],
+      following: results[1]?.docs?.map((doc) => doc.data()) ?? [],
+      follower: results[2]?.docs?.map((doc) => doc.data()) ?? [],
+      requests: results[3]?.docs?.map((doc) => doc.data()) ?? [],
+      requesting: results[4]?.docs?.map((doc) => doc.data()) ?? [],
+    });
+  } catch (error) {
+    console.log(error);
+    res.send(error);
+  }
+});
+
 router.get("/view/:id", async (req, res) => {
   try {
     const userRef = db.collection("user").doc(req.params.id);

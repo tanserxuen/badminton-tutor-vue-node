@@ -23,4 +23,22 @@ async function update(id, formdata) {
 }
 // }
 
-export default { update };
+async function index() {
+  try {
+    const response = await axios.get(`http://localhost:3000/user`);
+    return response;
+  } catch (error) {
+    return error;
+  }
+}
+
+async function getConnects(userId) {
+  try {
+    const response = await axios.post(`http://localhost:3000/user/get-connects`, {userId});
+    return response;
+  } catch (error) {
+    return error;
+  }
+}
+
+export default { update, index, getConnects };
