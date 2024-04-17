@@ -90,6 +90,8 @@
             type="file"
             name="image"
             @change="uploadImage"
+            required
+            accept="image/png, image/gif, image/jpeg"
             class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100"
           />
         </label>
@@ -101,7 +103,7 @@
 
 <script>
 import UserService from "@/js/services/user";
-import { computed, onMounted, reactive } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
@@ -111,11 +113,17 @@ export default {
     const router = useRouter();
     const formData = reactive({});
     const userDetails = computed(() => store.state?.currentUserDetails ?? "");
-    // const fileInput = ref(null);
+    const imageSize = ref(0);
 
     const uploadImage = (e) => {
       const image = e.target.files[0];
+      if (image.size > 66000) {
+        alert("Image size should be less than 66 kb");
+        e.preventDefault();
+        return;
+      }
       const reader = new FileReader();
+      imageSize.value = image.size;
       reader.readAsDataURL(image);
       reader.onload = () => {
         formData.image = reader.result;
@@ -124,6 +132,11 @@ export default {
     };
 
     const submitForm = () => {
+      if (imageSize.value == 0) {
+        alert("Please upload an image");
+        return;
+      } //empty image file
+
       try {
         UserService.update(userDetails.value.id, {
           name: formData.name,
@@ -135,8 +148,8 @@ export default {
           image: formData.image,
         })
           .then((response) => {
-            if(response.status === 200) {
-            router.push({ name: "Profile" });
+            if (response.status === 200) {
+              router.push({ name: "Profile" });
             }
           })
           .catch((error) => {

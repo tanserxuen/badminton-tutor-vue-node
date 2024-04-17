@@ -39,6 +39,8 @@
           <span class="sr-only">Choose profile photo</span>
           <input
             ref="fileInput"
+            required
+            accept="image/png, image/gif, image/jpeg"
             type="file"
             name="image"
             @change="uploadImage"
@@ -67,6 +69,11 @@ export default {
     const userDetails = computed(() => store.state?.currentUserDetails ?? "");
     const uploadImage = (e) => {
       const image = e.target.files[0];
+      if (image.size > 66000) {
+        alert("Image size should be less than 66 kb");
+        e.preventDefault();
+        return;
+      }
       const reader = new FileReader();
       reader.readAsDataURL(image);
       reader.onload = () => {
