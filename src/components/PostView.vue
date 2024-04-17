@@ -3,11 +3,13 @@
     <h2 class="base-page__heading-short" v-if="!isConnection">
       Post View
       <router-link to="#" class="float-end"
-        ><i class="fas fa-trash"></i></router-link
-      >
-      <router-link :to="{ name: 'PostEdit', params: { index: index } }" class="float-end me-3"
-        ><i class="fas fa-pencil-alt"></i></router-link
-      >
+        ><i class="fas fa-trash"></i
+      ></router-link>
+      <router-link
+        :to="{ name: 'PostEdit', params: { index: index } }"
+        class="float-end me-3"
+        ><i class="fas fa-pencil-alt"></i
+      ></router-link>
     </h2>
     <div class="bg-white border rounded-sm max-w-md mx-auto">
       <div class="flex items-center px-4 py-3">
@@ -53,7 +55,7 @@
           post?.number_of_likes == 0 ? "s" : ""
         }}
         <br />
-        <span class="text-gray-500 text-xs">{{ post?.created_at }}</span>
+        <span class="text-gray-500 text-xs">{{ date }}</span>
       </div>
       <div
         class="max-w-md mx-auto mt-5 px-4"
@@ -86,15 +88,17 @@
             class="transition-all"
           >
             <div class="row" v-for="(comment, i) in post?.comments" :key="i">
-              <div class="mb-2">
+              <!-- <div class="mb-2">
                 <div class="d-inline me-3">
-                  <img :src="post.image" :alt="post?.userId" class="avatar" />
-                </div>
-                <span>{{ comment.user }}</span>
-              </div>
-              <div class="col-sm-10">
-                <p>{{ comment.message }}</p>
-              </div>
+                <img :src="comment.userName" :alt="post?.userId" class="avatar" /> 
+                </div> -->
+              <span
+                >{{ comment.userName }}&nbsp;&nbsp;{{ comment.message }}</span
+              >
+              <!-- </div>
+              <div class="col-sm-10"> -->
+              <!-- <p></p> -->
+              <!-- </div> -->
             </div>
           </div>
         </template>
@@ -114,6 +118,7 @@
 import { computed, ref, watch } from "vue";
 import { useStore } from "vuex";
 import PostServices from "../js/services/post";
+import getDateFromTimestamp from "../js/services/date";
 
 export default {
   props: {
@@ -138,6 +143,11 @@ export default {
         ? store.getters.getNonUserPost(props.index)
         : store.getters.getUserPost(props.index);
     };
+
+    const date = computed(() => {
+      if (!post.value) return;
+      return getDateFromTimestamp(post.value?.created_at);
+    });
 
     fetchPost();
 
@@ -188,7 +198,7 @@ export default {
       toggleLike,
       addComment,
       isCommentsTabOpen,
-      comment,
+      comment,date
     };
   },
 };
