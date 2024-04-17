@@ -14,6 +14,7 @@ import FeedsIndex from "../components/FeedsIndex.vue";
 import ConnectionIndex from "../components/ConnectionIndex.vue";
 import FeedbackHistory from "../components/FeedbackHistory.vue";
 import DetailedAnalytics from "../components/DetailedAnalytics.vue";
+import TrainingPose from "../components/TrainingPose.vue";
 
 const routes = [
   { path: "/signin", name:"SignIn", component: () => SignIn },
@@ -32,6 +33,7 @@ const routes = [
   { path: "/connection", name:"ConnectionIndex", component: () => ConnectionIndex },
   { path: "/feedback-history", name:"FeedbackHistory", component: () => FeedbackHistory },
   { path: "/detailed-analytics", name:"DetailedAnalytics", component: () => DetailedAnalytics },
+  { path: "/training-pose", name:"TrainingPose", component: () => TrainingPose },
 ];
 
 export default routes;

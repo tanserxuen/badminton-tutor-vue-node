@@ -5,7 +5,7 @@
       data-drawer-toggle="default-sidebar"
       aria-controls="default-sidebar"
       type="button"
-      class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+      class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-amber-50 focus:outline-none focus:ring-2 focus:ring-gray-200"
       @click="closeSidebar"
     >
       <span class="sr-only">Open sidebar</span>
@@ -44,7 +44,7 @@
             <li>
               <router-link
                 to="/dashboard"
-                class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group"
+                class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-amber-50 group"
               >
                 <svg
                   class="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
@@ -66,31 +66,8 @@
 
             <li>
               <router-link
-                to="/pose-counter"
-                class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group"
-              >
-                <svg
-                  class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    d="m17.418 3.623-.018-.008a6.713 6.713 0 0 0-2.4-.569V2h1a1 1 0 1 0 0-2h-2a1 1 0 0 0-1 1v2H9.89A6.977 6.977 0 0 1 12 8v5h-2V8A5 5 0 1 0 0 8v6a1 1 0 0 0 1 1h8v4a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-4h6a1 1 0 0 0 1-1V8a5 5 0 0 0-2.582-4.377ZM6 12H4a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Z"
-                  />
-                </svg>
-                <span class="flex-1 ms-3 whitespace-nowrap">Pose Counter</span>
-                <span
-                  class="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full"
-                  >3</span
-                >
-              </router-link>
-            </li>
-            <li>
-              <router-link
-                to="/feeds"
-                class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group"
+                to="/training-pose"
+                class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-amber-50 group"
               >
                 <svg
                   class="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
@@ -106,13 +83,37 @@
                     d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z"
                   />
                 </svg>
-                <span class="ms-3">Feeds</span>
+                <span class="ms-3">Trainings</span>
+              </router-link>
+            </li>
+            <li>
+              <router-link
+                to="/feeds"
+                class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-amber-50 group"
+              >
+                <svg
+                  class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="m17.418 3.623-.018-.008a6.713 6.713 0 0 0-2.4-.569V2h1a1 1 0 1 0 0-2h-2a1 1 0 0 0-1 1v2H9.89A6.977 6.977 0 0 1 12 8v5h-2V8A5 5 0 1 0 0 8v6a1 1 0 0 0 1 1h8v4a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-4h6a1 1 0 0 0 1-1V8a5 5 0 0 0-2.582-4.377ZM6 12H4a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Z"
+                  />
+                </svg>
+                <span class="flex-1 ms-3 whitespace-nowrap">Feeds</span>
+                <span
+                  v-if="userDetails?.requests?.length"
+                  class="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full"
+                  >{{ userDetails?.requests?.length }}</span
+                >
               </router-link>
             </li>
             <li>
               <router-link
                 to="/posts"
-                class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group"
+                class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-amber-50 group"
               >
                 <svg
                   class="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
@@ -134,7 +135,7 @@
             <li>
               <router-link
                 to="/profile"
-                class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group"
+                class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-amber-50 group"
               >
                 <svg
                   class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
@@ -149,15 +150,16 @@
                 </svg>
                 <span class="flex-1 ms-3 whitespace-nowrap">Profile</span>
                 <span
-                  class="inline-flex items-center justify-center px-2 ms-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full"
-                  >Pro</span
-                >
+                  v-if="userDetails?.name == ''"
+                  class="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-red-800 bg-red-100 rounded-full"
+                  ><i class="fas fa-exclamation" title="Update Your Profile!"></i
+                ></span>
               </router-link>
             </li>
             <li>
               <button
                 @click="logoutUser"
-                class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group"
+                class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-amber-50 group"
               >
                 <svg
                   class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
@@ -185,11 +187,11 @@ import { logout } from "../js/services/auth.js";
 import store from "@/js/store.js";
 import { computed } from "vue";
 import { useRouter } from "vue-router";
-// import a from "../assets/images/logo.png"
 
 export default {
   setup() {
     const isAuthenticated = computed(() => store.getters.isAuthenticated);
+    const userDetails = computed(() => store.getters.getCurrentUserDetails);
     const router = useRouter();
 
     const toggleSidebar = () => {
@@ -216,7 +218,13 @@ export default {
           console.error(error);
         });
     };
-    return { isAuthenticated, logoutUser, toggleSidebar, closeSidebar };
+    return {
+      isAuthenticated,
+      logoutUser,
+      toggleSidebar,
+      closeSidebar,
+      userDetails,
+    };
   },
 };
 </script>

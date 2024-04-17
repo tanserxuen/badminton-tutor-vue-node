@@ -1,15 +1,19 @@
 <template>
-  <div>
-    <h1>Connection Index</h1>
-    <router-link to="/connection"><i class="fas fa-user-plus"></i></router-link>
-    <div class="p-4">
+  <div class="container mx-auto px-4 py-10">
+    <h2 class="base-page__heading-short">
+      Connections<router-link class="float-end" to="/connection"
+        ><i class="fas fa-user-plus"></i
+      ></router-link>
+    </h2>
+    <div class="base-page__inner-margin">
       <template v-if="posts.length != 0">
-        <div
-          v-for="(post, index) in posts"
-          :key="post.id"
-          class="bg-white shadow-md rounded-lg p-4"
-        >
-          <PostView :index="index" :isConnection="true"></PostView>
+        <div class="scroll-inside">
+          <PostView
+            :index="index"
+            :isConnection="true"
+            v-for="(post, index) in posts"
+            :key="post.id"
+          ></PostView>
         </div>
       </template>
       <template v-else>No Posts Yet</template>

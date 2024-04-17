@@ -1,21 +1,52 @@
 <template>
-  <div>
-    <h1>Edit Post</h1>
-    <form>
-      <div>
-        <label for="title">Title</label>
-        <input type="text" id="title" v-model="formData.title" />
+  <div class="container px-4 py-10">
+    <h2 class="base-page__heading">Edit Post</h2>
+    <form
+      class="mx-auto"
+      style="max-width: 360px"
+      encType="multipart/form-data"
+      @submit.prevent="submitForm"
+    >
+      <label class="auth-page__label" for="title">Title</label>
+      <input
+        type="text"
+        name="title"
+        placeholder="title"
+        :value="formData.title"
+        class="auth-page__input"
+        @input="(event) => (formData.title = event.target.value)"
+        required
+      /><label class="auth-page__label" for="description">Description</label>
+      <input
+        type="text"
+        name="description"
+        placeholder="description"
+        :value="formData.description"
+        class="auth-page__input"
+        @input="(event) => (formData.description = event.target.value)"
+        required
+      />
+      <div class="flex items-center space-x-6">
+        <div class="shrink-0">
+          <img
+            ref="avatar_preview"
+            class="h-32 w-32 object-cover rounded-full"
+            :src="formData.image ?? '/images/placeholderImg.jpg'"
+            alt="Current profile photo"
+          />
+        </div>
+        <label class="block">
+          <span class="sr-only">Choose profile photo</span>
+          <input
+            ref="fileInput"
+            type="file"
+            name="image"
+            @change="uploadImage"
+            class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100"
+          />
+        </label>
       </div>
-      <div>
-        <label for="description">Description</label>
-        <textarea id="description" v-model="formData.description"></textarea>
-      </div>
-      <div>
-        <label for="image">Image</label>
-        <input type="file" id="image" @change="uploadImage" />
-        <img :src="formData.image" alt="Post Image" />
-      </div>
-      <button @click.prevent="submitForm">Update Post</button>
+      <button class="auth-page__submit-button">Update</button>
     </form>
   </div>
 </template>

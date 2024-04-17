@@ -1,4 +1,5 @@
-h2.base-page__heading {
+h2.base-page__heading,
+h2.base-page__heading-short {
   color: #434240;
   font-family: var(--default-font-family);
   font-size: 24px;
@@ -9,6 +10,62 @@ h2.base-page__heading {
   white-space: nowrap;
   display: block;
   margin-top: 35px;
-  margin-bottom: 80px;
   margin-left: 50px;
+  margin-right: 50px;
+}
+
+h2.base-page__heading {
+  margin-bottom: 80px;
+}
+
+h2.base-page__heading-short {
+  margin-bottom: 30px;
+}
+
+.base-page__heading i,
+.base-page__heading-short i {
+  font-size: 20px;
+}
+
+.base-page__inner-margin {
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+.primary-button {
+  background-color: #fbbf24dd;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.primary-button:hover {
+  background-color: #f59e0bdd;
+  box-shadow: 0 2px 3px 0 rgb(0 0 0 / 0.05);
+}
+
+a i:hover,
+.float-end i:hover {
+  color: #d97706;
+}
+
+/* card grids for posts */
+.bg-white.shadow-md.rounded-lg.p-4:hover {
+  box-shadow: 0 2px 3px 0 rgb(0 0 0 / 0.05);
+  transition: all 0.3s;
+}
+
+.scroll-inside {
+  overflow-y: auto;
+  white-space: nowrap;
+  max-height: 500px;
+}
+
+.scroll-inside::-webkit-scrollbar {
+  width: 0;
 }

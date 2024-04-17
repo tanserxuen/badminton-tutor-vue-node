@@ -1,13 +1,16 @@
 <template>
-  <div class="">
-    <button v-if="!isConnection">
-      <router-link to="/post-edit">Edit Post</router-link>
-    </button>
+  <div class="container mx-auto px-4" :class="isConnection ? 'py-1' : 'py-10'">
+    <h2 class="base-page__heading-short" v-if="!isConnection">
+      Post View
+      <router-link to="/post-edit" class="primary-button float-end"
+        >Edit Post</router-link
+      >
+    </h2>
     <div class="bg-white border rounded-sm max-w-md mx-auto">
       <div class="flex items-center px-4 py-3">
         <img
           class="h-8 w-8 rounded-full"
-          src="https://picsum.photos/id/1027/150/150"
+          :src="user.image == '' ? '/images/placeholderImg.jpg' : user.image"
         />
         <div class="ml-3">
           <span class="text-sm font-semibold antialiased block leading-tight">{{
@@ -16,6 +19,11 @@
         </div>
       </div>
       <img :src="post?.image" :alt="post?.image" class="post-image" />
+      <div class="m-4">
+        <b>{{ post?.userName }}</b
+        >&nbsp;&nbsp;<span>{{ post?.description }}</span>
+        {{ post?.id }}
+      </div>
       <div class="flex items-center justify-between mx-4 mt-3 mb-2">
         <div class="flex gap-5">
           <i
@@ -41,6 +49,8 @@
         {{ post?.number_of_likes ?? 0 }} like{{
           post?.number_of_likes == 0 ? "s" : ""
         }}
+        <br />
+        <span class="text-gray-500 text-xs">{{ post?.created_at }}</span>
       </div>
       <div
         class="max-w-md mx-auto mt-5 px-4"
@@ -98,7 +108,7 @@
 </template>
 
 <script>
-import { computed, ref, onUpdated, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { useStore } from "vuex";
 import PostServices from "../js/services/post";
 
@@ -140,22 +150,22 @@ export default {
       });
     };
 
-    const addComment = () => {
+    const addComment = async () => {
       if (comment.value == "") return;
+      post.value.comments = post.value.comments ?? [];
       post.value?.comments.push({
         message: comment.value,
         userId: user.value.id,
       });
       comment.value = "";
-    };
 
-    const toggleLike = () => {
-      post.value.current_user_liked = !post.value.current_user_liked;
-    };
-
-    onUpdated(async () => {
       await updatePost();
-    });
+    };
+
+    const toggleLike = async () => {
+      post.value.current_user_liked = !post.value.current_user_liked;
+      await updatePost();
+    };
 
     //watch current user like
     watch(
@@ -193,7 +203,11 @@ export default {
 img.post-image {
   max-height: 70vh;
   width: -webkit-fill-available;
-  object-fit: cover;
   min-height: 250px;
+}
+
+img {
+  object-fit: cover;
+  object-position: center;
 }
 </style>

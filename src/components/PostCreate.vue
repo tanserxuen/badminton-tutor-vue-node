@@ -46,7 +46,7 @@
           />
         </label>
       </div>
-      <button class="auth-page__submit-button">Create Post</button>
+      <button class="auth-page__submit-button">Create</button>
     </form>
   </div>
 </template>

@@ -1,10 +1,13 @@
 <template>
-  <div>
-    <h1>Posts Index</h1>
-    <router-link to="/post-create">Create Post</router-link>
-    <br><br>
-    <div class="grid grid-cols-3 gap-4">
-      <template v-if="posts">
+  <div class="container mx-auto px-4 py-10">
+    <h2 class="base-page__heading-short">
+      Posts Index
+      <router-link to="/post-create" class="float-end"
+        ><i class="fas fa-plus"></i
+      ></router-link>
+    </h2>
+    <div class="grid grid-cols-3 gap-4 base-page__inner-margin">
+      <template v-if="posts.length">
         <div
           v-for="(post, index) in posts"
           :key="post.id"
@@ -15,12 +18,13 @@
           </router-link>
         </div>
       </template>
+      <template v-else>No Posts Yet</template>
     </div>
   </div>
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed } from "vue";
 import { useStore } from "vuex";
 
 export default {
@@ -36,8 +40,17 @@ export default {
 </script>
 
 <style scoped>
-img{
+img {
   height: 200px;
-  width:200px;
+  width: 200px;
   object-fit: cover;
-}</style>
+}
+
+.fa-plus {
+  /* background: white; */
+  padding: 5px;
+  border-radius: 3px;
+  background: #fdba74;
+  color: white;
+}
+</style>
