@@ -69,34 +69,35 @@ router.post("/update-connects", async (req, res) => {
     const userRef = db.collection("user");
     if (oldStatus == "connect" && newStatus == "requesting") {
       await userRef.doc(userId).update({
-        connect: FieldValue.arrayRemove(targetUserId),
+        // connect: FieldValue.arrayRemove(targetUserId),
         requesting: FieldValue.arrayUnion(targetUserId),
       });
       await userRef.doc(targetUserId).update({
-        connect: FieldValue.arrayUnion(userId),
+        // connect: FieldValue.arrayUnion(userId),
         requests: FieldValue.arrayUnion(userId),
       });
-      console.log('oldStatus=="connect"&&newStatus=="requesting"');
     } else if (oldStatus == "requesting" && newStatus == "following") {
       await userRef.doc(userId).update({
         requesting: FieldValue.arrayRemove(targetUserId),
         following: FieldValue.arrayUnion(targetUserId),
+        noOfFollowing: FieldValue.increment(1),
       });
       await userRef.doc(targetUserId).update({
         requests: FieldValue.arrayRemove(userId),
         follower: FieldValue.arrayUnion(userId),
+        noOfFollower: FieldValue.increment(1),
       });
-      console.log('oldStatus=="requesting"&&newStatus=="following"');
     } else if (oldStatus == "requests" && newStatus == "follower") {
       await userRef.doc(userId).update({
         requests: FieldValue.arrayRemove(targetUserId),
         follower: FieldValue.arrayUnion(targetUserId),
+        noOfFollower: FieldValue.increment(1),
       });
       await userRef.doc(targetUserId).update({
         requesting: FieldValue.arrayRemove(userId),
         following: FieldValue.arrayUnion(userId),
+        noOfFollowing: FieldValue.increment(1),
       });
-      console.log('oldStatus=="requests"&&newStatus=="follower"');
     }
     res.send(response);
   } catch (error) {

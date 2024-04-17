@@ -52,6 +52,10 @@ router.post("/create", async (req, res) => {
         ...postJsonTemplate,
       })
       .then((response) => {
+        const userRef = db.collection("user").doc(userId);
+        userRef.update({
+          noOfPosts: FieldValue.increment(1),
+        })
         res.send(response);
       });
   } catch (error) {
@@ -97,7 +101,7 @@ router.post("/update/:id/part", async (req, res) => {
     const id = req.params.id;
     const current_user_liked = req.body.current_user_liked;
     const number_of_likes = req.body.number_of_likes;
-    const comments = req.body.comments;
+    const comments = req.body.comments??[];
     const postRef = db.collection("post").doc(id).update({
       current_user_liked,
       number_of_likes,
