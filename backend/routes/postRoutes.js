@@ -79,18 +79,13 @@ router.post("/update/:id", async (req, res) => {
     const title = req.body.title;
     const description = req.body.description;
     const image = req.body.image;
-    const current_user_liked = req.body.current_user_liked;
-    const number_of_likes = req.body.number_of_likes;
-    const comments = req.body.comments;
     const postRef = db.collection("post").doc(id).update({
       title,
       description,
       image,
-      current_user_liked,
-      number_of_likes,
-      comments,
+    }).then((response) => {
+      res.send(response);
     });
-    res.send(postRef);
   } catch (error) {
     res.send(error);
   }

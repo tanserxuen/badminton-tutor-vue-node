@@ -52,20 +52,51 @@
 </template>
 
 <script>
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import PostService from "@/js/services/post.js";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 
 export default {
-  setup() {
+  props: {
+    index: {
+      type: Number,
+      required: true,
+    },
+  },
+  setup(props) {
+    const store = useStore();
+    const router = useRouter();
     const formData = reactive({
+      id: "",
       title: "",
       description: "",
       image: "",
     });
+    const imageSize = ref(0);
+
+    const fetchPost = async () => {
+      const { id, title, description, image } = store.getters.getUserPost(
+        props.index
+      );
+      console.log(props.index, store.getters.getUserPost(props.index));
+      formData.id = id;
+      formData.title = title;
+      formData.description = description;
+      formData.image = image;
+    };
+
+    fetchPost();
 
     const uploadImage = (e) => {
       const image = e.target.files[0];
+      if (image.size > 66000) {
+        alert("Image size should be less than 66 kb");
+        e.preventDefault();
+        return;
+      }
       const reader = new FileReader();
+      imageSize.value = image.size;
       reader.readAsDataURL(image);
       reader.onload = () => {
         formData.image = reader.result;
@@ -73,12 +104,15 @@ export default {
     };
 
     const submitForm = () => {
+      if (imageSize.value == 0) {
+        alert("Please upload an image");
+        return;
+      } //empty image file
+
       try {
-        PostService.updatePost({
-          ...formData,
-        })
+        PostService.updatePost(formData)
           .then((response) => {
-            console.log(response);
+            if (response.status == 200) router.push({ name: "PostsIndex" });
           })
           .catch((error) => {
             console.error(error);

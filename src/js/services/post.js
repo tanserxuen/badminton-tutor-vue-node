@@ -9,17 +9,11 @@ async function getUserPosts() {
   }
 }
 
-async function createPost({ userId, title, description, image, userName }) {
+async function createPost(data) {
   try {
     const response = await axios.post(
       "http://localhost:3000/post/create",
-      {
-        userId,
-        title,
-        description,
-        image,
-        userName
-      },
+      data
     );
     return response;
   } catch (error) {
@@ -38,15 +32,11 @@ async function viewPost({ id, userId }) {
   }
 }
 
-async function updatePost({ id, title, description, image }) {
+async function updatePost({ id, ...data }) {
   try {
     const response = await axios.post(
       `http://localhost:3000/post/update/${id}`,
-      {
-        title,
-        description,
-        image,
-      }
+      data
     );
     return response;
   } catch (error) {

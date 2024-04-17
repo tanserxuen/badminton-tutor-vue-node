@@ -2,8 +2,11 @@
   <div class="container mx-auto px-4" :class="isConnection ? 'py-1' : 'py-10'">
     <h2 class="base-page__heading-short" v-if="!isConnection">
       Post View
-      <router-link to="/post-edit" class="primary-button float-end"
-        >Edit Post</router-link
+      <router-link to="#" class="float-end"
+        ><i class="fas fa-trash"></i></router-link
+      >
+      <router-link :to="{ name: 'PostEdit', params: { index: index } }" class="float-end me-3"
+        ><i class="fas fa-pencil-alt"></i></router-link
       >
     </h2>
     <div class="bg-white border rounded-sm max-w-md mx-auto">
