@@ -1,13 +1,13 @@
 import axios from "axios";
 
-// async function view(id){
-//   try {
-//     const response = await axios.get(`http://localhost:3000/user/view/${id}}`);
-//     return response;
-//   } catch (error) {
-//     return error;
-//   }
-// }
+async function view(id){
+  try {
+    const response = await axios.get(`http://localhost:3000/user/view/${id}}`);
+    return response;
+  } catch (error) {
+    return error;
+  }
+}
 
 // class UserService {
 async function update(id, formdata) {
@@ -50,4 +50,4 @@ async function updateConnects(data){
   }
 }
 
-export default { update, index, getConnects, updateConnects };
+export default { update, index, getConnects, updateConnects, view };

@@ -22,7 +22,7 @@ async function signin(email, password) {
     });
     return response;
   } catch (error) {
-    return(error);
+    return error;
   }
 }
 
@@ -64,4 +64,15 @@ async function updatePassword(email, password) {
   }
 }
 
-export { signup, signin, logout, resetPassword, updatePassword };
+async function validateAuth() {
+  try {
+    const response = await axios.get(
+      "http://localhost:3000/auth/validate-auth"
+    );
+    return response;
+  } catch (error) {
+    return error;
+  }
+}
+
+export { signup, signin, logout, resetPassword, updatePassword, validateAuth };
