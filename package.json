@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "start": "node server.js"
+    "start": "nodemon server.js"
   },
   "dependencies": {
     "@google/generative-ai": "^0.6.0",
