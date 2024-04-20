@@ -2,7 +2,7 @@ import axios from "axios";
 
 async function view(id){
   try {
-    const response = await axios.get(`http://localhost:3000/user/view/${id}}`);
+    const response = await axios.get(`http://localhost:3000/user/view/${id}`);
     return response;
   } catch (error) {
     return error;
