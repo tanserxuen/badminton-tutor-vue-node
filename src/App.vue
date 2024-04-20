@@ -33,7 +33,7 @@ export default {
           if (!isAuthenticated.value) {
             router.push({ name: "SignIn" });
           } else {
-            router.push({ name: "DashBoard" });
+            router.go(1)
           }
         })
         .catch((error) => {
