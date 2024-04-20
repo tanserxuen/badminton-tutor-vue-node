@@ -58,9 +58,11 @@ const store = createStore({
     checkAuth: async ({ commit, dispatch }) => {
       try {
         await AuthService.validateAuth().then((res) => {
-          commit("setCurrentUser", res.data);
-          dispatch("fetchUserDetails", res.data?.uid);
-          dispatch("fetchPosts", res.data?.uid);
+          if (res.status == 200) {
+            commit("setCurrentUser", res.data);
+            dispatch("fetchUserDetails", res.data?.uid);
+            dispatch("fetchPosts", res.data?.uid);
+          }
         });
       } catch (error) {
         console.error(error);
@@ -77,6 +79,7 @@ const store = createStore({
     },
     fetchPosts: async ({ commit }, userId) => {
       try {
+        console.log("fetchpost");
         await PostService.getUserPosts().then((userPosts) => {
           commit(
             "setUserPosts",

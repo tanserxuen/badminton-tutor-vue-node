@@ -4,12 +4,12 @@ const { FieldValue } = require("firebase-admin/firestore");
 const userJsonTemplate = require("../config/userJson");
 require("dotenv").config();
 const {
-  // getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
   updatePassword,
   signOut,
+  onAuthStateChanged,
 } = require("firebase/auth");
 
 router.post("/signup", async (req, res) => {
@@ -91,8 +91,15 @@ router.post("/update-password", async (req, res) => {
 // check auth token
 router.get("/validate-auth", async (req, res) => {
   try {
-    const user = auth.currentUser;
-    res.json(user);
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        global.currentUser = user;
+        res.status(200).send(user);
+      } else {
+        global.currentUser = null;
+        res.status(401).send("Unauthorized");
+      }
+    });
   } catch (error) {
     res.send(error);
   }

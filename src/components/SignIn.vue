@@ -70,18 +70,13 @@ export default {
     const submitForm = () =>
       AuthService.signin(email.value, password.value)
         .then((response) => {
-          console.log(response.data.code !== undefined);
           if (response.data.code !== undefined) {
             throw new Error(response.data.code);
           } else {
             console.log("Signed in", response.data.uid);
             store.commit("setCurrentUser", response.data);
-            console.log({ currentUser: store.getters.getCurrentUser });
             store.dispatch("fetchUserDetails", response.data.uid);
             store.dispatch("fetchPosts", response.data.uid);
-            console.log({
-              currentUserDetails: store.getters.getCurrentUserDetails,
-            });
             router.push({ name: "DashBoard" });
           }
         })

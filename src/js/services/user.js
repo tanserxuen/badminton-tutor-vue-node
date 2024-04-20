@@ -9,7 +9,6 @@ async function view(id){
   }
 }
 
-// class UserService {
 async function update(id, formdata) {
   try {
     const response = await axios.post(
@@ -21,7 +20,6 @@ async function update(id, formdata) {
     return error;
   }
 }
-// }
 
 async function index() {
   try {
