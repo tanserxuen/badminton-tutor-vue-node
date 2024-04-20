@@ -3,11 +3,11 @@
     <h2 class="base-page__heading-short">Detailed Analytics</h2>
   </div>
   <div class="base-page__inner-margin">
-    <template v-if="analytics != undefined">
+    <template v-if="analytics">
       <div class="grid">
-        <div v-for="k in Object.keys(analytics)" :key="k">
-          <h3>{{ k }}</h3>
-          <AnalyticCharts :chartType="'Line'" :data="analytics[k]" />
+        <div v-for="title in Object.keys(analytics)" :key="title">
+          <h3 style="text-transform:capitalize">{{ title }}</h3>
+          <AnalyticCharts :chartType="'Line'" :data="analytics[title]" />
         </div>
       </div>
     </template>
@@ -47,11 +47,12 @@ export default {
       "Dec",
     ];
     const analytics = computed(() => {
+      if (!userDetails.value) return[];
       const user = userDetails.value;
       //get values of chartitlte from user
       return chartTitles.reduce((acc, title) => {
         let details = [];
-        details = user?.[title].map((day, index) => {
+        details = user?.[title]?.map((day, index) => {
           return { name: months[index], pl: day };
         });
         acc[title] = details;

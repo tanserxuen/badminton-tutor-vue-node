@@ -3,16 +3,16 @@
     <h2 class="base-page__heading-short">Dashboard</h2>
     <div class="base-page__inner-margin">
       <h3 class="font-semibold">Good Morning, {{ userDetails?.name }}!</h3>
-    <div class="d-grid mb-5 p-4 text-center">
-      <div class="card" v-for="activity in activityNames" :key="activity">
-        {{ activity }}
-        <p>
-          {{ userDetails[activity]?.last ?? 0 }}
-        </p>
+      <div class="d-grid mb-5 p-4 text-center" v-if="userDetails">
+        <div class="card" v-for="activity in activityNames" :key="activity">
+          {{ activity }}
+          <p>
+            {{ getLatestElement(userDetails[activity], activity) }}
+          </p>
+        </div>
       </div>
-    </div>
-    <router-link to="/feedback-history">Feedback History</router-link><br />
-    <router-link to="/detailed-analytics">Detailed Analytics</router-link>
+      <router-link to="/detailed-analytics">Detailed Analytics</router-link><br />
+      <router-link to="/feedback-history">Feedback History</router-link>
     </div>
   </div>
 </template>
@@ -31,7 +31,12 @@ export default {
       "performance",
       "growth",
     ];
-    return { userDetails, activityNames };
+
+    const getLatestElement = (arr, activity) => {
+      const ele = arr[arr.length - 1];
+      return activity != activityNames[0] ? `${ele * 100}%` : ele;
+    };
+    return { userDetails, activityNames, getLatestElement };
   },
 };
 </script>
