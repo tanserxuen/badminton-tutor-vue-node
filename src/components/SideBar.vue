@@ -183,7 +183,7 @@
 </template>
 
 <script>
-import { logout } from "../js/services/auth.js";
+import AuthService from "../js/services/auth.js";
 import store from "@/js/store.js";
 import { computed } from "vue";
 import { useRouter } from "vue-router";
@@ -205,7 +205,7 @@ export default {
     };
 
     const logoutUser = () => {
-      logout()
+      AuthService.logout()
         .then((response) => {
           if (response.status === 200) {
             store.commit("setCurrentUser", null);

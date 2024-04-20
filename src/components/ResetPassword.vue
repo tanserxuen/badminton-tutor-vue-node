@@ -26,7 +26,7 @@
 
 <script>
 import { ref } from "vue";
-import { resetPassword } from "@/js/services/auth";
+import AuthService from "@/js/services/auth";
 import { useRouter } from "vue-router";
 
 export default {
@@ -35,7 +35,7 @@ export default {
     const router = useRouter();
     const submitForm = () => {
       console.log(email.value);
-      resetPassword(email.value)
+      AuthService.resetPassword(email.value)
         .then((response) => {
           if (response.status === 200) {
             console.log("Password reset email sent");

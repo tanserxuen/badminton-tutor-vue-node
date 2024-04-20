@@ -44,7 +44,7 @@
 
 <script>
 import { computed, ref } from "vue";
-import { updatePassword } from "@/js/services/auth";
+import AuthService from "@/js/services/auth";
 import store from "@/js/store";
 
 export default {
@@ -64,7 +64,7 @@ export default {
         return;
       }
       console.log(currentUser.value.email, newPassword.value);
-      updatePassword(currentUser.value.email, newPassword.value)
+      AuthService.updatePassword(currentUser.value.email, newPassword.value)
         .then((response) => {
           if (response.status === 200) {
             console.log("Password updated");

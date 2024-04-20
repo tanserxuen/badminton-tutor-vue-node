@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { signin } from "../js/services/auth.js";
+import AuthService from "../js/services/auth.js";
 import { ref } from "vue";
 import store from "@/js/store.js";
 import { useRouter } from "vue-router";
@@ -68,7 +68,7 @@ export default {
     const error = ref(null);
 
     const submitForm = () =>
-      signin(email.value, password.value)
+      AuthService.signin(email.value, password.value)
         .then((response) => {
           console.log(response.data.code !== undefined);
           if (response.data.code !== undefined) {

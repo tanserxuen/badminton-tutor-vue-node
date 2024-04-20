@@ -1,6 +1,6 @@
 import PostService from "../js/services/post.js";
 import UserService from "../js/services/user.js";
-import { validateAuth } from "../js/services/auth.js";
+import AuthService from "../js/services/auth.js";
 import { createStore } from "vuex";
 
 const store = createStore({
@@ -57,7 +57,7 @@ const store = createStore({
   actions: {
     checkAuth: async ({ commit, dispatch }) => {
       try {
-        await validateAuth().then((res) => {
+        await AuthService.validateAuth().then((res) => {
           commit("setCurrentUser", res.data);
           dispatch("fetchUserDetails", res.data?.uid);
           dispatch("fetchPosts", res.data?.uid);

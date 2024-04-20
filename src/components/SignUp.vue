@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { signup } from "../js/services/auth.js";
+import AuthService from "../js/services/auth.js";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
@@ -62,7 +62,7 @@ export default {
     const error = ref(null);
 
     const submitForm = () =>
-      signup(email.value, password.value)
+      AuthService.signup(email.value, password.value)
         .then((response) => {
           console.log(response.data.code !== undefined);
           if (response.data.code !== undefined) {

@@ -75,4 +75,11 @@ async function validateAuth() {
   }
 }
 
-export { signup, signin, logout, resetPassword, updatePassword, validateAuth };
+export default {
+  signup,
+  signin,
+  logout,
+  resetPassword,
+  updatePassword,
+  validateAuth,
+};
