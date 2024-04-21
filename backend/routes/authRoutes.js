@@ -94,10 +94,12 @@ router.get("/validate-auth", async (req, res) => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         global.currentUser = user;
-        res.status(200).send(user);
+        res.status(200).json(user);
+        return;
       } else {
         global.currentUser = null;
-        res.status(401).send("Unauthorized");
+        res.status(401).json("Unauthorized");
+        return;
       }
     });
   } catch (error) {

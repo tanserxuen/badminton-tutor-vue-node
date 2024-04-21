@@ -1,0 +1,46 @@
+{
+  "footwork": {
+    "forward": {
+      "image": "part group",
+      "video": "part id"
+    },
+    "side": {
+      "image": "part group",
+      "video": "part id"
+    },
+    "backward": {
+      "image": "part group",
+      "video": "part id"
+    }
+  },
+  "techniques": {
+    "drive": {
+      "image": "abc",
+      "video": "ahdc"
+    },
+    "forehandClear": {
+      "image": "abc",
+      "video": "ahdc"
+    },
+    "backhandClear": {
+      "image": "abc",
+      "video": "ahdc"
+    },
+    "lift": {
+      "image": "abc",
+      "video": "ahdc"
+    },
+    "smash": {
+      "image": "abc",
+      "video": "ahdc"
+    },
+    "forehandServe": {
+      "image": "abc",
+      "video": "ahdc"
+    },
+    "backhandServe": {
+      "image": "abc",
+      "video": "ahdc"
+    }
+  }
+}

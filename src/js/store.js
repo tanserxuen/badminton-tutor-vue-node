@@ -79,7 +79,6 @@ const store = createStore({
     },
     fetchPosts: async ({ commit }, userId) => {
       try {
-        console.log("fetchpost");
         await PostService.getUserPosts().then((userPosts) => {
           commit(
             "setUserPosts",
