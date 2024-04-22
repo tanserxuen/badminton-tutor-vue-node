@@ -19,7 +19,7 @@ app.use(fileupload({ safeFileNames: true, preserveExtension: true }));
 app.use(express.urlencoded({ extended: false }));
 
 app.use(express.json());
-app.use(express.static("./backend"));
+app.use(express.static(__dirname+"/backend"));
 app.use("/", indexRouter);
 global.currentUser = null;
 
