@@ -12,6 +12,7 @@ h2.base-page__heading-short {
   margin-top: 35px;
   margin-left: 50px;
   margin-right: 50px;
+  text-transform: capitalize;
 }
 
 h2.base-page__heading {

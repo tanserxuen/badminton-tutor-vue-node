@@ -19,10 +19,10 @@ async function createTutorials() {
 }
 
 async function updateTutorials(data) {
-  const { type, name, id, image } = data;
+  const { type, name, id, image, img } = data;
   try {
     const response = await axios.post(
-      `http://localhost:3000/tutorials/update/${type}/${name}/${id}`,
+      `http://localhost:3000/tutorials/update/${type}/${name}/${img}/${id}`,
       { image }
     );
     return response;
