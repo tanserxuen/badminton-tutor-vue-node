@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-[#fffcf9]">
+  <div>
     <div class="auth_main-container">
       <h1 class="auth-page__heading">Sign Up</h1>
 

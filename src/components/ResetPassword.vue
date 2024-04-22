@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-[#fffcf9]">
+  <div>
     <div class="auth_main-container">
       <h1 class="auth-page__heading">Reset Password</h1>
       <label for="email" class="auth-page__label">Email</label>
