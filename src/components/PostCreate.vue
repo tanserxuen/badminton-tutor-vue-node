@@ -1,13 +1,26 @@
 <template>
   <div class="container px-4 py-10">
-    <h2 class="base-page__heading-short">Create Post</h2>
+    <h2 class="base-page__heading-short">
+      Create Post
+      <button class="float-end">
+        <i
+          @click="isChart = !isChart"
+          :class="isChart ? 'fas fa-image' : 'fa fa-bar-chart'"
+          :title="isChart ? 'Share Selected Image' : 'Share Your Analytics'"
+          aria-hidden="true"
+        ></i>
+      </button>
+    </h2>
+
     <form
       class="mx-auto"
       style="max-width: 360px"
       encType="multipart/form-data"
-      @submit.prevent="submitForm"
     >
-      <div>
+      <div v-show="isChart">
+        <DetailedAnalytics :isChart="isChart" />
+      </div>
+      <div v-show="!isChart">
         <img
           ref="avatar_preview"
           class="object-cover rounded-full m-auto"
@@ -19,7 +32,7 @@
           <span class="sr-only">Choose profile photo</span>
           <input
             ref="fileInput"
-            required
+            :required="!isChart"
             accept="image/png, image/gif, image/jpeg"
             type="file"
             name="image"
@@ -48,17 +61,24 @@
         required
       />
 
-      <button class="auth-page__submit-button">Create</button>
+      <button class="auth-page__submit-button" @click.prevent.stop="submitForm">
+        Create
+      </button>
     </form>
   </div>
 </template>
 
 <script>
-import { computed, reactive } from "vue";
+import { computed, reactive, ref } from "vue";
 import { useStore } from "vuex";
 import PostService from "@/js/services/post.js";
+import DetailedAnalytics from "./DetailedAnalytics.vue";
+import html2canvas from "html2canvas";
 
 export default {
+  components: {
+    DetailedAnalytics,
+  },
   setup() {
     const store = useStore();
     const formData = reactive({
@@ -66,6 +86,7 @@ export default {
       description: "",
       image: "",
     });
+    const isChart = ref(false);
     const userDetails = computed(() => store.state?.currentUserDetails ?? "");
     const uploadImage = (e) => {
       const image = e.target.files[0];
@@ -82,7 +103,22 @@ export default {
       };
     };
 
-    const submitForm = () => {
+    const getScreenShot = async() => {
+      let c = document.getElementById("canvasEl"); // or document.getElementById('canvas');
+      await html2canvas(c).then((canvas) => {
+        var t = canvas.toDataURL().replace("data:image/png;base64,", "");
+        formData.image = createBase64File("image/png", t);
+      });
+    };
+
+    const createBase64File = (contentType, base64Data) => {
+      const linkSource = `data:${contentType};base64,${base64Data}`;
+      return linkSource;
+    };
+
+    const submitForm = async () => {
+      if(isChart.value) await getScreenShot();
+      console.log(formData.image);
       try {
         PostService.createPost({
           userId: userDetails.value.id,
@@ -104,6 +140,7 @@ export default {
       formData,
       submitForm,
       uploadImage,
+      isChart,
     };
   },
 };
