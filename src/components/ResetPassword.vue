@@ -2,14 +2,26 @@
   <div>
     <div class="auth_main-container">
       <h1 class="auth-page__heading">Reset Password</h1>
+
+      <template v-if="error">
+        <div class="error-text" role="alert">
+          {{ error }}
+        </div>
+      </template>
+
       <label for="email" class="auth-page__label">Email</label>
       <input
-        type="text"
+        type="email"
         name="email"
         placeholder="Email"
         class="auth-page__input"
         :value="email"
-        @input="(event) => (email = event.target.value)"
+        @input="
+          (event) => {
+            email = event.target.value;
+            error = null;
+          }
+        "
         required
       />
       <button @click="submitForm" class="auth-page__submit-button">
@@ -33,6 +45,8 @@ export default {
   setup() {
     const email = ref("");
     const router = useRouter();
+    const error = ref(null);
+
     const submitForm = () => {
       console.log(email.value);
       AuthService.resetPassword(email.value)
@@ -40,13 +54,16 @@ export default {
           if (response.status === 200) {
             console.log("Password reset email sent");
             router.push({ name: "SignIn" });
+          } else {
+            throw new Error(response);
           }
         })
-        .catch((error) => {
-          console.error(error);
+        .catch((e) => {
+          error.value = "Error: No user found with this email";
+          console.error(e);
         });
     };
-    return { email, submitForm };
+    return { email, submitForm, error };
   },
 };
 </script>

@@ -3,8 +3,10 @@
     <div class="auth_main-container">
       <h1 class="auth-page__heading">Sign Up</h1>
 
-      <template v-if="error-text">
-        <p class="error">{{ error }}</p>
+      <template v-if="error">
+        <div class="error-text" role="alert">
+          {{ error }}
+        </div>
       </template>
 
       <label for="email" class="auth-page__label">Email</label>

@@ -70,11 +70,15 @@ router.post("/logout", async (req, res) => {
 
 router.post("/reset-password", async (req, res) => {
   const { email } = req.body;
+  const ref = await db.collection("user").where("email", "=", email).get()
+  if(ref.docs.length){
   try {
     await sendPasswordResetEmail(auth, email);
     res.send("Password reset email sent");
   } catch (error) {
     res.send(error);
+  }}else{
+    res.status(505).json("Email not found")
   }
 });
 
