@@ -38,7 +38,7 @@ router.post("/signup", async (req, res) => {
       response: response,
     });
   } catch (error) {
-    res.send(error);
+    res.status(500).json(error);
   }
 });
 
@@ -52,9 +52,9 @@ router.post("/login", async (req, res) => {
     );
     const user = userCredential.user;
     global.currentUser = user;
-    res.send(global.currentUser);
+    res.status(200).json(global.currentUser);
   } catch (error) {
-    res.send(error);
+    res.status(500).json(error);
   }
 });
 
@@ -64,20 +64,21 @@ router.post("/logout", async (req, res) => {
     global.currentUser = null;
     res.send("Logged out");
   } catch (error) {
-    res.send;
+    res.status(500).json(error);
   }
 });
 
 router.post("/reset-password", async (req, res) => {
   const { email } = req.body;
   const ref = await db.collection("user").where("email", "=", email).get()
-  if(ref.docs.length){
-  try {
-    await sendPasswordResetEmail(auth, email);
-    res.send("Password reset email sent");
-  } catch (error) {
-    res.send(error);
-  }}else{
+  if (ref.docs.length) {
+    try {
+      await sendPasswordResetEmail(auth, email);
+      res.send("Password reset email sent");
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  } else {
     res.status(505).json("Email not found")
   }
 });
@@ -88,26 +89,24 @@ router.post("/update-password", async (req, res) => {
     await updatePassword(auth, password);
     res.send("Password updated");
   } catch (error) {
-    res.send(error);
+    res.status(500).json(error);
   }
 });
 
 // check auth token
 router.get("/validate-auth", async (req, res) => {
   try {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        global.currentUser = user;
-        res.status(200).json(user);
-        return;
-      } else {
-        global.currentUser = null;
-        res.status(401).json("Unauthorized");
-        return;
-      }
-    });
+    let user = null;
+    await onAuthStateChanged(auth, (currentUser) => user = currentUser);
+    if (user) {
+      global.currentUser = user;
+      res.status(200).json(user);
+    } else {
+      global.currentUser = null;
+      res.status(401).json("Unauthorized");
+    }
   } catch (error) {
-    res.send(error);
+    res.status(500).json(error);
   }
 });
 
