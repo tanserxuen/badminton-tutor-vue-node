@@ -51,13 +51,13 @@
           <button class="auth-page__submit-button">Update Training</button>
         </form>
       </div>
-      <div v-for="name in tutorialKeys" :key="name" v-show="!isEdit">
-        <h3 class="font-semibold py-2 text-xl capitalize">{{ name }}</h3>
+      <lottie-animation path="images/loading.json" v-show="isLoading" :width="150" :height="150" />
+      <div v-for="name in tutorialKeys" :key="name" v-show="!isEdit && !isLoading">
+        <h3 class="font-semibold py-2 text-xl capitalize pt-10">{{ name }}</h3>
         <div class="grid">
           <div v-for="tutorial in Object.keys(tutorials[name])" :key="tutorial">
             <h4 class="font-semibold py-2 text-sm capitalize">{{ tutorial }}</h4>
-            <router-link
-              :to="{ name: 'TutorialDisplay', params: { tutorial: tutorial, name: name } }">
+            <router-link :to="{ name: 'TutorialDisplay', params: { tutorial: tutorial, name: name } }">
               <img :src="tutorials[name][tutorial].image" alt="tutorial" class="h-32 w-32 object-cover" /></router-link>
           </div>
         </div>
@@ -70,8 +70,12 @@
 import TutorialService from "@/js/services/tutorials";
 import tutorialsJson from "../../backend/config/tutorialJson.json"
 import { onMounted, ref, reactive, computed } from "vue";
+import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
 
 export default {
+  components: {
+    LottieAnimation,
+  },
   setup() {
     const tutorials = ref([]);
     const isEdit = ref(false);
@@ -82,6 +86,7 @@ export default {
       image: "",
       img: "", //video or image
     });
+    const isLoading = ref(true);
 
     const tutorialKeys = computed(() => {
       return Object.keys(tutorials.value).filter((key) => key !== "id");
@@ -95,6 +100,10 @@ export default {
       //   .catch((e) => {
       //     console.log(e);
       //   });
+      isLoading.value = true;
+      setTimeout(() => {
+        isLoading.value = false;
+      }, 1500);
       tutorials.value = tutorialsJson
     });
 
@@ -143,6 +152,7 @@ export default {
       tutorialKeys,
       createTutorials,
       isEdit,
+      isLoading
     };
   },
 };

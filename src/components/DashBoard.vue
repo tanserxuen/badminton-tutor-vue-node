@@ -6,9 +6,10 @@
       <div class="d-grid mb-5 p-4 text-center" v-if="userDetails">
         <div class="card" v-for="activity in activityNames" :key="activity">
           {{ activity }}
-          <p>
+          <p v-if="userDetails[activity].length">
             {{ getLatestElement(userDetails[activity], activity) }}
           </p>
+          <template v-else><lottie-animation path="images/no_data_found.json" :width="150" :height="150" /></template>
         </div>
       </div>
       <router-link to="/detailed-analytics">Detailed Analytics</router-link><br />
@@ -19,9 +20,13 @@
 
 <script>
 import { computed } from "vue";
-import { useStore } from "vuex";
+import { useStore } from "vuex"; import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
+
 
 export default {
+  components: {
+    LottieAnimation,
+  },
   setup() {
     const store = useStore();
     const userDetails = computed(() => store.state?.currentUserDetails ?? "");

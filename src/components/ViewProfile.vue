@@ -3,15 +3,13 @@
     <h2 class="base-page__heading-short">Profile</h2>
     <div class="profile">
       <span class="profile__name">{{ userDetails.name }}</span>
-      <img
-        :src="
-          userDetails.image == ''
-            ? '/images/placeholderImg.jpg'
-            : userDetails.image
-        "
-        alt=""
-        class="profile__avatar"
-      />
+      <template v-if="userDetails.image == ''">
+        <lottie-animation path="images/profile.json" :width="220" :height="220" />
+      </template>
+      <template v-else>
+        <img :src="userDetails.image" :alt="userDetails.name" class="profile__avatar" />
+      </template>
+
       <!-- <span class="styling"></span> -->
       <span class="profile__description">{{ userDetails.description }}</span>
       <div class="profile_details">
@@ -59,8 +57,12 @@
 <script>
 import { computed } from "vue";
 import { useStore } from "vuex";
+import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
 
 export default {
+  components: {
+    LottieAnimation,
+  },
   setup() {
     const store = useStore();
     const userDetails = computed(() => store.state?.currentUserDetails ?? "");
@@ -94,6 +96,7 @@ export default {
   background: white;
   border-radius: 0.325rem;
 }
+
 .profile__settings_title {
   font-size: 1.5rem;
   font-weight: 700;
