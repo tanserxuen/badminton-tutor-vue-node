@@ -161,4 +161,45 @@ router.post("/update/:id", async (req, res) => {
   }
 });
 
+router.get("/checkin", async (req, res) => {
+  try {
+    const id = global.currentUser.uid;
+    const userRef = await db.collection("user").doc(id);
+    const currentWeekNumber = getWeekNumber(new Date());
+    const recordedWeekNumber = userRef.get().updatedWeekNumber;
+    if (currentWeekNumber != recordedWeekNumber) {
+      await userRef.update({
+        updatedWeekNumber: {
+          year: currentWeekNumber[0],
+          week: currentWeekNumber[1],
+        },
+        activeDaysInWeek: FieldValue.arrayUnion(1),
+      });
+    }
+    else {
+      //increment the last element of activeDaysInWeek array
+      await userRef.update({
+        activeDaysInWeek: FieldValue.arrayUnion(FieldValue.increment(1)),
+      });
+    }
+    res.send(response);
+  } catch (error) {
+    res.send(error);
+  }
+});
+
+function getWeekNumber(d) {
+  // Copy date so don't modify original
+  d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  // Set to nearest Thursday: current date + 4 - current day number
+  // Make Sunday's day number 7
+  d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+  // Get first day of year
+  var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  // Calculate full weeks to nearest Thursday
+  var weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+  // Return array of year and week number
+  return [d.getUTCFullYear(), weekNo];
+}
+
 module.exports = router;

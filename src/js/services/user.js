@@ -48,4 +48,15 @@ async function updateConnects(data){
   }
 }
 
-export default { update, index, getConnects, updateConnects, view };
+async function updateActiveDaysPerWeek(){
+  try {
+    console.log("updateActiveDaysPerWeek")
+    const response = await axios.get(`http://localhost:3000/user/checkin`);
+    return response;
+  } catch (error) {
+    return error;
+  }
+
+}
+
+export default { update, index, getConnects, updateConnects, view, updateActiveDaysPerWeek };

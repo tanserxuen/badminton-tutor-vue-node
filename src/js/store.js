@@ -62,6 +62,7 @@ const store = createStore({
             commit("setCurrentUser", res.data);
             dispatch("fetchUserDetails", res.data?.uid);
             dispatch("fetchPosts", res.data?.uid);
+            dispatch("updateActiveDaysPerWeek");
           }
         });
       } catch (error) {
@@ -89,6 +90,13 @@ const store = createStore({
             userPosts.data.filter((post) => post.userId !== userId)
           );
         });
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    updateActiveDaysPerWeek: async () => {
+      try {
+        await UserService.updateActiveDaysPerWeek();
       } catch (error) {
         console.error(error);
       }
