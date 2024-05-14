@@ -6,32 +6,52 @@
       <a href="http://localhost:3000/predict-with-tfjs.html" target="_self">
         Start training now!! Pose Counter
       </a><br><br>
-      <video controls name="media" width="480" height="640" loop>
-        <source
-          src="https://firebasestorage.googleapis.com/v0/b/badmintonposecounter.appspot.com/o/Tutorials%2FVID_20231202_223410.mp4?alt=media&amp;token=0f3bc259-89c6-4bf8-a92f-d32ddf72a577"
-          type="video/mp4"
-        />
+      <video controls name="media" width="480" height="640" loop v-if="tutorial != 'ready-position'">
+        <source :src="getVideo" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
+      <div v-else>
+        <img :src="tutorials[name][tutorial].image" alt="tutorial" class="object-cover" />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+
+import tutorialsJson from "../../backend/config/tutorialJson.json"
+import { ref, computed } from "vue";
 export default {
   props: {
-    tutorial: String,
+    tutorial: {
+      type: String,
+      required: true
+    },
+    name: {
+      type: String,
+      required: true
+    },
   },
-  setup() {
-    return {};
+  setup(props) {
+    const tutorials = ref({});
+    tutorials.value = tutorialsJson;
+
+    const getVideo = computed(() => {
+      return tutorials.value?.[props.name]?.[props.tutorial]?.video
+    })
+    return { getVideo, tutorials };
   },
 };
 </script>
 
 <style scoped>
+video,
+img {
+  height: 270px;
+  width: 480px;
+}
+
 video {
   object-fit: contain;
-  width: 270px;
-  height: 480px;
 }
 </style>

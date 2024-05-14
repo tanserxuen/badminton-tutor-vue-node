@@ -7,16 +7,25 @@
 </head>
 
 <body>
+    <div>Teachable Machine Pose Model</div>
+    <p id="msg"></p>
+    <p>Make sure your full body is in the camera</p>
+    <button type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        id="startButton">Start</button>
+    <button type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        style="display: none" id="continueButton">Continue</button>
+    <button type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        style="display: none" id="pauseButton">Pause</button>
+    <button type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        style="display: none" id="stopButton">Stop</button>
+    <div class="flex flex-row gap-x-16"><canvas id="canvas"></canvas> <img id="correctPostImage"
+            src="https://placehold.co/350x220" alt="">
+            <h1 id="currentPose" class="text-6xl"></h1>
+    </div>
+    <div id="label-container"></div>
+    <ol id="feedbacks">
 
-  <div>Teachable Machine Pose Model</div>
-  <p id="msg"></p>
-  <p>Make sure your full body is in the camera</p>
-  <button type="button" class="primary-button">Start</button>
-  <div><canvas id="canvas"></canvas></div>
-  <div id="label-container"></div>
-  <ol id="feedbacks">
-  
-    <!-- <input type="text" name="speech-msg" id="speech-msg" x-webkit-speech>
+        <!-- <input type="text" name="speech-msg" id="speech-msg" x-webkit-speech>
   
       <div class="option">
           <label for="voice">Voice</label>
@@ -37,18 +46,24 @@
   
       <button id="speak">Speak</button>
    -->
-  </ol>
+    </ol>
 
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/pose@0.8/dist/teachablemachine-pose.min.js"></script>    
-     <script type="module">
-        import  { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai" ;
-        import { init } from "./predict.js";
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/pose@0.8/dist/teachablemachine-pose.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module">
+        import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
+        import {
+            init, clickStart,
+            clickCont,
+            clickPause,
+            clickStop,
+        } from "./predict.js";
 
         async function generateFeedback(pose) {
             console.log("Generating feedback...")
             const incorrectJson = JSON.stringify(pose);
-            const correctJson = JSON.stringify([{"score":0.8947370648384094,"part":"nose","position":{"x":234.28646599736194,"y":175.96719237153167}},{"score":0.8832026720046997,"part":"leftEye","position":{"x":239.6100652820869,"y":169.8886773001823}},{"score":0.5662047266960144,"part":"rightEye","position":{"x":235.95281148235156,"y":170.1057300493411}},{"score":0.9042125940322876,"part":"leftEar","position":{"x":253.15143254944323,"y":169.89184075292445}},{"score":0.11866213381290436,"part":"rightEar","position":{"x":230.25205070406545,"y":170.52088822836077}},{"score":0.9879465699195862,"part":"leftShoulder","position":{"x":269.36060816397463,"y":200.0307489461936}},{"score":0.9413213729858398,"part":"rightShoulder","position":{"x":237.268412623424,"y":199.75937479664844}},{"score":0.9791402816772461,"part":"leftElbow","position":{"x":289.0813378508453,"y":238.33601762348576}},{"score":0.8448910117149353,"part":"rightElbow","position":{"x":228.18234922357107,"y":231.06244380372044}},{"score":0.7894282341003418,"part":"leftWrist","position":{"x":261.1234744699085,"y":242.09491288151722}},{"score":0.847267210483551,"part":"rightWrist","position":{"x":232.83399125481392,"y":238.18936793256827}},{"score":0.9825746417045593,"part":"leftHip","position":{"x":292.47121402725634,"y":265.18915321112604}},{"score":0.8880601525306702,"part":"rightHip","position":{"x":260.35651158729877,"y":269.2972862303025}},{"score":0.978084146976471,"part":"leftKnee","position":{"x":290.6379430674393,"y":320.1855741122353}},{"score":0.9329531192779541,"part":"rightKnee","position":{"x":284.79714569878485,"y":321.18942208791054}},{"score":0.9069610834121704,"part":"leftAnkle","position":{"x":304.89546547603976,"y":373.43037962652596}},{"score":0.8557844161987305,"part":"rightAnkle","position":{"x":289.11574526983475,"y":369.35585667650986}}]);
+            const correctJson = JSON.stringify([{ "score": 0.8947370648384094, "part": "nose", "position": { "x": 234.28646599736194, "y": 175.96719237153167 } }, { "score": 0.8832026720046997, "part": "leftEye", "position": { "x": 239.6100652820869, "y": 169.8886773001823 } }, { "score": 0.5662047266960144, "part": "rightEye", "position": { "x": 235.95281148235156, "y": 170.1057300493411 } }, { "score": 0.9042125940322876, "part": "leftEar", "position": { "x": 253.15143254944323, "y": 169.89184075292445 } }, { "score": 0.11866213381290436, "part": "rightEar", "position": { "x": 230.25205070406545, "y": 170.52088822836077 } }, { "score": 0.9879465699195862, "part": "leftShoulder", "position": { "x": 269.36060816397463, "y": 200.0307489461936 } }, { "score": 0.9413213729858398, "part": "rightShoulder", "position": { "x": 237.268412623424, "y": 199.75937479664844 } }, { "score": 0.9791402816772461, "part": "leftElbow", "position": { "x": 289.0813378508453, "y": 238.33601762348576 } }, { "score": 0.8448910117149353, "part": "rightElbow", "position": { "x": 228.18234922357107, "y": 231.06244380372044 } }, { "score": 0.7894282341003418, "part": "leftWrist", "position": { "x": 261.1234744699085, "y": 242.09491288151722 } }, { "score": 0.847267210483551, "part": "rightWrist", "position": { "x": 232.83399125481392, "y": 238.18936793256827 } }, { "score": 0.9825746417045593, "part": "leftHip", "position": { "x": 292.47121402725634, "y": 265.18915321112604 } }, { "score": 0.8880601525306702, "part": "rightHip", "position": { "x": 260.35651158729877, "y": 269.2972862303025 } }, { "score": 0.978084146976471, "part": "leftKnee", "position": { "x": 290.6379430674393, "y": 320.1855741122353 } }, { "score": 0.9329531192779541, "part": "rightKnee", "position": { "x": 284.79714569878485, "y": 321.18942208791054 } }, { "score": 0.9069610834121704, "part": "leftAnkle", "position": { "x": 304.89546547603976, "y": 373.43037962652596 } }, { "score": 0.8557844161987305, "part": "rightAnkle", "position": { "x": 289.11574526983475, "y": 369.35585667650986 } }]);
             const genAI = new GoogleGenerativeAI("AIzaSyAgtqxNm9C9fH1FmIjmBgTMSz5i1xJJgAU");
             const model = genAI.getGenerativeModel({ model: "gemini-pro" });
             const prompt = `provided the correct pose's coordinates: ${correctJson}. provided the incorrect pose's coordinates: ${incorrectJson}. Teach and instruct the person with incorrect pose to adjust his body in 3 sentence. you dont have to show the adjusted arrays`
@@ -65,31 +80,36 @@
             feedbackContainer.innerHTML = feedback;
             document.getElementById('feedbacks').appendChild(feedbackContainer);
         }
-        document.querySelector('button').addEventListener('click', init);
+
+        document.querySelector('#startButton').addEventListener('click', () => { init(); clickStart(); });
+        document.querySelector('#continueButton').addEventListener('click', clickCont);
+        document.querySelector('#pauseButton').addEventListener('click', clickPause);
+        document.querySelector('#stopButton').addEventListener('click', clickStop);
         window.generateFeedback = generateFeedback;
-    </script> 
+
+    </script>
     <script> /*
-        * Check for browser support
-        */
-       var supportMsg = document.getElementById('msg');
-       
-       if ('speechSynthesis' in window) {
-           supportMsg.innerHTML = 'Your browser <strong>supports</strong> speech synthesis.';
-       } else {
-           supportMsg.innerHTML = 'Sorry your browser <strong>does not support</strong> speech synthesis.<br>Try this in <a href="https://www.google.co.uk/intl/en/chrome/browser/canary.html">Chrome Canary</a>.';
-           supportMsg.classList.add('not-supported');
-       }
+* Check for browser support
+*/
+        var supportMsg = document.getElementById('msg');
+
+        if ('speechSynthesis' in window) {
+            supportMsg.innerHTML = 'Your browser <strong>supports</strong> speech synthesis.';
+        } else {
+            supportMsg.innerHTML = 'Sorry your browser <strong>does not support</strong> speech synthesis.<br>Try this in <a href="https://www.google.co.uk/intl/en/chrome/browser/canary.html">Chrome Canary</a>.';
+            supportMsg.classList.add('not-supported');
+        }
 
         window.speechSynthesis.cancel()
         const speechSynthesis = window.speechSynthesis;
-        var voices =null;
+        var voices = null;
 
-        window.speechSynthesis.onvoiceschanged = async(e)=> {
+        window.speechSynthesis.onvoiceschanged = async (e) => {
             voices = await speechSynthesis.getVoices();
-            console.log({voices}, voices[0])
+            console.log({ voices }, voices[0])
         };
 
-        function speak(text){
+        function speak(text) {
             var msg = new SpeechSynthesisUtterance(text);
             msg.lang = 'en-US';
             msg.volume = parseFloat(1);
@@ -97,7 +117,7 @@
             msg.pitch = parseFloat(1);
             msg.voice = voices[0];
             window.speechSynthesis.speak(msg);
-            console.log({msg}, window.speechSynthesis)
+            console.log({ msg }, window.speechSynthesis)
         }
     </script>
 
@@ -193,8 +213,12 @@
         });
 
     </script> -->
+    <style>
+        img {
+            height: 270px;
+            width: 480px;
+        }
+    </style>
 </body>
-
-</html>
 
 </html>

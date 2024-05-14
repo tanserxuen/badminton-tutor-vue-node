@@ -10,68 +10,42 @@
         <button class="primary-button" @click="createTutorials">
           Create Tutorials
         </button>
-        <form
-          v-if="tutorials"
-          style="max-width: 360px"
-          encType="multipart/form-data"
-          @submit.prevent="submitForm"
-        >
-          <select
-            name="img"
-            id="img"
+        <form v-if="tutorials" style="max-width: 360px" encType="multipart/form-data" @submit.prevent="submitForm">
+          <select name="img" id="img"
             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
-            @change="formData.img = $event.target.value"
-          >
+            @change="formData.img = $event.target.value">
             <option selected>Choose a Img</option>
             <option value="image">image</option>
             <option value="video">video</option>
           </select>
           <template v-for="name in tutorialKeys" :key="name">
-            <select
-              id="type"
+            <select id="type"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
-              @change="formData.type = $event.target.value"
-            >
+              @change="formData.type = $event.target.value">
               <option selected>Choose a Type</option>
               <option :value="name">
                 {{ name }}
               </option>
             </select>
-            <select
-              id="name"
+            <select id="name"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
-              @change="formData.name = $event.target.value"
-            >
+              @change="formData.name = $event.target.value">
               <option selected>Choose a Name</option>
-              <option
-                v-for="tutorial in Object.keys(tutorials[name])"
-                :key="tutorial"
-                :value="tutorial"
-              >
+              <option v-for="tutorial in Object.keys(tutorials[name])" :key="tutorial" :value="tutorial">
                 {{ tutorial }}
               </option>
             </select>
           </template>
           <div class="flex items-center space-x-6">
             <div class="shrink-0">
-              <img
-                ref="avatar_preview"
-                class="h-32 w-32 object-cover rounded-full"
-                :src="formData?.image"
-                alt="Current profile photo"
-              />
+              <img ref="avatar_preview" class="h-32 w-32 object-cover rounded-full" :src="formData?.image"
+                alt="Current profile photo" />
             </div>
             <label class="block">
               <span class="sr-only">Choose profile photo</span>
-              <input
-                ref="fileInput"
-                type="file"
-                name="image"
-                @change="uploadImage"
-                required
+              <input ref="fileInput" type="file" name="image" @change="uploadImage" required
                 accept="image/png, image/gif, image/jpeg, video/mp4,video/x-m4v,video/*"
-                class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100"
-              />
+                class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100" />
             </label>
           </div>
           <button class="auth-page__submit-button">Update Training</button>
@@ -83,13 +57,8 @@
           <div v-for="tutorial in Object.keys(tutorials[name])" :key="tutorial">
             <h4 class="font-semibold py-2 text-sm capitalize">{{ tutorial }}</h4>
             <router-link
-              :to="{ name: 'TutorialDisplay', params: { tutorial: tutorial } }"
-            >
-              <img
-                :src="tutorials[name][tutorial].image"
-                alt="tutorial"
-                class="h-32 w-32 object-cover"
-            /></router-link>
+              :to="{ name: 'TutorialDisplay', params: { tutorial: tutorial, name: name } }">
+              <img :src="tutorials[name][tutorial].image" alt="tutorial" class="h-32 w-32 object-cover" /></router-link>
           </div>
         </div>
       </div>
@@ -99,6 +68,7 @@
 
 <script>
 import TutorialService from "@/js/services/tutorials";
+import tutorialsJson from "../../backend/config/tutorialJson.json"
 import { onMounted, ref, reactive, computed } from "vue";
 
 export default {
@@ -118,13 +88,14 @@ export default {
     });
 
     onMounted(() => {
-      TutorialService.fetchTutorials()
-        .then((response) => {
-          tutorials.value = response.data[0];
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+      // TutorialService.fetchTutorials()
+      //   .then((response) => {
+      //     tutorials.value = response.data[0];
+      //   })
+      //   .catch((e) => {
+      //     console.log(e);
+      //   });
+      tutorials.value = tutorialsJson
     });
 
     const uploadImage = (e) => {

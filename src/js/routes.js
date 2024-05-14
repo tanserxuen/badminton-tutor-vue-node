@@ -26,7 +26,7 @@ const routes = [
   { path: "/update-password", name:"UpdatePassword", component: () => UpdatePassword },
   { path: "/reset-password", name:"ResetPassword", component: () => ResetPassword },
   // { path: "/pose-counter", name:"PoseCounter",  },
-  { path: "/tutorial-display/:tutorial", name:"TutorialDisplay", component: () => TutorialDisplay, props: true},
+  { path: "/tutorial-display/:tutorial/:name", name:"TutorialDisplay", component: () => TutorialDisplay, props: true},
   { path: "/posts", name:"PostsIndex", component: () => PostsIndex },
   { path: "/post/:index", name:"PostView", component: () => PostView, props: true },
   { path: "/post-create", name:"PostCreate", component: () => PostCreate },

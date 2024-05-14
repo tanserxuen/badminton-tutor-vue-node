@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { v4: uuidv4 } = require("uuid");
-const tutorialJsonTemplate = require("../config/tutorialJson");
+// const tutorialJsonTemplate = require("../config/tutorialJson");
 // const { uploadBytes, ref, getStorage } = require("firebase/storage");
 
 router.get("/", async (req, res) => {
