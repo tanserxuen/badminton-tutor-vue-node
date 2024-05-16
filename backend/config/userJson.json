@@ -8,7 +8,7 @@
   "performance": [],
   "movementAccuracy": [],
   "growth": [],
-  "activeDaysInWeek": [],
+  "activeDays": 1,
   "noOfFollowers": 0,
   "noOfFollowing": 0,
   "noOfPosts": 0,

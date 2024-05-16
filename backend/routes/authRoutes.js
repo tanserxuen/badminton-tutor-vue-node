@@ -11,6 +11,7 @@ const {
   signOut,
   onAuthStateChanged,
 } = require("firebase/auth");
+const getDateDetails = require("../utils/date");
 
 router.post("/signup", async (req, res) => {
   const { email, password } = req.body;
@@ -29,6 +30,8 @@ router.post("/signup", async (req, res) => {
       email,
       password,
       created_at: FieldValue.serverTimestamp(),
+      updated_at: FieldValue.serverTimestamp(),
+      updatedDayNumber: getDateDetails(new Date()).nthDay,
       ...userJsonTemplate,
     };
     const usersDb = db.collection("user");
@@ -70,7 +73,7 @@ router.post("/logout", async (req, res) => {
 
 router.post("/reset-password", async (req, res) => {
   const { email } = req.body;
-  const ref = await db.collection("user").where("email", "=", email).get()
+  const ref = await db.collection("user").where("email", "=", email).get();
   if (ref.docs.length) {
     try {
       await sendPasswordResetEmail(auth, email);
@@ -79,7 +82,7 @@ router.post("/reset-password", async (req, res) => {
       res.status(500).json(error);
     }
   } else {
-    res.status(505).json("Email not found")
+    res.status(505).json("Email not found");
   }
 });
 
@@ -97,7 +100,7 @@ router.post("/update-password", async (req, res) => {
 router.get("/validate-auth", async (req, res) => {
   try {
     let user = null;
-    await onAuthStateChanged(auth, (currentUser) => user = currentUser);
+    await onAuthStateChanged(auth, (currentUser) => (user = currentUser));
     if (user) {
       global.currentUser = user;
       res.status(200).json(user);

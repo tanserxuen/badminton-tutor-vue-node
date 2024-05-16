@@ -62,7 +62,7 @@ const store = createStore({
             commit("setCurrentUser", res.data);
             dispatch("fetchUserDetails", res.data?.uid);
             dispatch("fetchPosts", res.data?.uid);
-            dispatch("updateActiveDaysPerWeek");
+            dispatch("updateActiveDays");
           }
         });
       } catch (error) {
@@ -94,9 +94,9 @@ const store = createStore({
         console.error(error);
       }
     },
-    updateActiveDaysPerWeek: async () => {
+    updateActiveDays: async () => {
       try {
-        await UserService.updateActiveDaysPerWeek();
+        await UserService.updateActiveDays();
       } catch (error) {
         console.error(error);
       }

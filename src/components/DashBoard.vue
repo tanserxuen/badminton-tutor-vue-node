@@ -4,10 +4,10 @@
     <div class="base-page__inner-margin">
       <h3 class="font-semibold">Good Morning, {{ userDetails?.name }}!</h3>
       <div class="d-grid mb-5 p-4 text-center" v-if="userDetails">
-        <div class="card" v-for="activity in activityNames" :key="activity">
+        <div class="card" v-for="(activity, i) in activityNames" :key="activity">
           {{ activity }}
-          <p v-if="userDetails[activity].length">
-            {{ getLatestElement(userDetails[activity], activity) }}
+          <p v-if="userDetails[activity].length || i == 0">
+            {{ i == 0 ? userDetails[activity] : getLatestElement(userDetails[activity], activity) }}
           </p>
           <template v-else><lottie-animation path="images/no_data_found.json" :width="150" :height="150" /></template>
         </div>
@@ -31,7 +31,7 @@ export default {
     const store = useStore();
     const userDetails = computed(() => store.state?.currentUserDetails ?? "");
     const activityNames = [
-      "activeDaysInWeek",
+      "activeDays",
       "movementAccuracy",
       "performance",
       "growth",

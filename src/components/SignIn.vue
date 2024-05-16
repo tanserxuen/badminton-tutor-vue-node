@@ -77,7 +77,7 @@ export default {
             store.commit("setCurrentUser", response.data);
             store.dispatch("fetchUserDetails", response.data.uid);
             store.dispatch("fetchPosts", response.data.uid);
-            store.dispatch("updateActiveDaysPerWeek");
+            store.dispatch("updateActiveDays");
             router.push({ name: "DashBoard" });
           }
         })
