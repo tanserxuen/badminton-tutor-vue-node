@@ -158,6 +158,6 @@ export default {
 
 <style scoped>
 .grid {
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
 }
 </style>
