@@ -69,16 +69,16 @@ export default {
 
     const submitForm = () =>
       AuthService.signin(email.value, password.value)
-        .then((response) => {
-          if (response.data.code !== undefined) {
-            throw new Error(response.data.code);
-          } else {
-            console.log("Signed in", response.data.uid);
-            store.commit("setCurrentUser", response.data);
-            store.dispatch("fetchUserDetails", response.data.uid);
-            store.dispatch("fetchPosts", response.data.uid);
+        .then((res) => {
+          console.log(res)
+          if (res.status === 200) {console.log("Signed in", res.data.uid);
+            store.commit("setCurrentUser", res.data);
+            store.dispatch("fetchUserDetails", res.data.uid);
+            store.dispatch("fetchPosts", res.data.uid);
             store.dispatch("updateActiveDays");
             router.push({ name: "DashBoard" });
+          } else {
+            throw new Error(res.response.data.code);
           }
         })
         .catch((e) => {
