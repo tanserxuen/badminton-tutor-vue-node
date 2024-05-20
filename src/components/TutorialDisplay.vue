@@ -3,9 +3,6 @@
     <h2 class="base-page__heading-short">Tutorial Display - {{ tutorial }}</h2>
 
     <div class="base-page__inner-margin">
-      <a href="http://localhost:3000/predict-with-tfjs.html" target="_self">
-        Start training now!! Pose Counter
-      </a><br><br>
       <video controls name="media" width="480" height="640" loop v-if="tutorial != 'ready-position'">
         <source :src="getVideo" type="video/mp4" />
         Your browser does not support the video tag.

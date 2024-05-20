@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto px-4 py-10">
-    <h2 class="base-page__heading-short">Trainings</h2>
+    <h2 class="base-page__heading-short" style="margin-bottom:0px">Trainings</h2>
 
     <div class="base-page__inner-margin">
       <!-- <button class="primary-button" @click="isEdit = !isEdit">
@@ -53,7 +53,7 @@
       </div>
       <lottie-animation path="images/loading.json" v-show="isLoading" :width="150" :height="150" />
       <div v-for="name in tutorialKeys" :key="name" v-show="!isEdit && !isLoading">
-        <h3 class="font-semibold py-2 text-xl capitalize pt-10">{{ name }}</h3>
+        <h3 class="py-2 text-lg font-extrabold capitalize pt-10">{{ name }}</h3>
         <div class="grid">
           <div v-for="tutorial in Object.keys(tutorials[name])" :key="tutorial">
             <h4 class="font-semibold py-2 text-sm capitalize">{{ tutorial }}</h4>
@@ -68,7 +68,6 @@
 
 <script>
 import TutorialService from "@/js/services/tutorials";
-import tutorialsJson from "../../backend/config/tutorialJson.json"
 import { onMounted, ref, reactive, computed } from "vue";
 import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
 
@@ -93,18 +92,17 @@ export default {
     });
 
     onMounted(() => {
-      // TutorialService.fetchTutorials()
-      //   .then((response) => {
-      //     tutorials.value = response.data[0];
-      //   })
-      //   .catch((e) => {
-      //     console.log(e);
-      //   });
       isLoading.value = true;
-      setTimeout(() => {
-        isLoading.value = false;
-      }, 1500);
-      tutorials.value = tutorialsJson
+      TutorialService.fetchTutorials()
+        .then((response) => {
+          tutorials.value = response.data[0];
+          setTimeout(() => {
+            isLoading.value = false;
+          }, 1500);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     });
 
     const uploadImage = (e) => {

@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div>
     <div v-html="poseCounterFunction.html" class="container mt-5"></div>
     <input type="file" name="" id=""/>
@@ -86,4 +86,4 @@ export default {
 };
 </script>
 
-<style></style>
+<style></style> -->

@@ -3,25 +3,43 @@
     <h2 class="base-page__heading-short">Dashboard</h2>
     <div class="base-page__inner-margin">
       <h3 class="font-semibold">Good Morning, {{ userDetails?.name }}!</h3>
-      <div class="d-grid mb-5 p-4 text-center" v-if="userDetails">
+      <div class="d-grid mb-5 p-4 text-center" v-if="userDetails && !isLoading">
         <div class="card" v-for="(activity, i) in activityNames" :key="activity">
           {{ activity }}
-          <p v-if="userDetails[activity].length || i == 0">
-            {{ i == 0 ? userDetails[activity] : getLatestElement(userDetails[activity], activity) }}
-          </p>
-          <template v-else><lottie-animation path="images/no_data_found.json" :width="150" :height="150" /></template>
+          <template v-if="userDetails[activity]?.length && i > 1">
+            <p> {{ getLatestElement(userDetails[activity], activity) }}</p>
+          </template>
+          <template v-else-if="i == 0">
+            <p>{{ userDetails[activity] }}</p>
+            <small>per {{ totalRegisteredDays }} days</small>
+          </template>
+          <template v-else-if="i == 1">
+            <p> {{ getHighestScore(userDetails?.[activity]) }} </p>
+            <small>{{ highestScoreTechnique }}</small>
+          </template>
+          <template v-else>
+            <lottie-animation path="images/no_data_found.json" :width="150" :height="150" />
+          </template>
         </div>
       </div>
-      <router-link to="/detailed-analytics">Detailed Analytics</router-link><br />
-      <router-link to="/feedback-history">Feedback History</router-link>
+      <lottie-animation path="images/loading.json" v-show="isLoading" :width="150" :height="150" />
+
+      <div class="bar">
+        <router-link to="/detailed-analytics">Detailed Analytics</router-link>
+        <i class="fas fa-chevron-right"></i>
+      </div>
+      <div class="bar">
+        <router-link to="/feedback-history">Feedback History</router-link>
+        <i class="fas fa-chevron-right"></i>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { computed } from "vue";
-import { useStore } from "vuex"; import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
-
+import { computed, ref } from "vue";
+import { useStore } from "vuex";
+import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
 
 export default {
   components: {
@@ -32,16 +50,48 @@ export default {
     const userDetails = computed(() => store.state?.currentUserDetails ?? "");
     const activityNames = [
       "activeDays",
-      "movementAccuracy",
+      "movementAccuracyObj",
       "performance",
       "growth",
     ];
+    const isLoading = computed(() => !userDetails.value);
+
+    const highestScoreTechnique = ref("");
+
+    const getHighestScoreTechnique = (obj, index) => {
+      highestScoreTechnique.value = Object.keys(obj)[index];
+    }
 
     const getLatestElement = (arr, activity) => {
       const ele = arr[arr.length - 1];
       return activity != activityNames[0] ? `${ele * 100}%` : ele;
     };
-    return { userDetails, activityNames, getLatestElement };
+
+    const totalRegisteredDays = computed(() => {
+      const registeredDate = new Date(userDetails.value.created_at._seconds * 1000);
+      const today = Date.now();
+      // calculate the difference between the two dates in days
+      const diffInTime = today - registeredDate;
+      const diffInDays = diffInTime / (1000 * 3600 * 24);
+      return Math.floor(diffInDays);
+    });
+
+    const getHighestScore = (obj) => {
+      const highestScore = Math.max(...Object.values(obj));
+      const scoreIndex = Object.values(obj).indexOf(highestScore);
+      getHighestScoreTechnique(obj, scoreIndex);
+      return highestScore;
+    };
+
+    return {
+      userDetails,
+      isLoading,
+      activityNames,
+      getLatestElement,
+      getHighestScore,
+      highestScoreTechnique,
+      totalRegisteredDays
+    };
   },
 };
 </script>
@@ -79,5 +129,23 @@ export default {
 .card p {
   font-size: 3.5rem;
   font-weight: bold;
+}
+
+.card small {
+  font-size: 0.8rem;
+  font-weight: normal;
+}
+
+.bar {
+  display: flex;
+  padding: 10px 16px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  background: white;
+  border-radius: 5px;
+  margin-bottom: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--default-font-family);
 }
 </style>

@@ -70,3 +70,16 @@ a i:hover,
 .scroll-inside::-webkit-scrollbar {
   width: 0;
 }
+
+.base-page__inner-margin::-webkit-scrollbar,
+.scroll-inside::-webkit-scrollbar {
+  width: 10px;
+  background-color: #fffa;
+  border-radius: 10px;
+}
+
+.base-page__inner-margin::-webkit-scrollbar-thumb,
+.scroll-inside::-webkit-scrollbar-thumb {
+  background: #c5c5c5aa;
+  border-radius: 10px;
+}

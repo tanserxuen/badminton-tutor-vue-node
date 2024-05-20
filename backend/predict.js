@@ -1,12 +1,45 @@
 // const { GoogleGenerativeAI } = require("google-generative-ai");
 // More API functions here:
 // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/pose
-
 // the link to your model provided by Teachable Machine export panel
-const URL = "https://teachablemachine.withgoogle.com/models/LEhh3auhv/";
-let model, ctx, labelContainer, maxPredictions, webcam, cameraActivated = false;
+
+const URL = "https://teachablemachine.withgoogle.com/models/6_szoTmfF/"; // technique 3
+// const URL = "https://teachablemachine.withgoogle.com/models/LEhh3auhv/"; // technique 2
+// const URL = "https://teachablemachine.withgoogle.com/models/LEhh3auhv/"; // technique 1
+let model,
+  ctx,
+  labelContainer,
+  maxPredictions,
+  webcam,
+  cameraActivated = false;
 let isGeneratingFeedback = false;
 const fps = 5;
+let tutorialJson = null;
+
+axios({
+  method: 'get',
+  url: "http://localhost:3000/tutorials/",
+}).then(({data}) => {
+  tutorialJson = {...data.techniques, ...data.footwork};
+  console.log({ tutorialJson });
+}).catch((error) => {
+  console.log("error: ", error);
+});
+
+const movingAccuracyObj = {};
+
+window.addEventListener("beforeunload", async function (e) {
+  e.preventDefault();
+  console.log("beforeunload");
+  await updateAnalytics(await calculateMovingAccuracy());
+  const res = alert("You are leaving the page");
+  //if yes continue leave page, else stay on the page
+  if (res) {
+    return true;
+  } else {
+    return false;
+  }
+});
 
 async function init() {
   cameraActivated = false;
@@ -56,11 +89,13 @@ async function predict() {
   // Prediction #1: run input through posenet
   // estimatePose can take in an image, video or canvas html element
   const { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
+
   // check if user's whole body is in the frame
   if (JSON.stringify(pose?.keypoints)?.includes("0.0")) {
     drawPose(pose, false);
     return;
   }
+
   // Prediction 2: run input through teachable machine classification model
   const prediction = await model.predict(posenetOutput);
 
@@ -69,17 +104,27 @@ async function predict() {
       prediction[i].className + ": " + prediction[i].probability.toFixed(2);
     labelContainer.childNodes[i].innerHTML = classPrediction;
     console.log(prediction[i].probability.toFixed(2), prediction[i].className);
-    if (prediction[i].probability.toFixed(2) > 0.75) document.getElementById("currentPose").innerHTML = prediction[i].className;
-    // if (prediction[i].probability.toFixed(2) > 0.75 && prediction[i].className.includes('Big')) {
-    //   document.getElementById("correctPostImage").src = "https://firebasestorage.googleapis.com/v0/b/badmintonposecounter.appspot.com/o/Tutorials%2Ffront%20footwork%20right%20(26).jpg?alt=media&token=ba4d4ca7-993a-4ecf-b5cb-454b413838cd";
-    // } else if (prediction[i].probability.toFixed(2) > 0.75 && prediction[i].className.includes('Squat')) {
-    //   document.getElementById("correctPostImage").src = "https://firebasestorage.googleapis.com/v0/b/badmintonposecounter.appspot.com/o/Tutorials%2Ffront%20footwork%20left%20(19).jpg?alt=media&token=5736c8a2-4453-4625-9fe5-6b2919541e2a";
-    // } else if (prediction[i].probability.toFixed(2) > 0.75 && prediction[i].className.includes('Kick')) {
-    //   document.getElementById("correctPostImage").src = "https://firebasestorage.googleapis.com/v0/b/badmintonposecounter.appspot.com/o/Tutorials%2Fsideway%20footwork%20left%20(2).jpg?alt=media&token=589f39bc-adfc-4e45-97c3-413558186d0a";
-    // }
+    // if the class's probability is the highest of all class
+    console.log("max: ",Math.max(...prediction.map((p) => p.probability)))
+    const highestProbability = Math.max(...prediction.map((p) => p.probability));
+    if (prediction[i].probability == highestProbability) {
+      document.getElementById("currentPose").innerHTML =
+        prediction[i].className;
+        // display relavant tutorial based on the detected pose
+        document.getElementById("correctPostImage").src = tutorialJson[prediction[i].className.replaceAll(" ", "-")]?.image;
+
+      // only record the highest probability of the detected pose
+      setTimeout(() => {
+        setMovingAccuracy(
+          prediction[i].className,
+          prediction[i].probability.toFixed(2)
+        );
+      }, 1500);
+    }
   }
   if (isGeneratingFeedback == false) {
     isGeneratingFeedback = true;
+    // to uncomment
     // generateFeedback(pose).then(() => {
     //   isGeneratingFeedback = false;
     //   console.log("Generating feedback done...");
@@ -104,7 +149,7 @@ function drawPose(pose, hasFullBody = true) {
       const minPartConfidence = 0.5;
       tmPose.drawKeypoints(pose.keypoints, minPartConfidence, ctx);
       tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx);
-      console.log(JSON.stringify(pose.keypoints).replaceAll('"', "'"))
+      console.log(JSON.stringify(pose.keypoints).replaceAll('"', "'"));
     }
   }
 }
@@ -114,40 +159,73 @@ function clickStart(event) {
   document.getElementById("stopButton").style.display = "block";
   document.getElementById("pauseButton").style.display = "block";
 }
+
 function clickCont(event) {
   document.getElementById("startButton").style.display = "none";
-  document.getElementById("continueButton").style.display =
-    "none";
+  document.getElementById("continueButton").style.display = "none";
   document.getElementById("pauseButton").style.display = "block";
   document.getElementById("stopButton").style.display = "block";
   cameraActivated = true;
   webcam.play();
   loop();
 }
+
 function clickPause(event) {
   document.getElementById("startButton").style.display = "none";
-  document.getElementById("continueButton").style.display =
-    "block";
+  document.getElementById("continueButton").style.display = "block";
   document.getElementById("pauseButton").style.display = "none";
   document.getElementById("stopButton").style.display = "block";
   webcam.pause();
   cameraActivated = false;
 }
+
 function clickStop(event) {
   document.getElementById("startButton").style.display = "block";
-  document.getElementById("continueButton").style.display =
-    "none";
+  document.getElementById("continueButton").style.display = "none";
   document.getElementById("pauseButton").style.display = "none";
   document.getElementById("stopButton").style.display = "none";
   webcam.stop();
   cameraActivated = false;
 }
 
-export {
-  init,
-  predict,
-  clickStart,
-  clickCont,
-  clickPause,
-  clickStop,
-};
+function setMovingAccuracy(className, probability) {
+  const newClassName = className.replaceAll(" ", "-");
+  movingAccuracyObj[newClassName]?.length
+    ? movingAccuracyObj[newClassName].push(probability)
+    : (movingAccuracyObj[newClassName] = [probability]);
+  // console.log({ movingAccuracyObj });
+}
+
+function calculateMovingAccuracy() {
+  let totalAccuracy = 0;
+  for (const key in movingAccuracyObj) {
+    const accuracy =
+      movingAccuracyObj[key].reduce(
+        (a, b) => parseFloat(a) + parseFloat(b),
+        0
+      ) / movingAccuracyObj[key].length;
+    totalAccuracy += accuracy;
+    console.log(key, accuracy);
+  }
+  const averageAccuracy = totalAccuracy / Object.keys(movingAccuracyObj).length;
+  console.log("Average Accuracy: ", averageAccuracy);
+  return averageAccuracy;
+}
+
+async function updateAnalytics(averageAccuracy) {
+  console.log("updating analytics...");
+  console.log({ averageAccuracy });
+  // await axios({
+  //   method: 'post',
+  //   url: "http://localhost:3000/update-movement-accuracy",
+  //   data: {
+  //     movingAccuracyObj, "latestAverageAccuracy": averageAccuracy
+  //   }
+  // }).then((response) => {
+  //   console.log("fetch tutorial data: ", response.data);
+  // }).catch((error) => {
+  //   console.log("error: ", error);
+  // });
+}
+
+export { init, predict, clickStart, clickCont, clickPause, clickStop };

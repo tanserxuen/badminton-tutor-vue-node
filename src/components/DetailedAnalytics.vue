@@ -8,14 +8,20 @@
       <div class="base-page__inner-margin">
         <lottie-animation :path="randomLottie" :width="250" :height="250" />
         <template v-if="analytics">
+          <h3 style="text-transform: capitalize">{{ title }}</h3>
           <div class="grid">
-            <div v-for="title in Object.keys(analytics)" :key="title">
-              <h3 style="text-transform: capitalize">{{ title }}</h3>
-              <AnalyticCharts :chartType="'Line'" :data="analytics[title]" v-if="analytics[title].length" />
-              <div v-else>
-                <lottie-animation path="images/no_data_found.json" :width="200" :height="200" />
-              </div>
+            <div class="card">
+              <b>{{ Object.keys(analytics)[0] }}</b>
+              <p>{{ analytics[Object.keys(analytics)[0]] }}</p>
             </div>
+            <div class="card">
+              <AnalyticCharts :chartType="'PolarArea'" :data="analytics[Object.keys(analytics)[1]]"
+                :title="Object.keys(analytics)[1]" />
+            </div>
+            <AnalyticCharts :chartType="'Line'" :data="analytics[Object.keys(analytics)[2]]"
+              :title="Object.keys(analytics)[2]" />
+            <AnalyticCharts :chartType="'Line'" :data="analytics[Object.keys(analytics)[3]]"
+              :title="Object.keys(analytics)[3]" />
           </div>
         </template>
       </div>
@@ -25,7 +31,8 @@
         <div v-for="title in Object.keys(analytics)" :key="title">
           <h3 style="text-transform: capitalize">{{ title }}</h3>
           <AnalyticCharts :chartType="'Line'" :data="analytics[title]" v-if="analytics[title].length" />
-          <div v-else><lottie-animation path="images/no_data_found.json" :width="250" :height="250" />
+          <div v-else>
+            <lottie-animation path="images/no_data_found.json" :width="250" :height="250" />
           </div>
         </div>
       </div>
@@ -55,10 +62,10 @@ export default {
     const store = useStore();
     const userDetails = computed(() => store.state?.currentUserDetails ?? "");
     const chartTitles = [
-      "activeDaysInWeek",
-      "growth",
-      "movementAccuracy",
+      "activeDays",
+      "movementAccuracyObj",
       "performance",
+      "growth",
     ];
 
     const months = [
@@ -89,7 +96,16 @@ export default {
       if (!userDetails.value) return [];
       const user = userDetails.value;
       //get values of chartitlte from user
-      return chartTitles.reduce((acc, title) => {
+      return chartTitles.reduce((acc, title, idx) => {
+        // return if the title is 'activeDays' or 'movementAccuracyObj' or user has no data for the title
+        if (idx == 0 || idx == 1) {
+          acc[title] = user[title];
+          return acc;
+        }
+        if (!user[title] || !user[title]?.length) {
+          acc[title] = null;
+          return acc;
+        }
         let details = [];
         details = user?.[title]?.map((day, index) => {
           return { name: months[index], pl: day };
@@ -115,10 +131,15 @@ h3 {
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(150px, 1fr));
   padding: 20px;
   width: fit-content;
   column-gap: 50px;
   margin: auto;
+}
+
+.card p {
+  font-size: 3.5rem;
+  font-weight: bold;
 }
 </style>

@@ -30,11 +30,11 @@
     }
   },
   "techniques": {
-    "forehandClear": {
+    "forehand-clear": {
       "image": "https://firebasestorage.googleapis.com/v0/b/badmintonposecounter.appspot.com/o/Tutorials%2Fclear%20forehand%20ready%20(11).JPG?alt=media&token=e5f9fd2a-53d8-4a39-8369-8ba5ec66505b",
       "video": "https://firebasestorage.googleapis.com/v0/b/badmintonposecounter.appspot.com/o/Tutorials%2Fclear%20forehand.MP4?alt=media&token=4196830f-ad27-47fd-a984-dcf16ac605bd"
     },
-    "backhandClear": {
+    "backhand-clear": {
       "image": "https://firebasestorage.googleapis.com/v0/b/badmintonposecounter.appspot.com/o/Tutorials%2Fbackhand%20clear%20end%20(1).JPG?alt=media&token=53192afe-9f5e-45ae-a9c2-e8c145f83206",
       "video": "https://firebasestorage.googleapis.com/v0/b/badmintonposecounter.appspot.com/o/Tutorials%2Fclear%20backhand%203.MP4?alt=media&token=692227a7-5328-462e-92c0-ae7167137c19"
     },
@@ -58,7 +58,7 @@
       "image": "https://firebasestorage.googleapis.com/v0/b/badmintonposecounter.appspot.com/o/Tutorials%2Fnet%20kill%20forehand%20head%20view%20(6).JPG?alt=media&token=89bce788-41cd-4aa9-afa8-7f579464d127",
       "video": "https://firebasestorage.googleapis.com/v0/b/badmintonposecounter.appspot.com/o/Tutorials%2Fnet%20kill%20right.MP4?alt=media&token=9c3610e4-99e3-43f3-961c-dec6b8431466"
     },
-    "backhandServe": {
+    "backhand-serve": {
       "image": "https://firebasestorage.googleapis.com/v0/b/badmintonposecounter.appspot.com/o/Tutorials%2Fserve%20forehand%20(1).JPG?alt=media&token=840c58af-c962-42fa-9bb8-7ea10001d13c",
       "video": "https://firebasestorage.googleapis.com/v0/b/badmintonposecounter.appspot.com/o/Tutorials%2Fready%20position.MP4?alt=media&token=c1468403-8777-45ce-85ee-b46b52ebff46"
     },

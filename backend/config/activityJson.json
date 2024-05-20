@@ -1,6 +1,6 @@
 {
   "activeDays": 0,
-  "movementAccuracy": 0,
+  "movementAccuracyObj": 0,
   "performance": 0,
   "growth": 0
 }
