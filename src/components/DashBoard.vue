@@ -78,10 +78,15 @@ export default {
     });
 
     const getHighestScore = (obj) => {
+      console.log(!obj, Object.values(obj))
+      if (Object.values(obj) == 0) {
+        highestScoreTechnique.value = "No Data";
+        return "0";
+      }
       const highestScore = Math.max(...Object.values(obj));
       const scoreIndex = Object.values(obj).indexOf(highestScore);
       getHighestScoreTechnique(obj, scoreIndex);
-      return highestScore;
+      return highestScore.toFixed(2);
     };
 
     return {

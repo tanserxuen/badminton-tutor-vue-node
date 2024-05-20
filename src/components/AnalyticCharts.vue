@@ -122,7 +122,7 @@ export default {
       if (props.title !== 'movementAccuracyObj') return null;
       const arrLength = Object.keys(props.data).length;
       return {
-        labels: Object.keys(props.data),
+        labels: Object.keys(props.data).map(e => snakeToTitleCase(e).replace("-", " ")),
         datasets: [
           {
             data: Object.values(props.data),
@@ -133,9 +133,9 @@ export default {
     });
 
     return {
-      direction, 
+      direction,
       margin,
-      testData, 
+      testData,
       snakeToTitleCase
     };
   },

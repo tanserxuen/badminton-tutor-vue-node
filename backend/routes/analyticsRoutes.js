@@ -6,10 +6,12 @@ router.post("/update-movement-accuracy", async (req, res) => {
   try {
     const analyticsRef = db
       .collection("user")
-      .doc(global.currentUser?.uid ?? "1dEfksfsENPMoTGarpVQ8lL4Xov2");
+      .doc(global.currentUser?.uid);
+    if (req.body.latestAverageAccuracy == {}) res.send("No data to update");
     analyticsRef
       .update({
-        movementAccuracyObj: req.body.averageAccuracy ?? movementAccuracyJson,
+        movementAccuracyObj:
+          req.body.latestAverageAccuracy ?? movementAccuracyJson,
       })
       .then((doc) => {
         res.send(doc);

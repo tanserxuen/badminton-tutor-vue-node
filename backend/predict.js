@@ -1,11 +1,7 @@
-// const { GoogleGenerativeAI } = require("google-generative-ai");
-// More API functions here:
-// https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/pose
-// the link to your model provided by Teachable Machine export panel
-
 const URL = "https://teachablemachine.withgoogle.com/models/6_szoTmfF/"; // technique 3
 // const URL = "https://teachablemachine.withgoogle.com/models/LEhh3auhv/"; // technique 2
 // const URL = "https://teachablemachine.withgoogle.com/models/LEhh3auhv/"; // technique 1
+
 let model,
   ctx,
   labelContainer,
@@ -15,6 +11,7 @@ let model,
 let isGeneratingFeedback = false;
 const fps = 5;
 let tutorialJson = null;
+let correctJson = null;
 
 axios({
   method: "get",
@@ -28,19 +25,21 @@ axios({
     console.log("error: ", error);
   });
 
+axios({
+  method: "get",
+  url: "http://localhost:3000/json/correctJson.json",
+})
+  .then(({ data }) => (correctJson = data))
+  .catch((error) => {
+    console.log("error: ", error);
+  });
+
 const movingAccuracyObj = {};
 
 window.addEventListener("beforeunload", async function (e) {
   e.preventDefault();
   console.log("beforeunload");
-  await updateAnalytics(await calculateMovingAccuracy());
-  const res = alert("You are leaving the page");
-  //if yes continue leave page, else stay on the page
-  if (res) {
-    return "Goodbye!";
-  } else {
-    return "Stay on the page!";
-  }
+  beforeLeavePage();
 });
 
 async function init() {
@@ -55,7 +54,7 @@ async function init() {
   maxPredictions = model.getTotalClasses();
 
   // Convenience function to setup a webcam
-  const size = 200;
+  const size = 400;
   const flip = true; // whether to flip the webcam
   webcam = new tmPose.Webcam(size, size, flip); // width, height, flip
   await webcam.setup(); // request access to the webcam
@@ -100,6 +99,7 @@ async function predict() {
 
   // Prediction 2: run input through teachable machine classification model
   const prediction = await model.predict(posenetOutput);
+  let correctPoseClassName = null;
 
   for (let i = 0; i < maxPredictions; i++) {
     const classPrediction =
@@ -108,25 +108,25 @@ async function predict() {
     console.log(prediction[i].probability.toFixed(2), prediction[i].className);
     // if the class's probability is the highest of all class
     console.log("max: ", Math.max(...prediction.map((p) => p.probability)));
-    
+
     const highestProbability = Math.max(
       ...prediction.map((p) => p.probability)
     );
-    
+
     if (
       prediction[i].probability == highestProbability &&
       highestProbability > 0.75
     ) {
-      document.getElementById("currentPose").innerHTML =
-        prediction[i].className;
+      correctPoseClassName = prediction[i].className;
+      document.getElementById("currentPose").innerHTML = correctPoseClassName;
       // display relavant tutorial based on the detected pose
       document.getElementById("correctPostImage").src =
-        tutorialJson[prediction[i].className.replaceAll(" ", "-")]?.image;
+        tutorialJson[correctPoseClassName.replaceAll(" ", "-")]?.image;
 
       // only record the highest probability of the detected pose
       setTimeout(async () => {
         await setMovingAccuracy(
-          prediction[i].className,
+          correctPoseClassName,
           prediction[i].probability.toFixed(2)
         );
       }, 1500);
@@ -135,10 +135,10 @@ async function predict() {
   if (isGeneratingFeedback == false) {
     isGeneratingFeedback = true;
     // to uncomment
-    // generateFeedback(pose).then(() => {
-    //   isGeneratingFeedback = false;
-    //   console.log("Generating feedback done...");
-    // });
+    generateFeedback(pose, correctJson[correctPoseClassName]).then(() => {
+      isGeneratingFeedback = false;
+      console.log("Generating feedback done...");
+    });
   }
 
   // finally draw the poses
@@ -208,16 +208,13 @@ function setMovingAccuracy(className, probability) {
 
 function calculateMovingAccuracy() {
   //get average accuracy for each key in the object movingAccuracyObj and display in a object
-  const averageAccuracy = Object.keys(movingAccuracyObj).reduce(
-    (acc, key) => {
-      const average =
-        movingAccuracyObj[key].reduce((acc, val) => acc + parseFloat(val), 0) /
-        movingAccuracyObj[key].length;
-      acc[key] = average;
-      return acc;
-    },
-    {}
-  );
+  const averageAccuracy = Object.keys(movingAccuracyObj).reduce((acc, key) => {
+    const average =
+      movingAccuracyObj[key].reduce((acc, val) => acc + parseFloat(val), 0) /
+      movingAccuracyObj[key].length;
+    acc[key] = average;
+    return acc;
+  }, {});
   return averageAccuracy;
 }
 
@@ -225,17 +222,44 @@ async function updateAnalytics(averageAccuracy) {
   console.log("updating analytics...");
   console.log({ averageAccuracy });
   await axios({
-    method: 'post',
+    method: "post",
     url: "http://localhost:3000/analytics/update-movement-accuracy",
     data: {
-      movingAccuracyObj, 
-      "latestAverageAccuracy": averageAccuracy
-    }
-  }).then((response) => {
-    console.log("fetch tutorial data: ", response.data);
-  }).catch((error) => {
-    console.log("error: ", error);
-  });
+      movingAccuracyObj,
+      latestAverageAccuracy: averageAccuracy,
+    },
+  })
+    .then((response) => {
+      console.log("fetch tutorial data: ", response.data);
+    })
+    .catch((error) => {
+      console.log("error: ", error);
+    });
 }
 
-export { init, predict, clickStart, clickCont, clickPause, clickStop, calculateMovingAccuracy };
+async function backToApp() {
+  await beforeLeavePage();
+  window.location.href = "http://localhost:8080/dashboard";
+}
+
+async function beforeLeavePage() {
+  const res = confirm("You are leaving the page");
+  //if yes continue leave page, else stay on the page
+  if (res) {
+    await updateAnalytics(await calculateMovingAccuracy());
+    return "Goodbye!";
+  } else {
+    return "Stay on the page!";
+  }
+}
+
+export {
+  init,
+  predict,
+  clickStart,
+  clickCont,
+  clickPause,
+  clickStop,
+  calculateMovingAccuracy,
+  backToApp,
+};
