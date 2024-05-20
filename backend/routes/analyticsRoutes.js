@@ -9,7 +9,7 @@ router.post("/update-movement-accuracy", async (req, res) => {
       .doc(global.currentUser?.uid ?? "1dEfksfsENPMoTGarpVQ8lL4Xov2");
     analyticsRef
       .update({
-        movementAccuracyObj: req.body.movingAccuracyObj ?? movementAccuracyJson,
+        movementAccuracyObj: req.body.averageAccuracy ?? movementAccuracyJson,
       })
       .then((doc) => {
         res.send(doc);
@@ -23,6 +23,39 @@ router.post("/update-movement-accuracy", async (req, res) => {
     res.send(error);
   }
 });
+
+// router.post("/update-growth", async (req, res) => {
+//   try {
+//     const analyticsRef = db
+//       .collection("user")
+//       .doc(global.currentUser?.uid ?? "1dEfksfsENPMoTGarpVQ8lL4Xov2");
+//     const analytics = await analyticsRef.get();
+//     const oldMovementAccuracyObj = analytics.data().movementAccuracyObj;
+//     const newMovementAccuracyObj = req.body.movingAccuracyObj;
+//     //growth is to take the object and compare the values of the two objects
+//     const growth = oldMovementAccuracyObj.reduce((acc, key) => {
+//       const growth = newMovementAccuracyObj[key] - oldMovementAccuracyObj[key];
+//       acc[key] = growth;
+//       return acc;
+//     }, {});
+//     console.log(growth)
+
+//     analyticsRef
+//       .update({
+//         performance,
+//       })
+//       .then((doc) => {
+//         res.send(doc);
+//       })
+//       .catch((error) => {
+//         console.log("error", error);
+//         res.send(error);
+//       });
+//   } catch (error) {
+//     console.log("error", error);
+//     res.send(error);
+//   }
+// });
 
 router.get("/", async (req, res) => {
   try {

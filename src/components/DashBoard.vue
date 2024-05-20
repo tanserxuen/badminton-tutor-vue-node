@@ -5,7 +5,7 @@
       <h3 class="font-semibold">Good Morning, {{ userDetails?.name }}!</h3>
       <div class="d-grid mb-5 p-4 text-center" v-if="userDetails && !isLoading">
         <div class="card" v-for="(activity, i) in activityNames" :key="activity">
-          {{ activity }}
+          {{ snakeToTitleCase(activity) }}
           <template v-if="userDetails[activity]?.length && i > 1">
             <p> {{ getLatestElement(userDetails[activity], activity) }}</p>
           </template>
@@ -15,7 +15,7 @@
           </template>
           <template v-else-if="i == 1">
             <p> {{ getHighestScore(userDetails?.[activity]) }} </p>
-            <small>{{ highestScoreTechnique }}</small>
+            <small>{{ snakeToTitleCase(highestScoreTechnique) }}</small>
           </template>
           <template v-else>
             <lottie-animation path="images/no_data_found.json" :width="150" :height="150" />
@@ -40,6 +40,7 @@
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
+import { snakeToTitleCase } from "../js/services/sentence";
 
 export default {
   components: {
@@ -51,8 +52,8 @@ export default {
     const activityNames = [
       "activeDays",
       "movementAccuracyObj",
-      "performance",
-      "growth",
+      // "performance",
+      // "growth",
     ];
     const isLoading = computed(() => !userDetails.value);
 
@@ -90,7 +91,8 @@ export default {
       getLatestElement,
       getHighestScore,
       highestScoreTechnique,
-      totalRegisteredDays
+      totalRegisteredDays,
+      snakeToTitleCase
     };
   },
 };

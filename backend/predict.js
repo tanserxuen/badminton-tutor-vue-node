@@ -17,14 +17,16 @@ const fps = 5;
 let tutorialJson = null;
 
 axios({
-  method: 'get',
+  method: "get",
   url: "http://localhost:3000/tutorials/",
-}).then(({data}) => {
-  tutorialJson = {...data.techniques, ...data.footwork};
-  console.log({ tutorialJson });
-}).catch((error) => {
-  console.log("error: ", error);
-});
+})
+  .then(({ data }) => {
+    tutorialJson = { ...data.techniques, ...data.footwork };
+    console.log({ tutorialJson });
+  })
+  .catch((error) => {
+    console.log("error: ", error);
+  });
 
 const movingAccuracyObj = {};
 
@@ -35,9 +37,9 @@ window.addEventListener("beforeunload", async function (e) {
   const res = alert("You are leaving the page");
   //if yes continue leave page, else stay on the page
   if (res) {
-    return true;
+    return "Goodbye!";
   } else {
-    return false;
+    return "Stay on the page!";
   }
 });
 
@@ -105,17 +107,25 @@ async function predict() {
     labelContainer.childNodes[i].innerHTML = classPrediction;
     console.log(prediction[i].probability.toFixed(2), prediction[i].className);
     // if the class's probability is the highest of all class
-    console.log("max: ",Math.max(...prediction.map((p) => p.probability)))
-    const highestProbability = Math.max(...prediction.map((p) => p.probability));
-    if (prediction[i].probability == highestProbability) {
+    console.log("max: ", Math.max(...prediction.map((p) => p.probability)));
+    
+    const highestProbability = Math.max(
+      ...prediction.map((p) => p.probability)
+    );
+    
+    if (
+      prediction[i].probability == highestProbability &&
+      highestProbability > 0.75
+    ) {
       document.getElementById("currentPose").innerHTML =
         prediction[i].className;
-        // display relavant tutorial based on the detected pose
-        document.getElementById("correctPostImage").src = tutorialJson[prediction[i].className.replaceAll(" ", "-")]?.image;
+      // display relavant tutorial based on the detected pose
+      document.getElementById("correctPostImage").src =
+        tutorialJson[prediction[i].className.replaceAll(" ", "-")]?.image;
 
       // only record the highest probability of the detected pose
-      setTimeout(() => {
-        setMovingAccuracy(
+      setTimeout(async () => {
+        await setMovingAccuracy(
           prediction[i].className,
           prediction[i].probability.toFixed(2)
         );
@@ -193,39 +203,39 @@ function setMovingAccuracy(className, probability) {
   movingAccuracyObj[newClassName]?.length
     ? movingAccuracyObj[newClassName].push(probability)
     : (movingAccuracyObj[newClassName] = [probability]);
-  // console.log({ movingAccuracyObj });
+  console.log({ movingAccuracyObj });
 }
 
 function calculateMovingAccuracy() {
-  let totalAccuracy = 0;
-  for (const key in movingAccuracyObj) {
-    const accuracy =
-      movingAccuracyObj[key].reduce(
-        (a, b) => parseFloat(a) + parseFloat(b),
-        0
-      ) / movingAccuracyObj[key].length;
-    totalAccuracy += accuracy;
-    console.log(key, accuracy);
-  }
-  const averageAccuracy = totalAccuracy / Object.keys(movingAccuracyObj).length;
-  console.log("Average Accuracy: ", averageAccuracy);
+  //get average accuracy for each key in the object movingAccuracyObj and display in a object
+  const averageAccuracy = Object.keys(movingAccuracyObj).reduce(
+    (acc, key) => {
+      const average =
+        movingAccuracyObj[key].reduce((acc, val) => acc + parseFloat(val), 0) /
+        movingAccuracyObj[key].length;
+      acc[key] = average;
+      return acc;
+    },
+    {}
+  );
   return averageAccuracy;
 }
 
 async function updateAnalytics(averageAccuracy) {
   console.log("updating analytics...");
   console.log({ averageAccuracy });
-  // await axios({
-  //   method: 'post',
-  //   url: "http://localhost:3000/update-movement-accuracy",
-  //   data: {
-  //     movingAccuracyObj, "latestAverageAccuracy": averageAccuracy
-  //   }
-  // }).then((response) => {
-  //   console.log("fetch tutorial data: ", response.data);
-  // }).catch((error) => {
-  //   console.log("error: ", error);
-  // });
+  await axios({
+    method: 'post',
+    url: "http://localhost:3000/analytics/update-movement-accuracy",
+    data: {
+      movingAccuracyObj, 
+      "latestAverageAccuracy": averageAccuracy
+    }
+  }).then((response) => {
+    console.log("fetch tutorial data: ", response.data);
+  }).catch((error) => {
+    console.log("error: ", error);
+  });
 }
 
-export { init, predict, clickStart, clickCont, clickPause, clickStop };
+export { init, predict, clickStart, clickCont, clickPause, clickStop, calculateMovingAccuracy };

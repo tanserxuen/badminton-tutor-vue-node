@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b>{{ title }}</b>
+    <b>{{ snakeToTitleCase(title) }}</b>
     <template v-if="!data">
       <lottie-animation path="images/no_data_found.json" :width="150" :height="150" />
     </template>
@@ -58,6 +58,7 @@ import { computed, ref } from "vue";
 import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
 import { PolarAreaChart } from 'vue-chart-3';
 import { Chart, registerables } from "chart.js";
+import { snakeToTitleCase } from "@/js/services/sentence";
 
 
 Chart.register(...registerables);
@@ -97,6 +98,24 @@ export default {
       right: 0,
       bottom: 20,
     });
+    const colorPalette = [
+      "#FF0000", // Red
+      "#FF7F00", // Orange
+      "#FFFF00", // Yellow
+      "#00FF00", // Green
+      "#0000FF", // Blue
+      "#4B0082", // Indigo
+      "#8B00FF", // Violet
+      "#EE82EE", // Lavender
+      "#00FFFF", // Cyan
+      "#FF1493", // Deep Pink
+      "#FFD700", // Gold
+      "#8A2BE2", // Blue Violet
+      "#A52A2A", // Brown
+      "#5F9EA0", // Cadet Blue
+      "#D2691E", // Chocolate
+      "#FF4500"  // Orange Red
+    ];
 
     const testData = computed(() => {
       if (!props.data) return null;
@@ -107,15 +126,17 @@ export default {
         datasets: [
           {
             data: Object.values(props.data),
-            backgroundColor: Array.from({ length: arrLength }, () => ['#77CEFF', '#0079AF', '#123E6B', '#97B0C4', '#A5C8ED'][Math.floor(Math.random() * 5)]),
+            backgroundColor: [...colorPalette].slice(0, arrLength),
           },
         ],
       }
     });
 
     return {
-      direction, margin,
-      testData
+      direction, 
+      margin,
+      testData, 
+      snakeToTitleCase
     };
   },
 };
