@@ -95,6 +95,9 @@ export default {
   padding-block: 0.5rem;
   background: white;
   border-radius: 0.325rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .profile__settings_title {
