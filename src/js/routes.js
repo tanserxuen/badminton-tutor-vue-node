@@ -5,7 +5,7 @@ import UpdateProfile from "../components/UpdateProfile.vue";
 import DashBoard from "../components/DashBoard.vue";
 import UpdatePassword from "../components/UpdatePassword.vue";
 import ResetPassword from "../components/ResetPassword.vue";
-// import PoseCounter from "../components/PoseCounter.vue";
+import PoseCounter from "../components/PoseCounter.vue";
 import TutorialDisplay from "../components/TutorialDisplay.vue";
 import PostsIndex from "../components/PostsIndex.vue";
 import PostView from "../components/PostView.vue";
@@ -25,7 +25,7 @@ const routes = [
   { path: "/dashboard", name:"DashBoard", component: () => DashBoard },
   { path: "/update-password", name:"UpdatePassword", component: () => UpdatePassword },
   { path: "/reset-password", name:"ResetPassword", component: () => ResetPassword },
-  // { path: "/pose-counter", name:"PoseCounter",  },
+  { path: "/pose-counter", name:"PoseCounter",  component: () => PoseCounter},
   { path: "/tutorial-display/:tutorial/:name", name:"TutorialDisplay", component: () => TutorialDisplay, props: true},
   { path: "/posts", name:"PostsIndex", component: () => PostsIndex },
   { path: "/post/:index", name:"PostView", component: () => PostView, props: true },
