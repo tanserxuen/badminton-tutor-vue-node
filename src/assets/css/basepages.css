@@ -13,6 +13,12 @@ h2.base-page__heading-short {
   margin-left: 50px;
   margin-right: 50px;
   text-transform: capitalize;
+  @media screen and (max-width: 640px) {
+    margin-top: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 20px;
+  }
 }
 
 h2.base-page__heading {
@@ -31,6 +37,10 @@ h2.base-page__heading-short {
 .base-page__inner-margin {
   margin-left: 50px;
   margin-right: 50px;
+  @media screen and (max-width: 640px) {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
 }
 
 .primary-button {
@@ -43,6 +53,10 @@ h2.base-page__heading-short {
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.3s;
+  @media screen and (max-width: 640px) {
+    padding: 7px 12px;
+    font-size: 14px;
+  }
 }
 
 .primary-button:hover {
@@ -67,15 +81,17 @@ a i:hover,
   max-height: 500px;
 }
 
-.scroll-inside::-webkit-scrollbar {
-  width: 0;
-}
-
 .base-page__inner-margin::-webkit-scrollbar,
 .scroll-inside::-webkit-scrollbar {
   width: 10px;
   background-color: #fffa;
   border-radius: 10px;
+}
+@media screen and (max-width: 640px) {
+  .base-page__inner-margin::-webkit-scrollbar,
+  .scroll-inside::-webkit-scrollbar {
+    width: 5px;
+  }
 }
 
 .base-page__inner-margin::-webkit-scrollbar-thumb,

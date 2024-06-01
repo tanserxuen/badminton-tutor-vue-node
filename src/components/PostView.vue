@@ -19,7 +19,7 @@
       <div class="m-4">
         <b>{{ post?.userName }}</b>
         <br>
-        <span style="font-size: 12px;">{{ post?.description }}</span>
+        <span>{{ post?.description }}</span>
         <!-- {{ post?.id }} -->
       </div>
       <div class="flex items-center justify-between mx-4 mt-3 mb-2">
@@ -191,5 +191,39 @@ img.post-image {
 img {
   object-fit: cover;
   object-position: center;
+}
+
+.m-4 {
+  @media screen and (max-width: 640px) {
+    margin-block: 10px;
+  }
+}
+
+.m-4 b {
+  font-size: 16px;
+  @media screen and (max-width: 640px) {
+    font-size: 14px;
+  }
+}
+
+.m-4 span {
+  font-size: 12px;
+  @media screen and (max-width: 640px) {
+    font-size: 10px;
+  }
+}
+
+.text-gray-500.text-xs {
+  font-size: 12px;
+  @media screen and (max-width: 640px) {
+    font-size: 10px;
+  }
+}
+
+.font-semibold.text-sm.mx-4.mt-2.mb-4 {
+  font-size: 14px;
+  @media screen and (max-width: 640px) {
+    font-size: 12px;
+  }
 }
 </style>

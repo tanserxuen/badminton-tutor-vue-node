@@ -2,7 +2,7 @@
   <div class="container mx-auto px-4 py-10">
     <h2 class="base-page__heading-short">Profile</h2>
     <div class="profile">
-      <span class="profile__name">{{ userDetails.name }}</span>
+      <b class="profile__name">{{ userDetails.name }}</b>
       <template v-if="userDetails.image == ''">
         <lottie-animation path="images/profile.json" :width="220" :height="220" />
       </template>
@@ -24,37 +24,22 @@
           {{ userDetails.noOfFollowing }}
         </div>
       </div>
-
-      <div class="profile__settings">
-        <span class="profile__settings_title">Settings</span>
-        <router-link to="/update-password">
-          <div class="profile__settings_bar">Update Password
-            <i class="fas fa-chevron-right"></i>
-          </div>
-        </router-link>
-        <router-link to="/update-profile">
-          <div class="profile__settings_bar">
-            Update Profile
-            <i class="fas fa-chevron-right"></i>
-          </div>
-        </router-link>
-      </div>
     </div>
-    <!-- <div v-if="userDetails">
-      <pre>userDetails {{ userDetails }}</pre>
-    </div> -->
+    <div class="base-page__inner-margin">
+      <span class="profile__settings_title">Settings</span>
+      <router-link to="/update-password">
+        <div class="profile__settings_bar">Update Password
+          <i class="fas fa-chevron-right"></i>
+        </div>
+      </router-link>
+      <router-link to="/update-profile">
+        <div class="profile__settings_bar">
+          Update Profile
+          <i class="fas fa-chevron-right"></i>
+        </div>
+      </router-link>
+    </div>
   </div>
-  <!-- <div>
-    <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl">Profile</h1>
-    <router-link class="font-medium text-blue-600 dark:text-blue-500 hover:underline" to="/update-password"
-      >Update Password</router-link
-    >
-    <router-link class="font-medium text-blue-600 dark:text-blue-500 hover:underline" to="/update-profile"
-      >Update Profile</router-link
-    >
-    <p>View your profile here</p>
-
-  </div> -->
 </template>
 
 <script>
@@ -88,12 +73,8 @@ export default {
   margin: auto;
 }
 
-.profile__settings {
-  width: -webkit-fill-available;
-}
-
 .profile__settings_bar {
-  margin-block: 1rem;
+  margin-block: 0.5rem;
   padding-inline: 1.5rem;
   padding-block: 0.5rem;
   background: white;
@@ -101,11 +82,19 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media screen and (max-width: 640px) {
+    font-size: 14px;
+  }
 }
 
 .profile__settings_title {
   font-size: 1.5rem;
   font-weight: 700;
+
+  @media screen and (max-width: 640px) {
+    font-size: 16px;
+  }
 }
 
 .profile__avatar {
@@ -115,6 +104,9 @@ export default {
   width: 250px;
   height: 250px;
   object-fit: cover;
+  @media screen and (max-width: 640px) {
+  margin-block: 30px;
+  }
 }
 
 /* .styling {
@@ -151,6 +143,10 @@ export default {
   column-gap: 2rem;
   text-align: center;
   margin-block: 40px;
+  @media screen and (max-width: 640px) {
+    row-gap: 0.5rem;
+    margin-block: 30px;
+  }
 }
 
 .profile_details__text1 {
@@ -185,6 +181,17 @@ export default {
 .profile_details__numbers3 {
   font-size: 4.5rem;
   font-weight: 500;
+  @media screen and (max-width: 640px) {
+    font-size: 2.5rem;
+  }
+}
+
+.profile_details__text1,
+.profile_details__text2,
+.profile_details__text3{
+  @media screen and (max-width: 640px) {
+    font-size: 14px;
+  }
 }
 
 .profile__name,

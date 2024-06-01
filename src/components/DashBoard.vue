@@ -3,7 +3,7 @@
     <h2 class="base-page__heading-short">Dashboard</h2>
     <div class="base-page__inner-margin">
       <h3 class="font-semibold">Good Morning, {{ userDetails?.name }}!</h3>
-      <div class="d-grid mb-5 p-4 text-center" v-if="userDetails && !isLoading">
+      <div class="d-grid mb-5 py-4 text-center" v-if="userDetails && !isLoading">
         <div class="card" v-for="(activity, i) in activityNames" :key="activity">
           {{ snakeToTitleCase(activity) }}
           <template v-if="userDetails[activity]?.length && i > 1">
@@ -109,8 +109,9 @@ export default {
 <style scoped>
 .d-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 20px;
+  overflow-x: auto;
 }
 
 .card {
@@ -120,6 +121,9 @@ export default {
   font-weight: 600;
   min-width: 195px;
   min-height: 175px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 
 .d-grid .card:nth-child(1) {
@@ -159,5 +163,27 @@ export default {
   align-items: center;
   justify-content: space-between;
   font-family: var(--default-font-family);
+}
+
+
+@media screen and (max-width: 640px) {
+  .card p {
+    font-size: 1.8rem;
+    font-weight: bold;
+  }
+
+  .card small {
+    font-size: 0.7rem;
+    font-weight: normal;
+  }
+
+  .card {
+    font-size: 0.9rem;
+    min-width: 175px;
+    min-height: 165px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
 }
 </style>

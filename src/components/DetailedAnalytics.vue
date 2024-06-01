@@ -4,16 +4,17 @@
     <template v-if="!isChart">
       <div class="container mx-auto px-4 pt-10 pb-0">
         <h2 class="base-page__heading-short">
-        <BackButton />
-        Detailed Analytics</h2>
+          <BackButton />
+          Detailed Analytics
+        </h2>
       </div>
       <div class="base-page__inner-margin">
-        <div class="flex justify-between">
-          <lottie-animation :path="randomLottie" :width="250" :height="250" />
-          <div class="card mb-10" style="padding-right:2rem">
+        <div class="flex justify-between items-center mx-auto" style="max-width: 400px;">
+          <div class="card" style="padding-left: 2rem;">
             <b>{{ snakeToTitleCase(Object.keys(analytics)[0]) }}</b>
             <p>{{ analytics[Object.keys(analytics)[0]] }}</p>
           </div>
+          <lottie-animation :path="randomLottie" :width="250" :height="250" />
         </div>
         <template v-if="analytics">
           <h3 style="text-transform: capitalize">{{ snakeToTitleCase(title) }}</h3>

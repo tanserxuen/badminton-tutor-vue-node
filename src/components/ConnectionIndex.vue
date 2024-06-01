@@ -1,7 +1,7 @@
 <template>
   <div class="container mx-auto px-4 py-10">
     <h2 class="base-page__heading-short">
-        <BackButton />Connection Index</h2>
+        <BackButton />Connections</h2>
     <div class="base-page__inner-margin">
       <form class="max-w-md mx-auto">
         <div class="flex">
@@ -20,8 +20,8 @@
         </div>
       </form>
 
-      <div class="flex flex-wrap text-sm font-medium text-center border-b border-gray-200">
-        <div class="me-2">
+      <div class="flex flex-wrap text-sm font-medium text-center border-b border-gray-200" style="overflow-x: auto;">
+        <div class="me-2" style="min-width: max-content">
           <a v-for="status in statuses" :key="status" href="#" aria-current="page" class="inline-block p-4 rounded-t-lg"
             :class="activeTab == status
                 ? 'text-amber-600 bg-amber-100 active'
@@ -31,8 +31,8 @@
       </div>
       <!--tab displays -->
       <div>
-        <template v-if="userTypes[activeTab].length">
-          <div v-for="user in userTypes[activeTab]" :key="user.id" class="pt-4">
+        <template v-if="userTypes[activeTab]?.length">
+          <div v-for="user in userTypes[activeTab]" :key="user?.id" class="card-bar">
             <div class="w-full">
               <div
                 class="border border-gray-100 bg-white rounded-lg p-4 flex flex-col justify-between leading-normal hover:bg-amber-50">
@@ -94,9 +94,7 @@ export default {
     ];
     const isLoading = ref(true);
     const activeTab = ref(statuses[0]);
-    // const users = ref([]);
-    const userDetails = computed(() => store.getters?.getCurrentUserDetails);
-
+    const userDetails = ref(null);
     const userTypes = reactive({
       connect: [],
       requesting: [],
@@ -149,8 +147,10 @@ export default {
       });
     };
 
-    onMounted(() => {
-      UserService.getConnects(userDetails.value.id).then((response) => {
+    onMounted(async () => {
+      userDetails.value = await store.getters.getCurrentUserDetails;
+      console.log({ userDetails: userDetails.value?.id }, {state: store.getters.getCurrentUserDetails})
+      await UserService.getConnects(userDetails.value?.id).then((response) => {
         const { connect, requesting, requests, follower, following } =
           response.data;
         userTypes.connect = connect;
@@ -178,6 +178,10 @@ export default {
 <style scoped>
 a[href] {
   text-transform: capitalize;
+  @media screen and (max-width: 640px) {
+    padding-inline: 10px;
+    font-size: 13px;
+  }
 }
 
 img {
@@ -186,7 +190,13 @@ img {
 }
 
 input[type="search"] {
-  /* background-color: rgb(255, 242, 224); */
   border: 0;
+}
+
+.card-bar{
+  margin-top: 1rem;
+  @media screen and (max-width: 640px) {
+    margin-top: 0.5rem;
+  }
 }
 </style>

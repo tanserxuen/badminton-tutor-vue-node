@@ -79,8 +79,8 @@ input.auth-page__input:disabled {
 }
 
 input.auth-page__input-disabled:focus {
-  border:0;
-  outline:0;
+  border: 0;
+  outline: 0;
   box-shadow: none;
 }
 
@@ -90,7 +90,7 @@ button.auth-page__submit-button {
   position: relative;
   height: 40px;
   margin-top: 40px;
-    margin-bottom: 40px;
+  margin-bottom: 40px;
   border-radius: 3px;
   font-family: var(--default-font-family);
 }

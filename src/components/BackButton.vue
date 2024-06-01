@@ -22,6 +22,10 @@ export default {
 <style scoped>
 .base-page__heading-short .fa-chevron-left {
     font-size: 12px;
+    
+  @media screen and (max-width: 640px) {
+    font-size: 10px;
+  }
 }
 
 .base-page__heading i.fa-circle,
@@ -33,9 +37,15 @@ export default {
 .base-page__heading span.fa-stack,
 .base-page__heading-short span.fa-stack {
     font-size: 12px;
+  @media screen and (max-width: 640px) {
+    font-size: 10px;
+  }
 }
 
 .float-start {
     margin-right: 25px;
+  @media screen and (max-width: 640px) {
+    margin-right: 13px;
+  }
 }
 </style>

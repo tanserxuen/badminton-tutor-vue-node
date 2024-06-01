@@ -1,10 +1,11 @@
 <template>
   <div class="container mx-auto px-4 py-10">
     <h2 class="base-page__heading-short">
-      Posts Index
-      <router-link to="/post-create" class="float-end"><i class="fas fa-plus" title="Create new posts"></i></router-link>
+      My Posts
+      <router-link to="/post-create" class="float-end"><i class="fas fa-plus"
+          title="Create new posts"></i></router-link>
     </h2>
-    <div class="grid grid-cols-3 gap-4 base-page__inner-margin">
+    <div class="d-grid base-page__inner-margin">
       <template v-if="posts.length">
         <div v-for="(post, index) in posts" :key="post.id" class="bg-white shadow-md rounded-lg p-4">
           <router-link :to="{ name: 'PostView', params: { index: index } }">
@@ -39,9 +40,15 @@ export default {
 
 <style scoped>
 img {
-  height: 200px;
-  width: 200px;
+  height: 100%;
+  width: 100%;
   object-fit: cover;
+
+  @media screen and (max-width: 640px) {
+    width: 140px;
+    height: 140px;
+    margin: auto;
+  }
 }
 
 .fa-plus {
@@ -50,5 +57,25 @@ img {
   border-radius: 3px;
   background: #fdba74;
   color: white;
+}
+
+.d-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 20px;
+  @media screen and (max-width: 640px) {
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  }
+}
+
+.d-grid > div {
+  @media screen and (max-width: 640px) {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.d-grid>div>a {
+  overflow: hidden;
 }
 </style>
