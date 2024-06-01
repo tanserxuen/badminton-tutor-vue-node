@@ -1,6 +1,6 @@
 const firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  apiKey: process.env.VUE_APP_API_KEY,
+  authDomain: process.env.VUE_APP_AUTH_DOMAIN,
   databaseURL: "https://badmintonposecounter-default-rtdb.firebaseio.com",
   projectId: "badmintonposecounter",
   storageBucket: "badmintonposecounter.appspot.com",

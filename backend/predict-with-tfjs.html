@@ -78,16 +78,14 @@
         clickCont,
         clickPause,
         clickStop,
-        backToApp
+        backToApp,
       } from "./predict.js";
 
       async function generateFeedback(pose, correctJsonString) {
         console.log("Generating feedback...");
         const incorrectJson = JSON.stringify(pose);
         const correctJson = JSON.parse(correctJsonString);
-        const genAI = new GoogleGenerativeAI(
-          "AIzaSyAgtqxNm9C9fH1FmIjmBgTMSz5i1xJJgAU"
-        );
+        const genAI = new GoogleGenerativeAI(process.env.VUE_APP_API_KEY);
         const model = genAI.getGenerativeModel({ model: "gemini-pro" });
         const prompt = `provided the correct pose's coordinates: ${correctJson}. provided the incorrect pose's coordinates: ${incorrectJson}. Teach and instruct the person with incorrect pose to adjust his body in 3 sentence. you dont have to show the adjusted arrays`;
 

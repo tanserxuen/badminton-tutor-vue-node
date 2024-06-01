@@ -29,8 +29,8 @@ const axiosInstance = axios.create({
 });
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAgtqxNm9C9fH1FmIjmBgTMSz5i1xJJgAU",
-  authDomain: "badmintonposecounter.firebaseapp.com",
+  apiKey: process.env.VUE_APP_API_KEY,
+  authDomain: process.env.VUE_APP_AUTH_DOMAIN,
   databaseURL: "https://badmintonposecounter-default-rtdb.firebaseio.com",
   projectId: "badmintonposecounter",
   storageBucket: "badmintonposecounter.appspot.com",
