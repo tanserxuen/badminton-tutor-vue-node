@@ -24,14 +24,17 @@
       </div>
       <lottie-animation path="images/loading.json" v-show="isLoading" :width="150" :height="150" />
 
-      <div class="bar">
-        <router-link to="/detailed-analytics">Detailed Analytics</router-link>
-        <i class="fas fa-chevron-right"></i>
-      </div>
-      <div class="bar">
-        <router-link to="/feedback-history">Feedback History</router-link>
-        <i class="fas fa-chevron-right"></i>
-      </div>
+      <router-link to="/detailed-analytics">
+        <div class="bar">Detailed Analytics
+          <i class="fas fa-chevron-right"></i>
+        </div>
+      </router-link>
+      <router-link to="/feedback-history">
+        <div class="bar">
+          Feedback History
+          <i class="fas fa-chevron-right"></i>
+        </div>
+      </router-link>
     </div>
   </div>
 </template>
@@ -115,6 +118,8 @@ export default {
   padding: 20px;
   border: 0;
   font-weight: 600;
+  min-width: 195px;
+  min-height: 175px;
 }
 
 .d-grid .card:nth-child(1) {
