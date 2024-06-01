@@ -3,7 +3,9 @@
     <!-- <button @click="getScreenShot">Get Canvas</button> -->
     <template v-if="!isChart">
       <div class="container mx-auto px-4 pt-10 pb-0">
-        <h2 class="base-page__heading-short">Detailed Analytics</h2>
+        <h2 class="base-page__heading-short">
+        <BackButton />
+        Detailed Analytics</h2>
       </div>
       <div class="base-page__inner-margin">
         <div class="flex justify-between">
@@ -48,11 +50,13 @@ import AnalyticCharts from "./AnalyticCharts.vue";
 import { useStore } from "vuex";
 import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
 import { snakeToTitleCase } from "../js/services/sentence";
+import BackButton from "./BackButton.vue";
 
 export default {
   components: {
     AnalyticCharts,
-    LottieAnimation
+    LottieAnimation,
+    BackButton,
   },
   props: {
     isChart: {

@@ -27,14 +27,17 @@
 
       <div class="profile__settings">
         <span class="profile__settings_title">Settings</span>
-        <div class="profile__settings_bar">
-          <router-link to="/update-password">Update Password</router-link>
-          <i class="fas fa-chevron-right"></i>
-        </div>
-        <div class="profile__settings_bar">
-          <router-link to="/update-profile">Update Profile</router-link>
-          <i class="fas fa-chevron-right"></i>
-        </div>
+        <router-link to="/update-password">
+          <div class="profile__settings_bar">Update Password
+            <i class="fas fa-chevron-right"></i>
+          </div>
+        </router-link>
+        <router-link to="/update-profile">
+          <div class="profile__settings_bar">
+            Update Profile
+            <i class="fas fa-chevron-right"></i>
+          </div>
+        </router-link>
       </div>
     </div>
     <!-- <div v-if="userDetails">

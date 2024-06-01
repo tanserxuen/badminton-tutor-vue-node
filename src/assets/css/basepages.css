@@ -23,8 +23,8 @@ h2.base-page__heading-short {
   margin-bottom: 30px;
 }
 
-.base-page__heading i,
-.base-page__heading-short i {
+.base-page__heading > a > i,
+.base-page__heading-short > a > i {
   font-size: 20px;
 }
 

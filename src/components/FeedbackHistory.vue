@@ -1,6 +1,8 @@
 <template>
   <div class="container mx-auto px-4 py-10">
-    <h2 class="base-page__heading-short">Feedback History</h2>
+    <h2 class="base-page__heading-short">
+      <BackButton />Feedback History
+    </h2>
 
     <div class="base-page__inner-margin">
       <template v-if="feedbacks.length != 0">
@@ -35,10 +37,12 @@ import FeedbackService from "@/js/services/feedback";
 import { useStore } from "vuex";
 import getDateFromTimestamp from "@/js/services/date.js";
 import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
+import BackButton from "./BackButton.vue";
 
 export default {
   components: {
     LottieAnimation,
+    BackButton,
   },
   setup() {
     const store = useStore();

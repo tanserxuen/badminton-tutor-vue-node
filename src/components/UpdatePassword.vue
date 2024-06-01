@@ -1,40 +1,22 @@
 <template>
   <div class="container px-4 py-10">
-    <h2 class="base-page__heading">Update Password</h2>
+    <h2 class="base-page__heading">
+      <BackButton /> Update Password
+    </h2>
     <div class="mx-auto" style="max-width: 360px">
       <template v-if="error - text">
         <p class="error">{{ error }}</p>
       </template>
 
       <label for="old-password" class="auth-page__label">Old Password</label>
-      <input
-        type="password"
-        name="old-password"
-        placeholder="Old Password"
-        class="auth-page__input"
-        :value="oldPassword"
-        @input="(event) => (oldPassword = event.target.value)"
-      />
+      <input type="password" name="old-password" placeholder="Old Password" class="auth-page__input"
+        :value="oldPassword" @input="(event) => (oldPassword = event.target.value)" />
       <label for="new-password" class="auth-page__label">New Password</label>
-      <input
-        type="password"
-        name="new-password"
-        placeholder="New Password"
-        class="auth-page__input"
-        :value="newPassword"
-        @input="(event) => (newPassword = event.target.value)"
-      />
-      <label for="confirm-password" class="auth-page__label"
-        >Confirm Password</label
-      >
-      <input
-        type="password"
-        name="confirm-password"
-        placeholder="Confirm Password"
-        class="auth-page__input"
-        :value="confirmPassword"
-        @input="(event) => (confirmPassword = event.target.value)"
-      />
+      <input type="password" name="new-password" placeholder="New Password" class="auth-page__input"
+        :value="newPassword" @input="(event) => (newPassword = event.target.value)" />
+      <label for="confirm-password" class="auth-page__label">Confirm Password</label>
+      <input type="password" name="confirm-password" placeholder="Confirm Password" class="auth-page__input"
+        :value="confirmPassword" @input="(event) => (confirmPassword = event.target.value)" />
       <button @click="submitForm" class="auth-page__submit-button">
         Update Password
       </button>
@@ -46,8 +28,12 @@
 import { computed, ref } from "vue";
 import AuthService from "@/js/services/auth";
 import store from "@/js/store";
+import BackButton from "./BackButton.vue";
 
 export default {
+  components: {
+    BackButton,
+  },
   setup() {
     const oldPassword = ref("");
     const newPassword = ref("");

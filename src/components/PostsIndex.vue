@@ -2,7 +2,7 @@
   <div class="container mx-auto px-4 py-10">
     <h2 class="base-page__heading-short">
       Posts Index
-      <router-link to="/post-create" class="float-end"><i class="fas fa-plus"></i></router-link>
+      <router-link to="/post-create" class="float-end"><i class="fas fa-plus" title="Create new posts"></i></router-link>
     </h2>
     <div class="grid grid-cols-3 gap-4 base-page__inner-margin">
       <template v-if="posts.length">

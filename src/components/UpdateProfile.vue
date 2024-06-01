@@ -1,6 +1,7 @@
 <template>
   <div class="container px-4 py-10">
-    <h2 class="base-page__heading">Update Profile</h2>
+    <h2 class="base-page__heading-short">
+      <BackButton />Update Profile</h2>
     <form
       class="mx-auto"
       style="max-width: 360px"
@@ -106,8 +107,12 @@ import UserService from "@/js/services/user";
 import { computed, onMounted, reactive, ref } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import BackButton from "./BackButton.vue";
 
 export default {
+  components: {
+    BackButton,
+  },
   setup() {
     const store = useStore();
     const router = useRouter();

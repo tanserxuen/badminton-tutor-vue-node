@@ -1,6 +1,8 @@
 <template>
   <div class="container mx-auto px-4 py-10">
-    <h2 class="base-page__heading-short">Tutorial Display - {{ tutorial }}</h2>
+    <h2 class="base-page__heading-short">
+      <BackButton />
+      Tutorial Display - {{ tutorial }}</h2>
 
     <div class="base-page__inner-margin">
       <video controls name="media" width="480" height="640" loop v-if="tutorial != 'ready-position'">
@@ -18,7 +20,12 @@
 
 import tutorialsJson from "../../backend/config/tutorialJson.json"
 import { ref, computed } from "vue";
+import BackButton from "./BackButton.vue";
+
 export default {
+  components: {
+    BackButton,
+  },
   props: {
     tutorial: {
       type: String,
