@@ -143,7 +143,7 @@ export default {
 </script>
 
 <style scoped>
-:deep .chart {
+:deep.chart {
   text-align: center;
 }
 </style>
