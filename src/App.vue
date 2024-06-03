@@ -27,18 +27,18 @@ export default {
     const router = useRouter();
 
     onMounted(async () => {
-      await store
-        .dispatch("checkAuth")
-        .then(() => {
-          if (!isAuthenticated.value) {
+      // await store
+      //   .dispatch("checkAuth")
+      //   .then(() => {
+      //     if (!isAuthenticated.value) {
             router.push({ name: "SignIn" });
-          } else {
-            router.go(1)
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+        //   } else {
+        //     router.go(1)
+        //   }
+        // })
+        // .catch((error) => {
+        //   console.error(error);
+        // });
     });
     return { isAuthenticated };
   },
