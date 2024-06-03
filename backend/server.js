@@ -1,9 +1,11 @@
+const serverless = require("serverless-http");
 const express = require("express");
 const cors = require("cors");
-var indexRouter = require("./backend/routes");
-require("./backend/config/firestoreSetup");
-require("./backend/config/firebaseSetup");
+var indexRouter = require("./routes");
+require("./config/firestoreSetup");
+require("./config/firebaseSetup");
 const fileupload = require("express-fileupload");
+const ServerlessHttp = require("serverless-http");
 
 const app = express();
 const port = 3000;
@@ -20,7 +22,9 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(express.json());
 app.use(express.static(__dirname+"/backend"));
-app.use("/", indexRouter);
+app.use("/api/", indexRouter);
 global.currentUser = null;
 
 app.listen(port, () => console.log(`Server is running on port ${port}`));
+
+module.exports.handler = serverless(app);

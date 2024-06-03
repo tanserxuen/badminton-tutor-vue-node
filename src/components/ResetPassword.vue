@@ -51,6 +51,7 @@ export default {
       console.log(email.value);
       AuthService.resetPassword(email.value)
         .then((response) => {
+          console.log(response);
           if (response.status === 200) {
             console.log("Password reset email sent");
             router.push({ name: "SignIn" });

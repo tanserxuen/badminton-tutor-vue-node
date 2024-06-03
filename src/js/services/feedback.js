@@ -2,7 +2,7 @@ import axios from "axios";
 
 async function fetchFeedback(id) {
   try {
-    const response = await axios.post("http://localhost:3000/feedback", { id });
+    const response = await axios.post("/feedback", { id });
     return response;
   } catch (error) {
     return error;

@@ -2,7 +2,7 @@ import axios from "axios";
 
 async function getUserPosts() {
   try {
-    const response = await axios.get("http://localhost:3000/post");
+    const response = await axios.get("/post");
     return response;
   } catch (error) {
     return error;
@@ -12,7 +12,7 @@ async function getUserPosts() {
 async function createPost(data) {
   try {
     const response = await axios.post(
-      "http://localhost:3000/post/create",
+      "/post/create",
       data
     );
     return response;
@@ -23,7 +23,7 @@ async function createPost(data) {
 
 async function viewPost({ id, userId }) {
   try {
-    const response = await axios.post(`http://localhost:3000/post/view/${id}`, {
+    const response = await axios.post(`/post/view/${id}`, {
       userId,
     });
     return response;
@@ -35,7 +35,7 @@ async function viewPost({ id, userId }) {
 async function updatePost({ id, ...data }) {
   try {
     const response = await axios.post(
-      `http://localhost:3000/post/update/${id}`,
+      `/post/update/${id}`,
       data
     );
     return response;
@@ -52,7 +52,7 @@ async function updateLikeComment({
 }) {
   try {
     const response = await axios.post(
-      `http://localhost:3000/post/update/${postId}/part`,
+      `/post/update/${postId}/part`,
       {
         current_user_liked,
         number_of_likes,
@@ -68,7 +68,7 @@ async function updateLikeComment({
 async function deletePost({ id, userId }) {
   try {
     const response = await axios.post(
-      `http://localhost:3000/post/delete/${id})`,
+      `/post/delete/${id})`,
       {
         userId,
       }

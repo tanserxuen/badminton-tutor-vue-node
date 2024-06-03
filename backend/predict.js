@@ -15,7 +15,7 @@ let correctJson = null;
 
 axios({
   method: "get",
-  url: "http://localhost:3000/tutorials/",
+  url: "/tutorials/",
 })
   .then(({ data }) => {
     tutorialJson = { ...data.techniques, ...data.footwork };
@@ -27,7 +27,7 @@ axios({
 
 axios({
   method: "get",
-  url: "http://localhost:3000/json/correctJson.json",
+  url: "/json/correctJson.json",
 })
   .then(({ data }) => (correctJson = data))
   .catch((error) => {
@@ -82,7 +82,7 @@ async function loop(timestamp) {
     // setTimeout(() => {
     window.requestAnimationFrame(loop);
     // }, 1000 / fps);
-    // console.log({ isGeneratingFeedback });
+    console.log({ isGeneratingFeedback });
   }
 }
 
@@ -223,7 +223,7 @@ async function updateAnalytics(averageAccuracy) {
   console.log({ averageAccuracy });
   await axios({
     method: "post",
-    url: "http://localhost:3000/analytics/update-movement-accuracy",
+    url: "/analytics/update-movement-accuracy",
     data: {
       movingAccuracyObj,
       latestAverageAccuracy: averageAccuracy,

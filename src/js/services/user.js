@@ -2,7 +2,7 @@ import axios from "axios";
 
 async function view(id){
   try {
-    const response = await axios.get(`http://localhost:3000/user/view/${id}`);
+    const response = await axios.get(`/user/view/${id}`);
     return response;
   } catch (error) {
     return error;
@@ -12,7 +12,7 @@ async function view(id){
 async function update(id, formdata) {
   try {
     const response = await axios.post(
-      `http://localhost:3000/user/update/${id}`,
+      `/user/update/${id}`,
       formdata
     );
     return response;
@@ -23,7 +23,7 @@ async function update(id, formdata) {
 
 async function index() {
   try {
-    const response = await axios.get(`http://localhost:3000/user`);
+    const response = await axios.get(`/user`);
     return response;
   } catch (error) {
     return error;
@@ -32,7 +32,7 @@ async function index() {
 
 async function getConnects(userId) {
   try {
-    const response = await axios.post(`http://localhost:3000/user/get-connects`, {userId});
+    const response = await axios.post(`/user/get-connects`, {userId});
     return response;
   } catch (error) {
     return error;
@@ -41,7 +41,7 @@ async function getConnects(userId) {
 
 async function updateConnects(data){
   try {
-    const response = await axios.post(`http://localhost:3000/user/update-connects`, data);
+    const response = await axios.post(`/user/update-connects`, data);
     return response;
   } catch (error) {
     return error;
@@ -51,7 +51,7 @@ async function updateConnects(data){
 async function updateActiveDays(){
   try {
     console.log("updateActiveDays")
-    const response = await axios.get(`http://localhost:3000/user/checkin`);
+    const response = await axios.get(`/user/checkin`);
     return response;
   } catch (error) {
     return error;

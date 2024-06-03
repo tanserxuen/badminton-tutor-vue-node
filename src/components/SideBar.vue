@@ -56,7 +56,7 @@
               </router-link>
             </li>
             <li @click="toggleSidebar">
-              <!-- <a href="http://localhost:3000/predict-with-tfjs.html" target="_self" -->
+              <!-- <a href="/predict-with-tfjs.html" target="_self" -->
                 <router-link to="/pose-counter"
                 class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-amber-50 group">
                 <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"

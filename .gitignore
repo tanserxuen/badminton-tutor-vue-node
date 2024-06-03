@@ -22,3 +22,6 @@ pnpm-debug.log*
 *.sw?
 
 badmintonposecounter-8a231abc9956.json
+
+# Local Netlify folder
+.netlify

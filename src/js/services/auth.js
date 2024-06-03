@@ -1,9 +1,8 @@
 import axios from "axios";
 
 async function signup(email, password) {
-  console.log("try register");
   try {
-    const response = await axios.post("http://localhost:3000/auth/signup", {
+    const response = await axios.post("/auth/signup", {
       email,
       password,
     });
@@ -16,7 +15,7 @@ async function signup(email, password) {
 
 async function signin(email, password) {
   try {
-    const response = await axios.post("http://localhost:3000/auth/login", {
+    const response = await axios.post("/auth/login", {
       email,
       password,
     });
@@ -28,7 +27,7 @@ async function signin(email, password) {
 
 async function logout() {
   try {
-    const response = await axios.post("http://localhost:3000/auth/logout");
+    const response = await axios.post("/auth/logout");
     return response;
   } catch (error) {
     return error;
@@ -38,7 +37,7 @@ async function logout() {
 async function resetPassword(email) {
   try {
     const response = await axios.post(
-      "http://localhost:3000/auth/reset-password",
+      "/auth/reset-password",
       {
         email,
       }
@@ -52,7 +51,7 @@ async function resetPassword(email) {
 async function updatePassword(email, password) {
   try {
     const response = await axios.post(
-      "http://localhost:3000/auth/update-password",
+      "/auth/update-password",
       {
         email,
         password,
@@ -67,7 +66,7 @@ async function updatePassword(email, password) {
 async function validateAuth() {
   try {
     const response = await axios.get(
-      "http://localhost:3000/auth/validate-auth"
+      "/auth/validate-auth"
     );
     return response;
   } catch (error) {

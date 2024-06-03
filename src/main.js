@@ -16,17 +16,18 @@ const router = createRouter({
   routes,
 });
 
-const axiosInstance = axios.create({
-  baseURL: process.env.VUE_APP_API_URL, // Your API base URL
-  headers: {
-    "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "*",
-    "Access-Control-Allow-Credentials": true,
-    "Access-Control-Allow-Headers": "Origin, Content-Type, Accept",
-    "Access-Control-Allow-Private-Network": true,
-  },
-});
+axios.defaults.baseURL =  process.env.VUE_APP_MODE == "env"
+      ? "http://localhost:3000/api/"
+      : "https://badmintontutor-backend.netlify.app/api/";
+
+axios.defaults.headers = {
+  "Content-Type": "application/json",
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "*",
+  "Access-Control-Allow-Credentials": true,
+  "Access-Control-Allow-Headers": "Origin, Content-Type, Accept",
+  "Access-Control-Allow-Private-Network": true,
+};
 
 const firebaseConfig = {
   apiKey: process.env.VUE_APP_API_KEY,
@@ -48,6 +49,6 @@ app.provide("firebaseAuth", firebaseAuth);
 app.provide("firebase", firebase);
 app.provide("db", db);
 
-app.config.globalProperties.$axios = axiosInstance;
+// app.config.globalProperties.$axios = axiosInstance;
 app.config.globalProperties.$currentUser = null;
 app.mount("#app");
