@@ -15,4 +15,9 @@ router.use("/feedback", FeedbackRoutes);
 router.use("/tutorials", TutorialRoutes);
 router.use("/analytics", AnalyticsRoutes);
 
+// set a testing route
+router.get("/", async (req, res) => {
+  res.send("Hello World");
+});
+
 module.exports = router;
