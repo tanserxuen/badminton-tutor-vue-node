@@ -8,18 +8,19 @@ let model,
   maxPredictions,
   webcam,
   cameraActivated = false;
-let isGeneratingFeedback = false;
-const fps = 5;
-let tutorialJson = null;
-let correctJson = null;
+let isGeneratingFeedback = false,
+  tutorialJson,
+  correctJson = null;
+const fps = 5,
+  movingAccuracyObj = {};
+const minPartConfidence = 0.5;
 
 axios({
   method: "get",
-  url: "/tutorials/",
+  url: "/api/tutorials/",
 })
   .then(({ data }) => {
-    tutorialJson = { ...data.techniques, ...data.footwork };
-    console.log({ tutorialJson });
+    tutorialJson = { ...data[0].techniques, ...data[0].footwork };
   })
   .catch((error) => {
     console.log("error: ", error);
@@ -33,8 +34,6 @@ axios({
   .catch((error) => {
     console.log("error: ", error);
   });
-
-const movingAccuracyObj = {};
 
 window.addEventListener("beforeunload", async function (e) {
   e.preventDefault();
@@ -92,7 +91,7 @@ async function predict() {
   const { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
 
   // check if user's whole body is in the frame
-  if (JSON.stringify(pose?.keypoints)?.includes("0.0")) {
+  if (JSON.stringify(pose?.keypoints)?.includes("0.0") && pose) {
     drawPose(pose, false);
     return;
   }
@@ -105,9 +104,7 @@ async function predict() {
     const classPrediction =
       prediction[i].className + ": " + prediction[i].probability.toFixed(2);
     labelContainer.childNodes[i].innerHTML = classPrediction;
-    console.log(prediction[i].probability.toFixed(2), prediction[i].className);
     // if the class's probability is the highest of all class
-    console.log("max: ", Math.max(...prediction.map((p) => p.probability)));
 
     const highestProbability = Math.max(
       ...prediction.map((p) => p.probability)
@@ -132,13 +129,25 @@ async function predict() {
       }, 1500);
     }
   }
-  if (isGeneratingFeedback == false) {
-    isGeneratingFeedback = true;
-    // to uncomment
+
+  // return if no pose detected
+  if (
+    isGeneratingFeedback &&
+    JSON.stringify(pose?.keypoints)?.includes("0.0") &&
+    !pose
+  )
+    return;
+
+  isGeneratingFeedback = true;
+
+  try {
     generateFeedback(pose, correctJson[correctPoseClassName]).then(() => {
       isGeneratingFeedback = false;
       console.log("Generating feedback done...");
     });
+  } catch (e) {
+    console.log("Error: ", e);
+    isGeneratingFeedback = false;
   }
 
   // finally draw the poses
@@ -156,10 +165,8 @@ function drawPose(pose, hasFullBody = true) {
     }
     // draw the keypoints and skeleton
     if (pose) {
-      const minPartConfidence = 0.5;
       tmPose.drawKeypoints(pose.keypoints, minPartConfidence, ctx);
       tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx);
-      console.log(JSON.stringify(pose.keypoints).replaceAll('"', "'"));
     }
   }
 }
@@ -223,7 +230,7 @@ async function updateAnalytics(averageAccuracy) {
   console.log({ averageAccuracy });
   await axios({
     method: "post",
-    url: "/analytics/update-movement-accuracy",
+    url: "/api/analytics/update-movement-accuracy",
     data: {
       movingAccuracyObj,
       latestAverageAccuracy: averageAccuracy,
