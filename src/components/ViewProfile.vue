@@ -27,11 +27,11 @@
     </div>
     <div class="base-page__inner-margin">
       <span class="profile__settings_title">Settings</span>
-      <router-link to="/update-password">
+      <!-- <router-link to="/update-password">
         <div class="profile__settings_bar">Update Password
           <i class="fas fa-chevron-right"></i>
         </div>
-      </router-link>
+      </router-link> -->
       <router-link to="/update-profile">
         <div class="profile__settings_bar">
           Update Profile
