@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>BadmintonTutor</title>
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
+    <!-- Load Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <!-- Load TensorFlow.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <!-- Load Posenet -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet"></script>
+    <!-- Load Roboflow -->
+    <script src="https://cdn.roboflow.com/0.2.26/roboflow.js"></script>
+    <!-- Load TailWind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>Yoga Pose Assessment Through Webcam</title>
+  </head>
+
+  <body>
+    <div class="base-page__inner-margin">
+      <h2 class="base-page__heading-short">
+        <span class="fa-stack mr-4" id="back">
+          <i class="fa-solid fa-circle fa-stack-2x"></i>
+          <i class="fa-solid fa-chevron-left fa-stack-1x fa-inverse"></i> </span
+        >Badminton Tutor
+      </h2>
+      <!-- <button id="updateDB">updateAccuracyDB</button> -->
+      <small id="msg"></small><br />
+      <small>Make sure your full body is in the camera</small><br />
+
+      <div class="flex">
+        <button type="button" id="start" class="mt-10 mr-3" onclick="start()">
+          <i class="fas fa-circle-play fa-3x"></i>
+        </button>
+        <button
+          type="button"
+          style="display: none"
+          id="continue"
+          class="mt-10 mr-3"
+          onclick="resume()"
+        >
+          <i class="fas fa-circle-play fa-3x"></i>
+        </button>
+        <button
+          type="button"
+          style="display: none"
+          id="pause"
+          class="mt-10 mr-3"
+          onclick="pause()"
+        >
+          <i class="fas fa-circle-pause fa-3x"></i>
+        </button>
+        <button
+          type="button"
+          style="display: none"
+          id="stop"
+          class="mt-10 mr-3"
+          onclick="stop()"
+        >
+          <i class="fas fa-3x fa-circle-stop"></i>
+        </button>
+      </div>
+
+      <div class="flex flex-row gap-x-16 mt-10">
+        <canvas id="canvas"></canvas>
+        <video
+          id="video"
+          width="640"
+          height="640"
+          autoplay
+          muted
+          playsinline
+        ></video>
+        <div id="fps"></div>
+        <img id="correctPostImage" src="https://placehold.co/350x220" alt="" />
+        <h1 id="currentPose" class="text-6xl"></h1>
+      </div>
+      <!-- <div id="label-container"></div> -->
+      <ol id="feedbacks"></ol>
+    </div>
+    <script>
+      let video, net, ctx, rfmodel, canvas, loopReq;
+      const cameraMode = "environment";
+      const font = "16px sans-serif";
+      const publishable_key = "rf_XsVPXXU953d69Px5zICOOYiQ5Ch2";
+      toLoad = {
+        model: "badminton-pose-classification",
+        version: 3,
+      };
+      const scale = 1;
+
+      async function setupCamera() {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          throw new Error(
+            "Browser API navigator.mediaDevices.getUserMedia not available"
+          );
+        }
+
+        const video = document.getElementById("video");
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: false,
+          video: true,
+        });
+        video.srcObject = stream;
+
+        return new Promise((resolve) => {
+          video.onloadedmetadata = () => {
+            resolve(video);
+          };
+        });
+      }
+
+      async function loadVideo() {
+        const video = await setupCamera();
+        video.play();
+
+        return video;
+      }
+
+      const detect = async () => {
+        if (!canvas) return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        if (!net && !video && !rfmodel) return;
+        detectPoseInRealTime(video, net);
+        const predictions = await classifyPoseInRealTime(video, rfmodel);
+        console.log({ predictions });
+        renderCanvasPredictions(predictions);
+        loopReq = requestAnimationFrame(detect);
+      };
+
+      const renderCanvasPredictions = (predictions) => {
+        if (!video) return;
+        predictions.forEach(function (prediction) {
+          const x = prediction.bbox.x;
+          const y = prediction.bbox.y;
+
+          const width = prediction.bbox.width;
+          const height = prediction.bbox.height;
+
+          // Draw the bounding box.
+          ctx.strokeStyle = prediction.color;
+          ctx.lineWidth = 4;
+          ctx.strokeRect(
+            (x - width / 2) / scale,
+            (y - height / 2) / scale,
+            width / scale,
+            height / scale
+          );
+
+          // Draw the label background.
+          ctx.fillStyle = prediction.color;
+          const textWidth = ctx.measureText(prediction.class).width;
+          const textHeight = parseInt(font, 10); // base 10
+          ctx.fillRect(
+            (x - width / 2) / scale,
+            (y - height / 2) / scale,
+            textWidth + 8,
+            textHeight + 4
+          );
+        });
+
+        predictions.forEach(function (prediction) {
+          const x = prediction.bbox.x;
+          const y = prediction.bbox.y;
+
+          const width = prediction.bbox.width;
+          const height = prediction.bbox.height;
+
+          // Draw the text last to ensure it's on top.
+          ctx.font = font;
+          ctx.textBaseline = "top";
+          ctx.fillStyle = "#000000";
+          ctx.fillText(
+            prediction.class,
+            (x - width / 2) / scale + 4,
+            (y - height / 2) / scale + 1
+          );
+        });
+      };
+
+      const classifyPoseInRealTime = async (video, rfmodel) => {
+        console.log("classifying pose...");
+        const predictions = await rfmodel.detect(video);
+        return predictions;
+      };
+
+      const detectPoseInRealTime = async (video, net) => {
+        console.log("detecting body keypoints...");
+        const flipHorizontal = true;
+
+        // Scale the image. The smaller the faster
+        const imageScaleFactor = 0.75;
+
+        // Stride, the larger, the smaller the output, the faster
+        const outputStride = 32;
+
+        // Store all the poses
+        let poses = [];
+        let minPoseConfidence;
+        let minPartConfidence;
+
+        const pose = await net.estimateSinglePose(
+          video,
+          imageScaleFactor,
+          flipHorizontal,
+          outputStride
+        );
+        console.log(pose);
+      };
+
+      const init = async () => {
+        video = await loadVideo();
+        net = await posenet.load();
+        await loadModel();
+        setupCanvas();
+      };
+
+      const setupCanvas = () => {
+        canvas = document.getElementById("canvas");
+        ctx = canvas.getContext("2d");
+        canvas.width = video.width;
+        canvas.height = video.height;
+      };
+
+      const loadModel = async () => {
+        console.log("loading model...");
+        await roboflow
+          .auth({
+            publishable_key: publishable_key,
+          })
+          .load(toLoad)
+          .then(function (m) {
+            rfmodel = m;
+          });
+      };
+
+      // run the program
+      init();
+
+      const start = () => {
+        detect();
+
+        document.getElementById("start").style.display = "none";
+        document.getElementById("stop").style.display = "block";
+        document.getElementById("pause").style.display = "block";
+      };
+
+      const pause = () => {
+        // pause the loop
+        cancelAnimationFrame(loopReq);
+        video.pause();
+        document.getElementById("start").style.display = "none";
+        document.getElementById("continue").style.display = "block";
+        document.getElementById("pause").style.display = "none";
+        document.getElementById("stop").style.display = "block";
+      };
+
+      const stop = () => {
+        // stop the loop
+        cancelAnimationFrame(loopReq);
+        video.pause();
+        video.srcObject.getTracks().forEach(function (track) {
+          track.stop();
+        });
+        document.getElementById("start").style.display = "block";
+        document.getElementById("continue").style.display = "none";
+        document.getElementById("pause").style.display = "none";
+        document.getElementById("stop").style.display = "none";
+      };
+
+      const resume = () => {
+        // resume the loop
+        video.play();
+        detect();
+        document.getElementById("start").style.display = "none";
+        document.getElementById("continue").style.display = "none";
+        document.getElementById("pause").style.display = "block";
+        document.getElementById("stop").style.display = "block";
+      };
+    </script>
+    <script type="module">
+      import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
+
+      async function generateFeedback(pose, correctJsonString) {
+        const incorrectJson = JSON.stringify(pose).replaceAll("'", '"');
+        const correctJson = JSON.parse(correctJsonString.replaceAll("'", '"'));
+        console.log("Generating feedback...", { pose, correctJsonString });
+        const genAI = new GoogleGenerativeAI(
+          "AIzaSyAgtqxNm9C9fH1FmIjmBgTMSz5i1xJJgAU"
+        );
+        const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+        const prompt = `provided the correct pose's coordinates: ${correctJson}. provided the incorrect pose's coordinates: ${incorrectJson}. Teach and instruct the person with incorrect pose to adjust his body in 3 sentence. you dont have to show the adjusted arrays`;
+
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        const feedback = response.text();
+        attachFeedback(feedback);
+        speak(feedback);
+      }
+
+      function attachFeedback(feedback) {
+        const feedbackContainer = document.createElement("li");
+        feedbackContainer.innerHTML = feedback;
+        document.getElementById("feedbacks").appendChild(feedbackContainer);
+      }
+    </script>
+    <script>
+      /*
+       * Check for browser support
+       */
+      var supportMsg = document.getElementById("msg");
+
+      if ("speechSynthesis" in window) {
+        supportMsg.innerHTML =
+          "Your browser <strong>supports</strong> speech synthesis.";
+      } else {
+        supportMsg.innerHTML =
+          'Sorry your browser <strong>does not support</strong> speech synthesis.<br>Try this in <a href="https://www.google.co.uk/intl/en/chrome/browser/canary.html">Chrome Canary</a>.';
+        supportMsg.classList.add("not-supported");
+      }
+
+      window.speechSynthesis.cancel();
+      const speechSynthesis = window.speechSynthesis;
+      var voices = null;
+
+      window.speechSynthesis.onvoiceschanged = async (e) => {
+        voices = await speechSynthesis.getVoices();
+      };
+
+      function speak(text) {
+        var msg = new SpeechSynthesisUtterance(text);
+        msg.lang = "en-US";
+        msg.volume = parseFloat(1);
+        msg.rate = parseFloat(1);
+        msg.pitch = parseFloat(1);
+        msg.voice = voices[0];
+        window.speechSynthesis.speak(msg);
+      }
+    </script>
+  </body>
+</html>
