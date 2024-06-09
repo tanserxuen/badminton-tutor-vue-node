@@ -34,9 +34,9 @@ app.use(
 );
 global.currentUser = null;
 
-app.listen(port, () =>
+app.listen(process.env.PORT || port, () =>
   process.env.VUE_APP_MODE == "env"
-    ? console.log(`Server is running on port ${port}`)
+    ? console.log(`Server is running on port ${process.env.PORT || port}`)
     : console.log("Server is running in production")
 );
 
