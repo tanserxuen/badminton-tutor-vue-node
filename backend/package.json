@@ -4,10 +4,10 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "netlify-lambda serve express",
-    "build": "npm install && netlify-lambda build express",
+    "start": "nodemon express/server.js",
+    "build": "npm install",
     "dev": "node express/server.js",
-    "startdev": "nodemon express/server.js"
+    "startdev": "netlify-lambda serve express"
   },
   "keywords": [],
   "engines": {
