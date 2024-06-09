@@ -15,8 +15,8 @@ const corsOptions = {
     "*",
     "https://badmintontutor-backend.netlify.app",
     "https://badmintontutor.netlify.app",
-    "http://localhost:8080", 
-    "http://localhost:3000"
+    "http://localhost:8080",
+    "http://localhost:3000",
   ],
   methods: ["GET", "POST", "PUT", "DELETE"], // Specify allowed HTTP methods
   credentials: true, // Allow cookies to be sent with requests
@@ -34,6 +34,10 @@ app.use(
 );
 global.currentUser = null;
 
-app.listen(port, () => console.log(`Server is running on port ${port}`));
+app.listen(port, () =>
+  process.env.VUE_APP_MODE == "env"
+    ? console.log(`Server is running on port ${port}`)
+    : console.log("Server is running in production")
+);
 
 module.exports.handler = serverless(app);
