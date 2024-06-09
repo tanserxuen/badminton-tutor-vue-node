@@ -28,10 +28,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(express.json());
 app.use(express.static(__dirname));
-app.use(
-  process.env.VUE_APP_MODE == "env" ? "/api" : "/.netlify/functions/router.js",
-  indexRouter
-);
+app.use("/api", indexRouter);
 global.currentUser = null;
 
 app.listen(process.env.PORT || port, () =>
