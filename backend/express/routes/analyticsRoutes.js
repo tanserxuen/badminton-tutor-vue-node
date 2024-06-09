@@ -14,7 +14,7 @@ router.post("/update-movement-accuracy", async (req, res) => {
           req.body.latestAverageAccuracy ?? movementAccuracyJson,
       })
       .then((doc) => {
-        res.send(doc);
+        res.send(global.currentUser?.uid);
       })
       .catch((error) => {
         console.log("error", error);

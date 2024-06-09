@@ -11,6 +11,11 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+    <!-- Load TensorFlow.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <!-- Load Posenet -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet"></script>
+
     <script src="https://cdn.roboflow.com/0.2.26/roboflow.js"></script>
   </head>
 
@@ -58,7 +63,7 @@
 
       <div class="flex flex-row gap-x-16 mt-10">
         <canvas id="canvas"></canvas>
-        <video id="video" autoplay muted playsinline></video>
+        <video id="video"  width="640" height="640" autoplay muted playsinline></video>
         <div id="fps"></div>
         <img id="correctPostImage" src="https://placehold.co/350x220" alt="" />
         <h1 id="currentPose" class="text-6xl"></h1>
@@ -106,10 +111,12 @@
         document.getElementById("feedbacks").appendChild(feedbackContainer);
       }
 
-      document.querySelector("#startButton").addEventListener("click", async() => {
-        await init();
-        clickStart();
-      });
+      document
+        .querySelector("#startButton")
+        .addEventListener("click", async () => {
+          await init();
+          clickStart();
+        });
       document
         .querySelector("#continueButton")
         .addEventListener("click", clickCont);

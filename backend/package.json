@@ -4,13 +4,16 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "node_modules/.bin/netlify-lambda serve src",
-    "build": "node_modules/.bin/netlify-lambda build src",
-    "dev": "node server.js",
-    "startdev": "nodemon server.js"
+    "start": "netlify-lambda serve express",
+    "build": "npm install && netlify-lambda build express",
+    "dev": "node express/server.js",
+    "startdev": "nodemon express/server.js"
   },
   "keywords": [],
-  "author": "",
+  "engines": {
+    "node": "20.12.2"
+  },
+  "author": "Joan Tan",
   "license": "ISC",
   "dependencies": {
     "@netlify/functions": "^2.7.0",

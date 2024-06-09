@@ -10,7 +10,8 @@ let rfmodel,
   predictionClass,
   probability,
   model,
-  maxPredictions;
+  maxPredictions,
+  net;
 const fps = 5,
   movingAccuracyObj = {},
   minPartConfidence = 0.5,
@@ -51,30 +52,18 @@ window.addEventListener("beforeunload", async function (e) {
 });
 
 const init = async () => {
-  //TM setup
-  // const modelURL = URL + "model.json";
-  // const metadataURL = URL + "metadata.json";
-  // model = await tmPose.load(modelURL, metadataURL);
-  // maxPredictions = model.getTotalClasses();
-  // const size = 400;
-  // const flip = true; // whether to flip the webcam
-  // webcam = new tmPose.Webcam(size, size, flip); // width, height, flip
-  // await webcam.setup(); // request access to the webcam
-  // await webcam.play();
-
-  //Roboflow setup
   video = document.getElementById("video");
   Promise.all([startVideoStreamPromise(video), loadModelPromise]).then(
     function () {
-      // $("body").removeClass("loading");
+      video.play()
       resizeCanvas();
       detectFrame();
     }
   );
 
-  console.log(canvas);
+  net = await posenet.load();
 
-  
+  console.log(canvas);
 };
 
 const startVideoStreamPromise = (video) =>
@@ -89,8 +78,7 @@ const startVideoStreamPromise = (video) =>
       return new Promise(function (resolve) {
         video.srcObject = stream;
         video.onloadeddata = function () {
-          video.play();
-          resolve();
+          resolve(video);
         };
       });
     });
@@ -152,10 +140,24 @@ const resizeCanvas = function () {
   canvas.setAttribute("top", (window.innerHeight - dimensions.height) / 2);
 };
 
-const renderPredictions = async function (predictions) {
-  // console.log(model, maxPredictions);
-  // const { pose, posenetOutput } = await model.estimatePose(canvas);
-  // console.log(pose, posenetOutput);
+const renderPredictions = async function(predictions) {
+  console.log(video);
+  const flipHorizontal = true;
+
+  // Scale the image. The smaller the faster
+  const imageScaleFactor = 0.75;
+
+  // Stride, the larger, the smaller the output, the faster
+  const outputStride = 32;
+
+  const pose = await net.estimateSinglePose(
+    video,
+    imageScaleFactor,
+    flipHorizontal,
+    outputStride
+  );
+
+  console.log({ pose });
 
   // roboflow output
   predictionClass = predictions[0].class;
@@ -168,7 +170,7 @@ const renderPredictions = async function (predictions) {
 
   var scale = 1;
 
-  predictions.forEach(function (prediction) {
+  predictions.forEach(function(prediction) {
     const x = prediction.bbox.x;
     const y = prediction.bbox.y;
 
@@ -197,7 +199,7 @@ const renderPredictions = async function (predictions) {
     );
   });
 
-  predictions.forEach(function (prediction) {
+  predictions.forEach(function(prediction) {
     const x = prediction.bbox.x;
     const y = prediction.bbox.y;
 

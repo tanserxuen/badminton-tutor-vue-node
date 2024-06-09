@@ -3,17 +3,25 @@ const URL = "https://teachablemachine.withgoogle.com/models/6_szoTmfF/"; // tech
 // const URL = "https://teachablemachine.withgoogle.com/models/LEhh3auhv/"; // technique 1
 
 let model,
+  rfmodel,
   ctx,
   labelContainer,
   maxPredictions,
   webcam,
-  cameraActivated = false;
-let isGeneratingFeedback = false,
+  cameraActivated = false,
+  video,
+  isGeneratingFeedback = false,
   tutorialJson,
   correctJson = null;
 const fps = 5,
-  movingAccuracyObj = {};
+  movingAccuracyObj = {},
+  cameraMode = "environment";
 const minPartConfidence = 0.5;
+const publishable_key = "rf_XsVPXXU953d69Px5zICOOYiQ5Ch2";
+const toLoad = {
+  model: "badminton-pose-classification",
+  version: 3,
+};
 
 axios({
   method: "get",
@@ -35,16 +43,55 @@ axios({
     console.log("error: ", error);
   });
 
-window.addEventListener("beforeunload", async function (e) {
-  e.preventDefault();
-  console.log("beforeunload");
-  beforeLeavePage();
-});
+// window.addEventListener("beforeunload", async function (e) {
+//   e.preventDefault();
+//   console.log("beforeunload");
+//   beforeLeavePage();
+// });
+
+// const loadModelPromise = new Promise(function (resolve, reject) {
+//   roboflow
+//     .auth({
+//       publishable_key: publishable_key,
+//     })
+//     .load(toLoad)
+//     .then(function (m) {
+//       rfmodel = m;
+//       resolve();
+//       console.log("roboflow model loaded");
+//     });
+// });
+
+// const startVideoStreamPromise = (video) =>
+//   navigator.mediaDevices
+//     .getUserMedia({
+//       audio: false,
+//       video: {
+//         facingMode: cameraMode,
+//       },
+//     })
+//     .then(function (stream) {
+//       return new Promise(function (resolve) {
+//         video.srcObject = stream;
+//         video.onloadeddata = function () {
+//           video.play();
+//           resolve();
+//         };
+//       });
+//     });
 
 async function init() {
   cameraActivated = false;
   const modelURL = URL + "model.json";
   const metadataURL = URL + "metadata.json";
+
+  // Promise.all([startVideoStreamPromise(video), loadModelPromise]).then(
+  //   function () {
+  //     // resizeCanvas();
+  //     detectFrame();
+  //   }
+  // );
+  // await loadModelPromise;
 
   // load the model and metadata
   // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
@@ -74,81 +121,112 @@ async function init() {
   }
 }
 
+// window.onresize = function () {
+//   resizeCanvas();
+// };
+
+// const resizeCanvas = function () {
+//   canvas = document.getElementById("canvas");
+
+//   ctx = canvas.getContext("2d");
+
+//   var dimensions = videoDimensions(video);
+
+//   canvas.width = video.videoWidth;
+//   canvas.height = video.videoHeight;
+
+//   canvas.setAttribute("width", dimensions.width);
+//   canvas.setAttribute("height", dimensions.height);
+//   canvas.setAttribute("left", (window.innerWidth - dimensions.width) / 2);
+//   canvas.setAttribute("top", (window.innerHeight - dimensions.height) / 2);
+// };
+
 async function loop(timestamp) {
   webcam.update(); // update the webcam frame
   if (cameraActivated) {
     await predict();
+    // await detectFrame();
     // setTimeout(() => {
     window.requestAnimationFrame(loop);
     // }, 1000 / fps);
-    console.log({ isGeneratingFeedback });
+    // console.log({ isGeneratingFeedback });
   }
 }
+
+// async function detectFrame() {
+//   if (!rfmodel) return;
+
+//   rfmodel.detect(video).then(function (predictions) {
+//     console.log(predictions);
+//   });
+// }
+
 
 async function predict() {
   // Prediction #1: run input through posenet
   // estimatePose can take in an image, video or canvas html element
-  const { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
+  const { pose } = await model.estimatePose(webcam.canvas);
+  console.log({ pose }); //incorrect pose json
 
-  // check if user's whole body is in the frame
-  if (JSON.stringify(pose?.keypoints)?.includes("0.0") && pose) {
-    drawPose(pose, false);
-    return;
-  }
+  // // check if user's whole body is in the frame
+  // if (JSON.stringify(pose?.keypoints)?.includes("0.0") && pose) {
+  //   drawPose(pose, false);
+  //   return;
+  // }
 
-  // Prediction 2: run input through teachable machine classification model
-  const prediction = await model.predict(posenetOutput);
-  let correctPoseClassName = null;
+  // // Prediction 2: run input through teachable machine classification model
+  // const prediction = await model.predict(posenetOutput);
+  // let correctPoseClassName = null;
 
-  for (let i = 0; i < maxPredictions; i++) {
-    const classPrediction =
-      prediction[i].className + ": " + prediction[i].probability.toFixed(2);
-    labelContainer.childNodes[i].innerHTML = classPrediction;
-    // if the class's probability is the highest of all class
+  // for (let i = 0; i < maxPredictions; i++) {
+  //   const classPrediction =
+  //     prediction[i].className + ": " + prediction[i].probability.toFixed(2);
+  //   labelContainer.childNodes[i].innerHTML = classPrediction;
+  //   // if the class's probability is the highest of all class
 
-    const highestProbability = Math.max(
-      ...prediction.map((p) => p.probability)
-    );
+  //   const highestProbability = Math.max(
+  //     ...prediction.map((p) => p.probability)
+  //   );
 
-    if (
-      prediction[i].probability == highestProbability &&
-      highestProbability > 0.75
-    ) {
-      correctPoseClassName = prediction[i].className;
-      document.getElementById("currentPose").innerHTML = correctPoseClassName;
-      // display relavant tutorial based on the detected pose
-      document.getElementById("correctPostImage").src =
-        tutorialJson[correctPoseClassName.replaceAll(" ", "-")]?.image;
+  //   if (
+  //     prediction[i].probability == highestProbability &&
+  //     highestProbability > 0.75
+  //   ) {
+  //     correctPoseClassName = prediction[i].className;
+  //     document.getElementById("currentPose").innerHTML = correctPoseClassName;
+  //     // display relavant tutorial based on the detected pose
+  //     document.getElementById("correctPostImage").src =
+  //       tutorialJson[correctPoseClassName.replaceAll(" ", "-")]?.image;
 
-      // only record the highest probability of the detected pose
-      setTimeout(async () => {
-        await setMovingAccuracy(
-          correctPoseClassName,
-          prediction[i].probability.toFixed(2)
-        );
-      }, 1500);
-    }
-  }
+  //     // only record the highest probability of the detected pose
+  //     setTimeout(async () => {
+  //       await setMovingAccuracy(
+  //         correctPoseClassName,
+  //         prediction[i].probability.toFixed(2)
+  //       );
+  //     }, 1500);
+  //   }
+  // }
 
   // return if no pose detected
-  if (
-    isGeneratingFeedback &&
-    JSON.stringify(pose?.keypoints)?.includes("0.0") &&
-    !pose
-  )
-    return;
+  // if (
+  //   isGeneratingFeedback &&
+  //   JSON.stringify(pose?.keypoints)?.includes("0.0") &&
+  //   !pose
+  // )
+  //   return;
 
-  isGeneratingFeedback = true;
+  // isGeneratingFeedback = true;
 
-  try {
-    generateFeedback(pose, correctJson[correctPoseClassName]).then(() => {
-      isGeneratingFeedback = false;
-      console.log("Generating feedback done...");
-    });
-  } catch (e) {
-    console.log("Error: ", e);
-    isGeneratingFeedback = false;
-  }
+  // try {
+  //   generateFeedback(pose, correctJson[correctPoseClassName]).then(() => {
+  //     isGeneratingFeedback = false;
+  //     console.log("Generating feedback done...");
+  //   });
+  // } catch (e) {
+  //   console.log("Error: ", e);
+  //   isGeneratingFeedback = false;
+  // }
 
   // finally draw the poses
   drawPose(pose);
@@ -246,7 +324,7 @@ async function updateAnalytics(averageAccuracy) {
 
 async function backToApp() {
   await beforeLeavePage();
-  window.location.href = "http://localhost:8080/dashboard";
+  // window.location.href = "http://localhost:8080/dashboard";
 }
 
 async function beforeLeavePage() {
