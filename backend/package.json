@@ -1,7 +1,7 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Badminton AI Tutor with pose, object detection and generative AI.",
   "main": "server.js",
   "scripts": {
     "start": "nodemon express/server.js",
