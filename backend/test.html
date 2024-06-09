@@ -132,11 +132,14 @@
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
         if (!net && !video && !rfmodel) return;
-        detectPoseInRealTime(video, net);
+        const incorrectKeypoints = JSON.stringify(await detectPoseInRealTime(video, net));
         const predictions = await classifyPoseInRealTime(video, rfmodel);
         console.log({ predictions });
         renderCanvasPredictions(predictions);
         loopReq = requestAnimationFrame(detect);
+        const correctClassName = predictions[0]?.class;
+        if (!correctClassName) return;
+        generateFeedback(correctClassName, incorrectKeypoints);
       };
 
       const renderCanvasPredictions = (predictions) => {
@@ -216,7 +219,7 @@
           flipHorizontal,
           outputStride
         );
-        console.log(pose);
+        return pose;
       };
 
       const init = async () => {
@@ -314,6 +317,8 @@
         feedbackContainer.innerHTML = feedback;
         document.getElementById("feedbacks").appendChild(feedbackContainer);
       }
+      
+        window.generateFeedback = generateFeedback;
     </script>
     <script>
       /*
