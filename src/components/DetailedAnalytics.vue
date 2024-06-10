@@ -14,7 +14,7 @@
             <b>{{ snakeToTitleCase(Object.keys(analytics)[0]) }}</b>
             <p>{{ analytics[Object.keys(analytics)[0]] }}</p>
           </div>
-          <lottie-animation :path="randomLottie" :width="250" :height="250" />
+          <!-- <lottie-animation :path="randomLottie" :width="250" :height="250" /> -->
         </div>
         <template v-if="analytics">
           <h3 style="text-transform: capitalize">{{ snakeToTitleCase(title) }}</h3>
@@ -37,7 +37,7 @@
           <h3 style="text-transform: capitalize">{{ snakeToTitleCase(title) }}</h3>
           <AnalyticCharts :chartType="'Line'" :data="analytics[title]" v-if="analytics[title].length" />
           <div v-else>
-            <lottie-animation path="images/no_data_found.json" :width="250" :height="250" />
+            <!-- <lottie-animation path="images/no_data_found.json" :width="250" :height="250" /> -->
           </div>
         </div>
       </div>

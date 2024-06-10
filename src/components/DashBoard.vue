@@ -18,11 +18,11 @@
             <small>{{ snakeToTitleCase(highestScoreTechnique) }}</small>
           </template>
           <template v-else>
-            <lottie-animation path="images/no_data_found.json" :width="150" :height="150" />
+            <!-- <lottie-animation path="images/no_data_found.json" :width="150" :height="150" /> -->
           </template>
         </div>
       </div>
-      <lottie-animation path="images/loading.json" v-show="isLoading" :width="150" :height="150" />
+      <!-- <lottie-animation path="images/loading.json" v-show="isLoading" :width="150" :height="150" /> -->
 
       <router-link to="/detailed-analytics">
         <div class="bar">Detailed Analytics

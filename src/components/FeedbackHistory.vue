@@ -22,10 +22,10 @@
             </li>
           </ol>
         </div>
-        <lottie-animation path="images/loading.json" v-show="isLoading" :width="150" :height="150" />
+        <!-- <lottie-animation path="images/loading.json" v-show="isLoading" :width="150" :height="150" /> -->
       </template>
       <template v-else>
-        <lottie-animation path="images/no_data_found.json" :width="256" :height="256" />
+        <!-- <lottie-animation path="images/no_data_found.json" :width="256" :height="256" /> -->
       </template>
     </div>
   </div>

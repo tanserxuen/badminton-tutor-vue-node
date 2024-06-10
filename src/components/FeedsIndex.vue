@@ -12,9 +12,11 @@
         </div>
       </template>
       <template v-else-if="isLoading">
-        <lottie-animation path="images/loading.json" v-show="isLoading" :width="150" :height="150" />
+        <!-- <lottie-animation path="images/loading.json" v-show="isLoading" :width="150" :height="150" /> -->
       </template>
-      <template v-else><lottie-animation path="images/no_data_found.json" /></template>
+      <template v-else>
+        <!-- <lottie-animation path="images/no_data_found.json" /> -->
+      </template>
     </div>
   </div>
 </template>

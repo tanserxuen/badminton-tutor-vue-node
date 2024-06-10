@@ -13,7 +13,9 @@
           </router-link>
         </div>
       </template>
-      <template v-else><lottie-animation path="images/no_data_found.json" /></template>
+      <template v-else>
+        <!-- <lottie-animation path="images/no_data_found.json" /> -->
+      </template>
     </div>
   </div>
 </template>

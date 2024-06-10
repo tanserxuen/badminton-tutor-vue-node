@@ -51,7 +51,7 @@
           <button class="auth-page__submit-button">Update Training</button>
         </form>
       </div>
-      <lottie-animation path="images/loading.json" v-show="isLoading" :width="150" :height="150" />
+      <!-- <lottie-animation path="images/loading.json" v-show="isLoading" :width="150" :height="150" /> -->
       <div v-for="name in tutorialKeys" :key="name" v-show="!isEdit && !isLoading">
         <h3 class="py-2 text-lg font-extrabold capitalize pt-10">{{ name }}</h3>
         <div class="grid">

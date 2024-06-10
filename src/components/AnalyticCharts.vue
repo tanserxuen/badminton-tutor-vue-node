@@ -2,7 +2,7 @@
   <div>
     <b>{{ snakeToTitleCase(title) }}</b>
     <template v-if="!data">
-      <lottie-animation path="images/no_data_found.json" :width="150" :height="150" />
+      <!-- <lottie-animation path="images/no_data_found.json" :width="150" :height="150" /> -->
     </template>
     <template v-else-if="chartType === 'Bar' && data">
       <VueChart :data="data" :margin="margin" :direction="direction" :size="{ width: 300, height: 210 }">

@@ -4,7 +4,7 @@
     <div class="profile">
       <b class="profile__name">{{ userDetails.name }}</b>
       <template v-if="userDetails.image == ''">
-        <lottie-animation path="images/profile.json" :width="220" :height="220" />
+        <!-- <lottie-animation path="images/profile.json" :width="220" :height="220" /> -->
       </template>
       <template v-else>
         <img :src="userDetails.image" :alt="userDetails.name" class="profile__avatar" />
