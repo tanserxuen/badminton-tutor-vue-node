@@ -23,8 +23,7 @@
     "vue-chart-3": "^3.1.8",
     "vue-router": "^4.3.0",
     "vue3-charts": "^1.1.33",
-    "vuex": "^4.1.0",
-    "@vue/cli-service": "~5.0.0"
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
