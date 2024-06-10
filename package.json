@@ -8,7 +8,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "postinstall": "if test \"$VUE_APP_MODE\" = \"prod\" ; then npm run build ; fi "
+    "postinstall": "if test \"$VUE_APP_MODE\" = \"prod\" ; then npm run build ; fi ",
+    "heroku-postinstall": "npm install && npm run build"
   },
   "author": "Joan Tan",
   "dependencies": {
