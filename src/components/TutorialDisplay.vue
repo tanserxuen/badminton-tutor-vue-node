@@ -18,7 +18,7 @@
 
 <script>
 
-import tutorialsJson from "../../backend/express/config/tutorialJson.json"
+import tutorialsJson from "../js/tutorialJson.json"
 import { ref, computed } from "vue";
 import BackButton from "./BackButton.vue";
 
