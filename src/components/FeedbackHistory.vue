@@ -36,12 +36,12 @@ import { computed, onMounted, ref } from "vue";
 import FeedbackService from "@/js/services/feedback";
 import { useStore } from "vuex";
 import getDateFromTimestamp from "@/js/services/date.js";
-import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
+// import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
 import BackButton from "./BackButton.vue";
 
 export default {
   components: {
-    LottieAnimation,
+    // LottieAnimation,
     BackButton,
   },
   setup() {

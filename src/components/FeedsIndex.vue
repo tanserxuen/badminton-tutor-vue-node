@@ -25,10 +25,13 @@
 import { computed } from "vue";
 import { useStore } from "vuex";
 import PostView from "./PostView.vue";
-import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
+// import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
 
 export default {
-  components: { PostView, LottieAnimation },
+  components: {
+    PostView,
+    // LottieAnimation 
+  },
   setup() {
     const store = useStore();
     const posts = computed(() => store.getters.getNonUserPosts);

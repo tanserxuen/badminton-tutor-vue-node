@@ -69,12 +69,12 @@
 <script>
 import TutorialService from "@/js/services/tutorials";
 import { onMounted, ref, reactive, computed } from "vue";
-import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
+// import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
 
 export default {
-  components: {
-    LottieAnimation,
-  },
+  // components: {
+  //   LottieAnimation,
+  // },
   setup() {
     const tutorials = ref([]);
     const isEdit = ref(false);

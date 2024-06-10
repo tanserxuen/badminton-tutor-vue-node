@@ -49,14 +49,14 @@
 import { computed } from "vue";
 import AnalyticCharts from "./AnalyticCharts.vue";
 import { useStore } from "vuex";
-import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
+// import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
 import { snakeToTitleCase } from "../js/services/sentence";
 import BackButton from "./BackButton.vue";
 
 export default {
   components: {
     AnalyticCharts,
-    LottieAnimation,
+    // LottieAnimation,
     BackButton,
   },
   props: {

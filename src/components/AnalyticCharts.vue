@@ -55,7 +55,7 @@ import {
   Area,
 } from "vue3-charts";
 import { computed, ref } from "vue";
-import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
+// import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
 import { PolarAreaChart } from 'vue-chart-3';
 import { Chart, registerables } from "chart.js";
 import { snakeToTitleCase } from "@/js/services/sentence";
@@ -73,7 +73,7 @@ export default {
     Tooltip,
     Marker,
     Area,
-    LottieAnimation,
+    // LottieAnimation,
     PolarAreaChart
   },
   props: {
