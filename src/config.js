@@ -1,7 +1,7 @@
 const axiosBaseURL =
   process.env.VUE_APP_MODE == "env"
     ? "http://localhost:3000/api/"
-    : "https://badmintontutor-backend.netlify.app/api/";
+    : "https://badmintontutor-backend-bf08e17698c1.herokuapp.com/api/";
 
 const axiosHeaders = {
   "Content-Type": "application/json",
