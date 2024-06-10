@@ -7,8 +7,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "postinstall": "if test \"$VUE_APP_MODE\" = \"prod\" ; then npm run build ; fi "
+    "lint": "vue-cli-service lint"
   },
   "author": "Joan Tan",
   "dependencies": {
