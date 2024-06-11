@@ -39,10 +39,10 @@
                 class="border border-gray-100 bg-white rounded-lg p-4 flex flex-col justify-between leading-normal hover:bg-amber-50">
                 <div class="flex items-center justify-between">
                   <div class="flex items-center">
-                    <img class="w-10 h-10 rounded-full mr-4" :src="user.image == ''
+                    <!-- <img class="w-10 h-10 rounded-full mr-4" :src="user.image == ''
                       ? '/images/placeholderImg.jpg'
                       : user.image
-                      " :alt="user.name" />
+                      " :alt="user.name" /> -->
                     <div class="text-sm">
                       <p class="text-gray-900 leading-none text-base font-semibold mb-1">
                         {{ user.name }}

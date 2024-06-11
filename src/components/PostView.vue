@@ -8,7 +8,7 @@
     </h2>
     <div class="bg-white border rounded-sm max-w-md mx-auto">
       <div class="flex items-center px-4 py-3">
-        <img class="h-8 w-8 rounded-full" :src="user.image == '' ? '/images/placeholderImg.jpg' : user.image" />
+        <!-- <img class="h-8 w-8 rounded-full" :src="user.image == '' ? '/images/placeholderImg.jpg' : user.image" /> -->
         <div class="ml-3">
           <span class="text-sm font-semibold antialiased block leading-tight">{{
             post?.userName

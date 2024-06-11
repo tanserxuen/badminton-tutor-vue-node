@@ -7,7 +7,7 @@
         <!-- <lottie-animation path="images/profile.json" :width="220" :height="220" /> -->
       </template>
       <template v-else>
-        <img :src="userDetails.image" :alt="userDetails.name" class="profile__avatar" />
+        <!-- <img :src="userDetails.image" :alt="userDetails.name" class="profile__avatar" /> -->
       </template>
 
       <!-- <span class="styling"></span> -->
