@@ -1,7 +1,8 @@
 <template>
   <div class="container mx-auto px-4 py-10">
     <h2 class="base-page__heading-short">
-        <BackButton />Connections</h2>
+      <BackButton />Connections
+    </h2>
     <div class="base-page__inner-margin">
       <form class="max-w-md mx-auto">
         <div class="flex">
@@ -24,8 +25,8 @@
         <div class="me-2" style="min-width: max-content">
           <a v-for="status in statuses" :key="status" href="#" aria-current="page" class="inline-block p-4 rounded-t-lg"
             :class="activeTab == status
-                ? 'text-amber-600 bg-amber-100 active'
-                : 'hover:text-amber-600 hover:bg-orange-50'
+              ? 'text-amber-600 bg-amber-100 active'
+              : 'hover:text-amber-600 hover:bg-orange-50'
               " @click="activeTab = status">{{ status }}</a>
         </div>
       </div>
@@ -39,8 +40,8 @@
                 <div class="flex items-center justify-between">
                   <div class="flex items-center">
                     <img class="w-10 h-10 rounded-full mr-4" :src="user.image == ''
-                        ? '/images/placeholderImg.jpg'
-                        : user.image
+                      ? '/images/placeholderImg.jpg'
+                      : user.image
                       " :alt="user.name" />
                     <div class="text-sm">
                       <p class="text-gray-900 leading-none text-base font-semibold mb-1">
@@ -71,17 +72,16 @@
 </template>
 
 <script>
-import { computed, onMounted, reactive, ref } from "vue";
+import { computed, defineAsyncComponent, onMounted, reactive, ref } from "vue";
 import UserService from "@/js/services/user.js";
 import { useStore } from "vuex";
 import getDateFromTimestamp from "@/js/services/date.js";
 // import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
-import BackButton from "./BackButton.vue";
 
 export default {
   components: {
     // LottieAnimation,
-    BackButton,
+    BackButton: defineAsyncComponent(() => import("./BackButton.vue")),
   },
   setup() {
     const store = useStore();
@@ -149,7 +149,7 @@ export default {
 
     onMounted(async () => {
       userDetails.value = await store.getters.getCurrentUserDetails;
-      console.log({ userDetails: userDetails.value?.id }, {state: store.getters.getCurrentUserDetails})
+      console.log({ userDetails: userDetails.value?.id }, { state: store.getters.getCurrentUserDetails })
       await UserService.getConnects(userDetails.value?.id).then((response) => {
         const { connect, requesting, requests, follower, following } =
           response.data;
@@ -178,6 +178,7 @@ export default {
 <style scoped>
 a[href] {
   text-transform: capitalize;
+
   @media screen and (max-width: 640px) {
     padding-inline: 10px;
     font-size: 13px;
@@ -193,8 +194,9 @@ input[type="search"] {
   border: 0;
 }
 
-.card-bar{
+.card-bar {
   margin-top: 1rem;
+
   @media screen and (max-width: 640px) {
     margin-top: 0.5rem;
   }

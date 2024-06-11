@@ -46,18 +46,18 @@
 </template>
 
 <script>
-import { computed } from "vue";
-import AnalyticCharts from "./AnalyticCharts.vue";
+import { computed, defineAsyncComponent } from "vue";
+// import AnalyticCharts from "./AnalyticCharts.vue";
 import { useStore } from "vuex";
 // import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
 import { snakeToTitleCase } from "../js/services/sentence";
-import BackButton from "./BackButton.vue";
+// import BackButton from "./BackButton.vue";
 
 export default {
   components: {
-    AnalyticCharts,
+    AnalyticCharts: defineAsyncComponent(() => import("./AnalyticCharts.vue")),
     // LottieAnimation,
-    BackButton,
+    BackButton: defineAsyncComponent(() => import("./BackButton.vue")),
   },
   props: {
     isChart: {

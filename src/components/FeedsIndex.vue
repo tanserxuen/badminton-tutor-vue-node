@@ -22,14 +22,14 @@
 </template>
 
 <script>
-import { computed } from "vue";
+import { computed, defineAsyncComponent } from "vue";
 import { useStore } from "vuex";
-import PostView from "./PostView.vue";
+// import PostView from "./PostView.vue";
 // import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
 
 export default {
   components: {
-    PostView,
+    PostView: defineAsyncComponent(() => import("./PostView.vue")),
     // LottieAnimation 
   },
   setup() {

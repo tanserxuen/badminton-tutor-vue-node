@@ -32,17 +32,17 @@
 </template>
 
 <script>
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, defineAsyncComponent } from "vue";
 import FeedbackService from "@/js/services/feedback";
 import { useStore } from "vuex";
 import getDateFromTimestamp from "@/js/services/date.js";
 // import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
-import BackButton from "./BackButton.vue";
+// import BackButton from "./BackButton.vue";
 
 export default {
   components: {
     // LottieAnimation,
-    BackButton,
+    BackButton: defineAsyncComponent(() => import("./BackButton.vue")),
   },
   setup() {
     const store = useStore();

@@ -19,12 +19,12 @@
 <script>
 
 import tutorialsJson from "../js/tutorialJson.json"
-import { ref, computed } from "vue";
-import BackButton from "./BackButton.vue";
+import { ref, computed, defineAsyncComponent } from "vue";
+// import BackButton from "./BackButton.vue";
 
 export default {
   components: {
-    BackButton,
+    BackButton: defineAsyncComponent(() => import("./BackButton.vue")),
   },
   props: {
     tutorial: {

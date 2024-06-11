@@ -104,14 +104,14 @@
 
 <script>
 import UserService from "@/js/services/user";
-import { computed, onMounted, reactive, ref } from "vue";
+import { computed, onMounted, reactive, ref, defineAsyncComponent } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import BackButton from "./BackButton.vue";
+// import BackButton from "./BackButton.vue";
 
 export default {
   components: {
-    BackButton,
+    BackButton: defineAsyncComponent(() => import("./BackButton.vue")),
   },
   setup() {
     const store = useStore();

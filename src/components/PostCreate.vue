@@ -38,17 +38,17 @@
 </template>
 
 <script>
-import { computed, reactive, ref } from "vue";
+import { computed, reactive, ref, defineAsyncComponent } from "vue";
 import { useStore } from "vuex";
 import PostService from "@/js/services/post.js";
-import DetailedAnalytics from "./DetailedAnalytics.vue";
+// import DetailedAnalytics from "./DetailedAnalytics.vue";
 import html2canvas from "html2canvas";
-import BackButton from "./BackButton.vue";
+// import BackButton from "./BackButton.vue";
 
 export default {
   components: {
-    DetailedAnalytics,
-    BackButton,
+    DetailedAnalytics: defineAsyncComponent(() => import("./DetailedAnalytics.vue")),
+    BackButton: defineAsyncComponent(() => import("./BackButton.vue")),
   },
   setup() {
     const store = useStore();
