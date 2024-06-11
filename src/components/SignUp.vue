@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="auth_main-container">
+    <div class="auth_main-container"> <img class="auth_logo object-cover rounded-full m-auto"
+        src="../assets/images/logo.png" alt="Badminton Tutor" />
       <h1 class="auth-page__heading">Sign Up</h1>
 
       <template v-if="error">
@@ -10,35 +11,17 @@
       </template>
 
       <label for="email" class="auth-page__label">Email</label>
-      <input
-        type="text"
-        name="email"
-        placeholder="Email"
-        class="auth-page__input"
-        :value="email"
-        @input="
-          (event) => {
-            email = event.target.value;
-            error = null;
-          }
-        "
-        required
-      />
+      <input type="text" name="email" placeholder="Email" class="auth-page__input" :value="email" @input="(event) => {
+          email = event.target.value;
+          error = null;
+        }
+        " required />
       <label for="password" class="auth-page__label">Password</label>
-      <input
-        type="password"
-        name="password"
-        placeholder="Password"
-        class="auth-page__input"
-        :value="password"
-        @input="
-          (event) => {
-            password = event.target.value;
-            error = null;
-          }
-        "
-        required
-      />
+      <input type="password" name="password" placeholder="Password" class="auth-page__input" :value="password" @input="(event) => {
+          password = event.target.value;
+          error = null;
+        }
+        " required />
       <button @click="submitForm" class="auth-page__submit-button">
         Submit
       </button>

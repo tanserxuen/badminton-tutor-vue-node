@@ -36,6 +36,11 @@ label.auth-page__label {
   display: block;
 }
 
+img.auth_logo {
+  height: 150px;
+  width: 150px;
+}
+
 h1.auth-page__heading {
   color: #434240;
   font-family: var(--default-font-family);
@@ -45,8 +50,8 @@ h1.auth-page__heading {
   position: relative;
   white-space: nowrap;
   display: block;
-  margin-top: 35px;
-  margin-bottom: 80px;
+  margin-top: 30px;
+  margin-bottom: 60px;
   text-align: center;
 }
 
