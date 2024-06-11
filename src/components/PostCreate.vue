@@ -44,6 +44,8 @@ import PostService from "@/js/services/post.js";
 // import DetailedAnalytics from "./DetailedAnalytics.vue";
 import html2canvas from "html2canvas";
 // import BackButton from "./BackButton.vue";
+import { uploadToFirebase } from "../js/services/firebaseUpload";
+import { useRouter } from "vue-router";
 
 export default {
   components: {
@@ -52,25 +54,22 @@ export default {
   },
   setup() {
     const store = useStore();
+    const router = useRouter();
     const formData = reactive({
       title: "",
       description: "",
       image: "",
     });
+    const file = ref(null);
     const isChart = ref(false);
     const userDetails = computed(() => store.state?.currentUserDetails ?? "");
     const uploadImage = (e) => {
       const image = e.target.files[0];
-      if (image.size > 66000) {
-        alert("Image size should be less than 66 kb");
-        e.preventDefault();
-        return;
-      }
+      file.value = image;
       const reader = new FileReader();
       reader.readAsDataURL(image);
       reader.onload = () => {
         formData.image = reader.result;
-        // this.$refs.avatar_preview.src = reader.result;
       };
     };
 
@@ -89,7 +88,10 @@ export default {
 
     const submitForm = async () => {
       if (isChart.value) await getScreenShot();
-      console.log(formData.image);
+
+      //upload image to firebase storage
+      formData.image = await uploadToFirebase(file.value, "Posts");
+
       try {
         PostService.createPost({
           userId: userDetails.value.id,
@@ -98,6 +100,9 @@ export default {
         })
           .then((response) => {
             console.log(response);
+            if (response.status === 200) {
+              router.push({ name: "PostsIndex" });
+            }
           })
           .catch((error) => {
             console.error(error);

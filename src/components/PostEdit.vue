@@ -56,6 +56,7 @@ import { reactive, ref } from "vue";
 import PostService from "@/js/services/post.js";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import { uploadToFirebase } from "../js/services/firebaseUpload";
 
 export default {
   props: {
@@ -74,6 +75,7 @@ export default {
       image: "",
     });
     const imageSize = ref(0);
+    const file = ref(null);
 
     const fetchPost = async () => {
       const { id, title, description, image } = store.getters.getUserPost(
@@ -90,11 +92,7 @@ export default {
 
     const uploadImage = (e) => {
       const image = e.target.files[0];
-      if (image.size > 66000) {
-        alert("Image size should be less than 66 kb");
-        e.preventDefault();
-        return;
-      }
+      file.value = image;
       const reader = new FileReader();
       imageSize.value = image.size;
       reader.readAsDataURL(image);
@@ -103,11 +101,14 @@ export default {
       };
     };
 
-    const submitForm = () => {
+    const submitForm = async() => {
       if (imageSize.value == 0) {
         alert("Please upload an image");
         return;
       } //empty image file
+      
+      //upload image to firebase storage
+      formData.image = await uploadToFirebase(file.value, "Posts");
 
       try {
         PostService.updatePost(formData)

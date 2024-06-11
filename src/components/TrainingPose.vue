@@ -69,6 +69,7 @@
 <script>
 import TutorialService from "@/js/services/tutorials";
 import { onMounted, ref, reactive, computed } from "vue";
+import { uploadToFirebase } from "../js/services/firebaseUpload";
 // import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
 
 export default {
@@ -79,6 +80,7 @@ export default {
     const tutorials = ref([]);
     const isEdit = ref(false);
     const imageSize = ref(0);
+    const file = ref(null);
     const formData = reactive({
       type: "",
       name: "",
@@ -107,11 +109,7 @@ export default {
 
     const uploadImage = (e) => {
       const image = e.target.files[0];
-      if (image.size > 66000) {
-        alert("Image size should be less than 66 kb");
-        e.preventDefault();
-        return;
-      }
+      file.value = image;
       const reader = new FileReader();
       imageSize.value = image.size;
       reader.readAsDataURL(image);
@@ -122,6 +120,8 @@ export default {
     };
 
     const submitForm = async () => {
+      //upload image to firebase storage
+      formData.image = await uploadToFirebase(file.value, "Avatar");
       await TutorialService.updateTutorials({
         type: formData.type,
         name: formData.name,

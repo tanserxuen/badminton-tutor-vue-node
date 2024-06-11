@@ -1,6 +1,7 @@
 <template>
   <div class="container mx-auto px-4" :class="isConnection ? 'py-1' : 'py-10'">
     <h2 class="base-page__heading-short" v-if="!isConnection">
+      <BackButton />
       Post View
       <router-link to="#" class="float-end"><i class="fas fa-trash"></i></router-link>
       <router-link :to="{ name: 'PostEdit', params: { index: index } }" class="float-end me-3"><i
@@ -84,12 +85,15 @@
 </template>
 
 <script>
-import { computed, ref, watch } from "vue";
+import { computed, ref, watch, defineAsyncComponent } from "vue";
 import { useStore } from "vuex";
 import PostServices from "../js/services/post";
 import getDateFromTimestamp from "../js/services/date";
 
 export default {
+  components: {
+    BackButton: defineAsyncComponent(() => import("./BackButton.vue")),
+  },
   props: {
     index: {
       type: Number,
@@ -201,6 +205,7 @@ img {
 
 .m-4 b {
   font-size: 16px;
+
   @media screen and (max-width: 640px) {
     font-size: 14px;
   }
@@ -208,6 +213,7 @@ img {
 
 .m-4 span {
   font-size: 12px;
+
   @media screen and (max-width: 640px) {
     font-size: 10px;
   }
@@ -215,6 +221,7 @@ img {
 
 .text-gray-500.text-xs {
   font-size: 12px;
+
   @media screen and (max-width: 640px) {
     font-size: 10px;
   }
@@ -222,6 +229,7 @@ img {
 
 .font-semibold.text-sm.mx-4.mt-2.mb-4 {
   font-size: 14px;
+
   @media screen and (max-width: 640px) {
     font-size: 12px;
   }
