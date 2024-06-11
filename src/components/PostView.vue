@@ -15,7 +15,7 @@
           }}</span>
         </div>
       </div>
-      <!-- <img :src="post?.image" :alt="post?.image" class="post-image" /> -->
+      <img :src="post?.image" :alt="post?.image" class="post-image" />
       <div class="m-4">
         <b>{{ post?.userName }}</b>
         <br>
