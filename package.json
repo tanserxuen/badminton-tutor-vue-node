@@ -7,10 +7,15 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "postinstall": "if test \"$VUE_FAPP_MODE\" = \"prod\" ; then npm run build ; fi "
   },
   "author": "Joan Tan",
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.36",
+    "@fortawesome/free-regular-svg-icons": "^5.15.4",
+    "@fortawesome/free-solid-svg-icons": "^5.15.4",
+    "@fortawesome/vue-fontawesome": "^3.0.8",
     "@google/generative-ai": "^0.6.0",
     "axios": "^1.6.8",
     "chart.js": "^3.9.1",
