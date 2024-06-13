@@ -109,7 +109,7 @@ export default {
 <style scoped>
 .d-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 250px));
   gap: 20px;
   overflow-x: auto;
 }
@@ -184,6 +184,10 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+  }
+
+  .d-grid{
+    grid-template-columns: repeat(auto-fit, minmax(100px, 160px));
   }
 }
 </style>
