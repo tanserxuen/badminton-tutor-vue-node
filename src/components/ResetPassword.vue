@@ -9,12 +9,17 @@
           {{ error }}
         </div>
       </template>
+      <template v-if="success">
+        <div class="success-text" role="info">
+          {{ success }} Check your email for the reset link.
+        </div>
+      </template>
 
       <label for="email" class="auth-page__label">Email</label>
       <input type="email" name="email" placeholder="Email" class="auth-page__input" :value="email" @input="(event) => {
-          email = event.target.value;
-          error = null;
-        }
+        email = event.target.value;
+        error = null;
+      }
         " required />
       <button @click="submitForm" class="auth-page__submit-button">
         Reset Password
@@ -38,15 +43,16 @@ export default {
     const email = ref("");
     const router = useRouter();
     const error = ref(null);
+    const success = ref(null);
 
     const submitForm = () => {
-      console.log(email.value);
       AuthService.resetPassword(email.value)
         .then((response) => {
-          console.log(response);
           if (response.status === 200) {
-            console.log("Password reset email sent");
-            router.push({ name: "SignIn" });
+            success.value = response.data;
+            setTimeout(() => {
+              router.push({ name: "SignIn" });
+            }, 1500);
           } else {
             throw new Error(response);
           }
@@ -56,7 +62,7 @@ export default {
           console.error(e);
         });
     };
-    return { email, submitForm, error };
+    return { email, submitForm, error, success };
   },
 };
 </script>

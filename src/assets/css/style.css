@@ -24,6 +24,18 @@
   }
 }
 
+.success-text {
+  color: rgb(1, 152, 61);
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 5px;
+  background-color: rgb(208, 254, 208);
+  @media screen and (max-width: 640px) {
+    padding: 0.6rem 1rem;
+    font-size: 14px;
+  }
+}
+
 /*  hide all scrollbar */
 ::-webkit-scrollbar {
   width: 0;

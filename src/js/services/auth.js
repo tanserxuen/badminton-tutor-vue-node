@@ -36,12 +36,9 @@ async function logout() {
 
 async function resetPassword(email) {
   try {
-    const response = await axios.post(
-      "/auth/reset-password",
-      {
-        email,
-      }
-    );
+    const response = await axios.post("/auth/reset-password", {
+      email,
+    });
     return response;
   } catch (error) {
     return error;
@@ -50,13 +47,10 @@ async function resetPassword(email) {
 
 async function updatePassword(email, password) {
   try {
-    const response = await axios.post(
-      "/auth/update-password",
-      {
-        email,
-        password,
-      }
-    );
+    const response = await axios.post("/auth/update-password", {
+      email,
+      password,
+    });
     return response;
   } catch (error) {
     return error;
@@ -65,9 +59,7 @@ async function updatePassword(email, password) {
 
 async function validateAuth() {
   try {
-    const response = await axios.get(
-      "/auth/validate-auth"
-    );
+    const response = await axios.get("/auth/validate-auth");
     return response;
   } catch (error) {
     return error;
