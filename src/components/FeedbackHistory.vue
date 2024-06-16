@@ -16,9 +16,11 @@
               <h3 class="text-lg font-semibold text-gray-900">
                 {{ feedback.title }}
               </h3>
-              <p class="text-base font-normal text-gray-500">
-                {{ feedback.content }}
-              </p>
+              <ol class="card">
+                <li class="text-base font-normal text-gray-500" v-for="(content, i) in feedback.content" :key="i">
+                  {{ i + 1 }}. {{ content }} <br><br>
+                </li>
+              </ol>
             </li>
           </ol>
         </div>
