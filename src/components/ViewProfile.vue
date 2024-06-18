@@ -38,6 +38,10 @@
           <i class="fas fa-chevron-right"></i>
         </div>
       </router-link>
+      <div class="profile__settings_bar" @click="logoutUser" style="cursor : pointer">
+        Logout
+        <i class="fas fa-chevron-right"></i>
+      </div>
     </div>
   </div>
 </template>
@@ -45,6 +49,8 @@
 <script>
 import { computed } from "vue";
 import { useStore } from "vuex";
+import AuthService from "../js/services/auth.js";
+import { useRouter } from "vue-router";
 // import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
 
 export default {
@@ -54,7 +60,30 @@ export default {
   setup() {
     const store = useStore();
     const userDetails = computed(() => store.state?.currentUserDetails ?? "");
-    return { userDetails };
+    const router = useRouter();
+
+    const logoutUser = (e) => {
+      e.preventDefault();
+      const choice = confirm("Are you sure you want to logout?");
+      if (!choice) return;
+      AuthService.logout()
+        .then((response) => {
+          if (response.status === 200) {
+            store.commit("setCurrentUser", null);
+            console.log({ currentUser: store.getters.getCurrentUser });
+            console.log("Logged out");
+            router.push({ name: "SignIn" });
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    };
+
+    return {
+      userDetails,
+      logoutUser
+    };
   },
 };
 </script>
@@ -104,8 +133,9 @@ export default {
   width: 250px;
   height: 250px;
   object-fit: cover;
+
   @media screen and (max-width: 640px) {
-  margin-block: 30px;
+    margin-block: 30px;
   }
 }
 
@@ -143,6 +173,7 @@ export default {
   column-gap: 2rem;
   text-align: center;
   margin-block: 40px;
+
   @media screen and (max-width: 640px) {
     row-gap: 0.5rem;
     margin-block: 30px;
@@ -181,6 +212,7 @@ export default {
 .profile_details__numbers3 {
   font-size: 4.5rem;
   font-weight: 500;
+
   @media screen and (max-width: 640px) {
     font-size: 2.5rem;
   }
@@ -188,7 +220,7 @@ export default {
 
 .profile_details__text1,
 .profile_details__text2,
-.profile_details__text3{
+.profile_details__text3 {
   @media screen and (max-width: 640px) {
     font-size: 14px;
   }

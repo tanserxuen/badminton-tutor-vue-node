@@ -132,17 +132,17 @@
 </template>
 
 <script>
-import AuthService from "../js/services/auth.js";
+// import AuthService from "../js/services/auth.js";
 import store from "@/js/store.js";
 import { computed } from "vue";
-import { useRouter } from "vue-router";
+// import { useRouter } from "vue-router";
 import { baseURL } from "@/config.js";
 
 export default {
   setup() {
     const isAuthenticated = computed(() => store.getters.isAuthenticated);
     const userDetails = computed(() => store.getters.getCurrentUserDetails);
-    const router = useRouter();
+    // const router = useRouter();
 
     const toggleSidebar = () => {
       console.log("Toggle sidebar")
@@ -154,26 +154,27 @@ export default {
 
     const feedbackLink = computed(() => `${baseURL}test.html?id=${userDetails.value?.id}`);
 
-    const logoutUser = (e) => {
-      e.preventDefault();
-      const choice = confirm("Are you sure you want to logout?");
-      if (!choice) return;
-      AuthService.logout()
-        .then((response) => {
-          if (response.status === 200) {
-            store.commit("setCurrentUser", null);
-            console.log({ currentUser: store.getters.getCurrentUser });
-            console.log("Logged out");
-            router.push({ name: "SignIn" });
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    };
+    // const logoutUser = (e) => {
+    //   e.preventDefault();
+    //   const choice = confirm("Are you sure you want to logout?");
+    //   if (!choice) return;
+    //   AuthService.logout()
+    //     .then((response) => {
+    //       if (response.status === 200) {
+    //         store.commit("setCurrentUser", null);
+    //         console.log({ currentUser: store.getters.getCurrentUser });
+    //         console.log("Logged out");
+    //         router.push({ name: "SignIn" });
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.error(error);
+    //     });
+    // };
+
     return {
       isAuthenticated,
-      logoutUser,
+      // logoutUser,
       toggleSidebar,
       userDetails,
       feedbackLink,
