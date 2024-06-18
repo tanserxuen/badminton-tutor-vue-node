@@ -28,7 +28,5 @@ app.provide("db", db);
 
 axios.defaults.baseURL = axiosBaseURL;
 axios.defaults.headers = axiosHeaders;
-// app.config.globalProperties.$axios = axiosInstance;
-app.config.globalProperties.$baseLink = axiosBaseURL;
 app.config.globalProperties.$currentUser = null;
 app.mount("#app");

@@ -4,22 +4,21 @@
       <BackButton />Connections
     </h2>
     <div class="base-page__inner-margin">
-      <form class="max-w-md mx-auto">
-        <div class="flex">
-          <label for="location-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
-          <div class="relative w-full">
-            <input type="search" id="location-search"
-              class="block p-2.5 mb-3 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg rounded-lg"
-              placeholder="Search anyone..." required />
-            <button type="submit"
-              class="absolute top-0 end-0 h-full p-2.5 text-sm font-medium text-white hover:bg-gray-100"
-              style="background-color: rgb(255, 242, 224)">
-              <i class="fas fa-search text-gray-500"></i>
-              <span class="sr-only">Search</span>
-            </button>
-          </div>
+      <div class="flex">
+        <label for="location-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
+        <div class="relative w-full">
+          <input type="search" id="location-search"
+            class="block p-2.5 mb-3 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg rounded-lg"
+            placeholder="Search anyone..." @input="keyword = $event.target.value;" :value="keyword" />
+          <i :class="{ 'fas fa-times': keyword }" @click="keyword = ''"></i>
+          <button type="submit"
+            class="absolute top-0 end-0 h-full p-2.5 text-sm font-medium text-white hover:bg-gray-100"
+            style="background-color: rgb(255, 242, 224)">
+            <i class="fas fa-search text-gray-500"></i>
+            <span class="sr-only">Search</span>
+          </button>
         </div>
-      </form>
+      </div>
 
       <div class="flex flex-wrap text-sm font-medium text-center border-b border-gray-200" style="overflow-x: auto;">
         <div class="me-2" style="min-width: max-content">
@@ -27,13 +26,14 @@
             :class="activeTab == status
               ? 'text-amber-600 bg-amber-100 active'
               : 'hover:text-amber-600 hover:bg-orange-50'
-              " @click="activeTab = status">{{ status }}</a>
+              " @click="activeTab = status">{{ status }} &nbsp; <span :class="badgeNumberClass(status)">{{
+                getBadgeNumbers(status) }}</span></a>
         </div>
       </div>
       <!--tab displays -->
       <div>
         <template v-if="userTypes[activeTab]?.length">
-          <div v-for="user in userTypes[activeTab]" :key="user?.id" class="card-bar">
+          <div v-for="user in filteredUsers" :key="user?.id" class="card-bar">
             <div class="w-full">
               <div
                 class="border border-gray-100 bg-white rounded-lg p-4 flex flex-col justify-between leading-normal hover:bg-amber-50">
@@ -45,10 +45,10 @@
                       " :alt="user.name" />
                     <div class="text-sm">
                       <p class="text-gray-900 leading-none text-base font-semibold mb-1">
-                        {{ user.name }}
+                        {{ user.name == "" ? "Badminton User" : user.name }}
                       </p>
                       <p class="text-gray-600 text-xs">
-                        {{ date(user.created_at) }}
+                        {{ user.email }}
                       </p>
                     </div>
                   </div>
@@ -102,12 +102,24 @@ export default {
       follower: [],
       following: [],
     });
+    const keyword = ref("");
 
     const date = computed(() => {
       return (timestamp) => {
         return getDateFromTimestamp(timestamp);
       };
     });
+
+    const getBadgeNumbers = (status) => {
+      const num = userTypes[status].length;
+      if (status == "following" || status == "follower") return '';
+      return num > 0 ? num : '';
+    }
+
+    const badgeNumberClass = (status) => {
+      const num = userTypes[status].length && !(status == "following" || status == "follower");
+      return num > 0 ? 'bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full' : '';
+    }
 
     const getDisplayWord = (status) => {
       switch (status) {
@@ -147,6 +159,12 @@ export default {
       });
     };
 
+    const filteredUsers = computed(() => {
+      if (userTypes[activeTab.value]?.length == 0) return [];
+      if (keyword.value == "") return userTypes[activeTab.value];
+      return userTypes[activeTab.value].filter(user => user.name.toLowerCase().includes(keyword.value.toLowerCase()) || user.email.toLowerCase().includes(keyword.value.toLowerCase()));
+    });
+
     onMounted(async () => {
       userDetails.value = await store.getters.getCurrentUserDetails;
       console.log({ userDetails: userDetails.value?.id }, { state: store.getters.getCurrentUserDetails })
@@ -169,7 +187,10 @@ export default {
       userTypes,
       getDisplayWord,
       date,
-      isLoading
+      isLoading,
+      getBadgeNumbers,
+      badgeNumberClass,
+      keyword, filteredUsers
     };
   },
 };
@@ -200,5 +221,21 @@ input[type="search"] {
   @media screen and (max-width: 640px) {
     margin-top: 0.5rem;
   }
+}
+
+input[type="search"] {
+  box-shadow: none;
+}
+
+.fas.fa-times {
+  right: 50px;
+  color: white;
+  background: lightgray;
+  padding: 5px;
+  border-radius: 100%;
+  font-size: 10px;
+  top: 40%;
+  transform: translateY(-50%);
+  position: absolute;
 }
 </style>

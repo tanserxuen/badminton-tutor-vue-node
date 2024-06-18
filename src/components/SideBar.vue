@@ -136,6 +136,7 @@ import AuthService from "../js/services/auth.js";
 import store from "@/js/store.js";
 import { computed } from "vue";
 import { useRouter } from "vue-router";
+import { baseURL } from "@/config.js";
 
 export default {
   setup() {
@@ -151,7 +152,7 @@ export default {
       backdrop.classList.toggle("sidebar__backdrop");
     };
 
-    const feedbackLink = () => this.baseLink;
+    const feedbackLink = computed(() => `${baseURL}test.html?id=${userDetails.value?.id}`);
 
     const logoutUser = (e) => {
       e.preventDefault();
@@ -174,7 +175,7 @@ export default {
       isAuthenticated,
       logoutUser,
       toggleSidebar,
-      userDetails, 
+      userDetails,
       feedbackLink,
     };
   },
