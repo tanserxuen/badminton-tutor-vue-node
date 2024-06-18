@@ -130,7 +130,7 @@ export default {
         case "requests":
           return "Accept";
         case "follower":
-          return "Follow Back";
+          return "Remove";
         case "following":
           return "Unfollow";
         default:
@@ -139,8 +139,27 @@ export default {
     };
 
     const changeStatus = (activeTab, targetUserId) => {
-      // to check current logic first below enabling more functions
-      if (activeTab == "follower" || activeTab == "following") return;
+      // to unfollow or remove follower, we need to change the status to connect
+      if (activeTab == "follower" || activeTab == "following") {
+        console.log({
+          userId: userDetails.value?.id,
+          targetUserId,
+          newStatus: "",
+          oldStatus: activeTab,
+        });
+        UserService.updateConnects({
+          userId: userDetails.value?.id,
+          targetUserId,
+          newStatus: "",
+          oldStatus: activeTab,
+        }).then((response) => {
+          console.log(response);
+          fetchUserConnections();
+        });
+        return;
+      }
+
+      // to accept or cancel request, we need to change the status to connect
       const oldStatusIndex = statuses.indexOf(activeTab);
       const newStatus = statuses[oldStatusIndex + 1];
       console.log({
@@ -156,6 +175,7 @@ export default {
         oldStatus: activeTab,
       }).then((response) => {
         console.log(response);
+        fetchUserConnections();
       });
     };
 
@@ -165,9 +185,7 @@ export default {
       return userTypes[activeTab.value].filter(user => user.name.toLowerCase().includes(keyword.value.toLowerCase()) || user.email.toLowerCase().includes(keyword.value.toLowerCase()));
     });
 
-    onMounted(async () => {
-      userDetails.value = await store.getters.getCurrentUserDetails;
-      console.log({ userDetails: userDetails.value?.id }, { state: store.getters.getCurrentUserDetails })
+    const fetchUserConnections = async () => {
       await UserService.getConnects(userDetails.value?.id).then((response) => {
         const { connect, requesting, requests, follower, following } =
           response.data;
@@ -178,6 +196,12 @@ export default {
         userTypes.following = following;
         isLoading.value = false;
       });
+    }
+
+    onMounted(async () => {
+      userDetails.value = await store.getters.getCurrentUserDetails;
+      console.log({ userDetails: userDetails.value?.id }, { state: store.getters.getCurrentUserDetails })
+      await fetchUserConnections();
     });
 
     return {
