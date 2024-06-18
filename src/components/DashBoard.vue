@@ -81,8 +81,7 @@ export default {
     });
 
     const getHighestScore = (obj) => {
-      console.log(!obj, Object.values(obj))
-      if (Object.values(obj) == 0) {
+      if (!obj || Object.values(obj)?.length == 0) {
         highestScoreTechnique.value = "No Data";
         return "0";
       }
@@ -186,7 +185,7 @@ export default {
     justify-content: space-around;
   }
 
-  .d-grid{
+  .d-grid {
     grid-template-columns: repeat(auto-fit, minmax(100px, 160px));
   }
 }
