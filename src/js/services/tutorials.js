@@ -2,7 +2,7 @@ import axios from "axios";
 
 async function fetchTutorials() {
   try {
-    const response = await axios.get("/tutorials");
+    const response = await axios.get("/category");
     return response;
   } catch (error) {
     return error;
@@ -11,7 +11,7 @@ async function fetchTutorials() {
 
 async function createTutorials() {
   try {
-    const response = await axios.get("/tutorials/create");
+    const response = await axios.get("/category/create");
     return response;
   } catch (error) {
     return error;
@@ -22,7 +22,7 @@ async function updateTutorials(data) {
   const { type, name, id, image, img } = data;
   try {
     const response = await axios.post(
-      `/tutorials/update/${type}/${name}/${img}/${id}`,
+      `/category/update/${type}/${name}/${img}/${id}`,
       { image }
     );
     return response;
