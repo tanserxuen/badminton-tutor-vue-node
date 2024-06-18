@@ -1,5 +1,5 @@
 <template>
-  <div :style="isChart ? 'transform: translateX(-40%);' : null">
+  <div>
     <!-- <button @click="getScreenShot">Get Canvas</button> -->
     <template v-if="!isChart">
       <div class="container mx-auto px-4 pt-10 pb-0">
@@ -32,14 +32,25 @@
       </div>
     </template>
     <template v-if="isChart">
-      <div class="grid" id="canvasEl">
-        <div v-for="title in Object.keys(analytics)" :key="title">
-          <h3 style="text-transform: capitalize">{{ snakeToTitleCase(title) }}</h3>
-          <AnalyticCharts :chartType="'Line'" :data="analytics[title]" v-if="analytics[title].length" />
-          <div v-else>
-            <!-- <lottie-animation path="images/no_data_found.json" :width="250" :height="250" /> -->
+      <div class="chart-post" id="canvasEl">
+        <!-- <div class="flex justify-between items-center mx-auto" style="max-width: 400px;">
+          <div class="card" style="padding-left: 2rem;">
+            <b>{{ snakeToTitleCase(Object.keys(analytics)[0]) }}</b>
+            <p>{{ analytics[Object.keys(analytics)[0]] }}</p>
           </div>
-        </div>
+          <lottie-animation :path="randomLottie" :width="250" :height="250" />
+        </div> -->
+        <template v-if="analytics">
+          <!-- <h3 style="text-transform: capitalize">{{ snakeToTitleCase(title) }}</h3> -->
+          <!-- <div class="grid"> -->
+          <AnalyticCharts :chartType="'PolarArea'" :data="analytics[Object.keys(analytics)[1]]"
+            :title="Object.keys(analytics)[1]" class="mx-auto" />
+          <!-- <AnalyticCharts :chartType="'Line'" :data="analytics[Object.keys(analytics)[2]]"
+              :title="Object.keys(analytics)[2]" />
+            <AnalyticCharts :chartType="'Line'" :data="analytics[Object.keys(analytics)[3]]"
+              :title="Object.keys(analytics)[3]" /> -->
+          <!-- </div> -->
+        </template>
       </div>
     </template>
   </div>
@@ -47,11 +58,9 @@
 
 <script>
 import { computed, defineAsyncComponent } from "vue";
-// import AnalyticCharts from "./AnalyticCharts.vue";
 import { useStore } from "vuex";
 // import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
 import { snakeToTitleCase } from "../js/services/sentence";
-// import BackButton from "./BackButton.vue";
 
 export default {
   components: {

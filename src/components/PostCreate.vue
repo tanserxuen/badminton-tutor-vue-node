@@ -63,6 +63,7 @@ export default {
     const file = ref(null);
     const isChart = ref(false);
     const userDetails = computed(() => store.state?.currentUserDetails ?? "");
+
     const uploadImage = (e) => {
       const image = e.target.files[0];
       file.value = image;
@@ -87,10 +88,15 @@ export default {
     };
 
     const submitForm = async () => {
-      if (isChart.value) await getScreenShot();
+      if (isChart.value) {
+        // dont upload to firebase storage sebab i cannot do that
+        await getScreenShot()
+        //upload data url string to firebase storage
+        // formData.image = await uploadStringToFirebase(formData.image, "Posts");
+      }
 
       //upload image to firebase storage
-      formData.image = await uploadToFirebase(file.value, "Posts");
+      else formData.image = await uploadToFirebase(file.value, "Posts");
 
       try {
         PostService.createPost({
