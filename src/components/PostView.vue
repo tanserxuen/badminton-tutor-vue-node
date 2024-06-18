@@ -21,11 +21,11 @@
         <b>{{ post?.userName }}</b>
         <br>
         <span>{{ post?.description }}</span>
-        <!-- {{ post?.id }} -->
+        {{ post?.id }}
       </div>
       <div class="flex items-center justify-between mx-4 mt-3 mb-2">
         <div class="flex gap-5">
-          <i :class="post?.current_user_liked ? 'fas fa-heart' : 'far fa-heart'" @click="toggleLike"></i>
+          <i :class="likedPost ? 'fas fa-heart' : 'far fa-heart'" @click="toggleLike"></i>
           <svg fill="#262626" height="24" viewBox="0 0 48 48" width="24"
             @click="isCommentsTabOpen = !isCommentsTabOpen">
             <path clip-rule="evenodd"
@@ -35,8 +35,8 @@
         </div>
       </div>
       <div class="font-semibold text-sm mx-4 mt-2 mb-4">
-        {{ post?.number_of_likes ?? 0 }} like{{
-          post?.number_of_likes == 0 ? "s" : ""
+        {{ post?.current_user_liked?.length ?? 0 }} like{{
+          post?.current_user_liked?.length == 0 ? "s" : ""
         }}
         <br />
         <span class="text-gray-500 text-xs">{{ date }}</span>
@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import { computed, ref, watch, defineAsyncComponent } from "vue";
+import { computed, ref, defineAsyncComponent } from "vue";
 import { useStore } from "vuex";
 import PostServices from "../js/services/post";
 import getDateFromTimestamp from "../js/services/date";
@@ -122,19 +122,21 @@ export default {
       return getDateFromTimestamp(post.value?.created_at);
     });
 
-    fetchPost();
-
     const updatePost = () => {
       if (!post.value) return;
       PostServices.updateLikeComment({
         postId: post.value.id,
         comments: post.value.comments,
         current_user_liked: post.value.current_user_liked,
-        number_of_likes: post.value.number_of_likes,
       }).then((res) => {
         console.log(res);
       });
     };
+
+    const likedPost = computed(() => {
+      if (!post.value) return;
+      return post.value?.current_user_liked.includes(user.value.id);
+    });
 
     const addComment = async () => {
       if (comment.value == "") return;
@@ -149,21 +151,17 @@ export default {
     };
 
     const toggleLike = async () => {
-      post.value.current_user_liked = !post.value.current_user_liked;
+      const userId = user.value.id;
+      if (post.value.current_user_liked.includes(userId)) {
+        const index = post.value.current_user_liked.indexOf(userId);
+        if (index > -1)  // only splice array when item is found
+          post.value.current_user_liked.splice(index, 1); // 2nd parameter means remove one item only
+      }
+      else post.value.current_user_liked.push(userId);
       await updatePost();
     };
 
-    //watch current user like
-    watch(
-      () => post.value?.current_user_liked,
-      (newVal, oldVal) => {
-        newVal == true && oldVal == false
-          ? post.value.number_of_likes++
-          : newVal == false && oldVal == true
-            ? post.value.number_of_likes--
-            : null;
-      }
-    );
+    fetchPost();
 
     return {
       post,
@@ -171,7 +169,9 @@ export default {
       toggleLike,
       addComment,
       isCommentsTabOpen,
-      comment, date
+      comment,
+      date,
+      likedPost
     };
   },
 };

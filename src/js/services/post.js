@@ -47,7 +47,6 @@ async function updatePost({ id, ...data }) {
 async function updateLikeComment({
   postId,
   current_user_liked,
-  number_of_likes,
   comments,
 }) {
   try {
@@ -55,7 +54,6 @@ async function updateLikeComment({
       `/post/update/${postId}/part`,
       {
         current_user_liked,
-        number_of_likes,
         comments,
       }
     );
