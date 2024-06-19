@@ -1,11 +1,11 @@
 const axiosBaseURL =
   process.env.VUE_APP_MODE == "env"
-    ? "http://localhost:80/api/"
+    ? "http://localhost/api/"
     : "https://badmintontutor-backend-bf08e17698c1.herokuapp.com/api/";
 
 const baseURL =
     process.env.VUE_APP_MODE == "env"
-      ? "http://localhost:80/"
+      ? "http://localhost/"
       : "https://badmintontutor-backend-bf08e17698c1.herokuapp.com/";
 
 const axiosHeaders = {
