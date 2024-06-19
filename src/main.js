@@ -5,7 +5,7 @@ import { firebaseConfig, axiosBaseURL, axiosHeaders } from "./config";
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore/lite";
 import { getAuth } from "firebase/auth";
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 import routes from "./js/routes";
 import store from "./js/store";
 import "./assets/css/style.css";
@@ -13,7 +13,7 @@ import "./assets/css/style.css";
 const app = createApp(App);
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes,
 });
 
