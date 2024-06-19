@@ -46,12 +46,12 @@ import UserService from "@/js/services/user";
 import { computed, onMounted, reactive, ref, defineAsyncComponent } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import { uploadToFirebase } from "../js/services/firebaseUpload";
-// import BackButton from "./BackButton.vue";
+import { uploadToFirebase } from "@/js/services/firebaseUpload";
+// import BackButton from "@/components/BackButton.vue";
 
 export default {
   components: {
-    BackButton: defineAsyncComponent(() => import("./BackButton.vue")),
+    BackButton: defineAsyncComponent(() => import("@/components/BackButton.vue")),
   },
   setup() {
     const store = useStore();

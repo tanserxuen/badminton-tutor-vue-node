@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "../css/authpages.css";
-@import "../css/basepages.css";
+@import "./authpages.css";
+@import "./basepages.css";
 
 :root {
   --default-font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",

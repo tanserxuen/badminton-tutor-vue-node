@@ -87,13 +87,13 @@
 <script>
 import { computed, ref, defineAsyncComponent } from "vue";
 import { useStore } from "vuex";
-import PostServices from "../js/services/post";
-import getDateFromTimestamp from "../js/services/date";
+import PostServices from "@/js/services/post";
+import getDateFromTimestamp from "@/js/services/date";
 import { useRouter } from "vue-router";
 
 export default {
   components: {
-    BackButton: defineAsyncComponent(() => import("./BackButton.vue")),
+    BackButton: defineAsyncComponent(() => import("@/components/BackButton.vue")),
   },
   props: {
     index: {

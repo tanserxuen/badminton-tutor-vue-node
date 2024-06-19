@@ -18,7 +18,7 @@
       <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50">
 
         <a to="/dashboard" class="flex items-center ps-2.5 mb-5">
-          <img src="../assets/images/logo.png" class="h-6 me-3 sm:h-7" alt="Flowbite Logo"
+          <img src="@/assets/images/logo.png" class="h-6 me-3 sm:h-7" alt="Flowbite Logo"
             style="border-radius: 50%;" />
           <span class="self-center text-xl font-semibold whitespace-nowrap">BadmintonTutor</span>
         </a>
@@ -132,7 +132,7 @@
 </template>
 
 <script>
-// import AuthService from "../js/services/auth.js";
+// import AuthService from "@/js/services/auth.js";
 import store from "@/js/store.js";
 import { computed } from "vue";
 // import { useRouter } from "vue-router";

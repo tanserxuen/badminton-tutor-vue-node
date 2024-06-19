@@ -1,21 +1,20 @@
-import SignUp from "../components/SignUp.vue";
-import SignIn from "../components/SignIn.vue";
-import ViewProfile from "../components/ViewProfile.vue";
-import UpdateProfile from "../components/UpdateProfile.vue";
-import DashBoard from "../components/DashBoard.vue";
-import UpdatePassword from "../components/UpdatePassword.vue";
-import ResetPassword from "../components/ResetPassword.vue";
-import PoseCounter from "../components/PoseCounter.vue";
-import TutorialDisplay from "../components/TutorialDisplay.vue";
-import PostsIndex from "../components/PostsIndex.vue";
-import PostView from "../components/PostView.vue";
-import PostCreate from "../components/PostCreate.vue";
-import PostEdit from "../components/PostEdit.vue";
-import FeedsIndex from "../components/FeedsIndex.vue";
-import ConnectionIndex from "../components/ConnectionIndex.vue";
-import FeedbackHistory from "../components/FeedbackHistory.vue";
-import DetailedAnalytics from "../components/DetailedAnalytics.vue";
-import TrainingPose from "../components/TrainingPose.vue";
+import SignUp from "@/components/Authentication/SignUp.vue";
+import SignIn from "@/components/Authentication/SignIn.vue";
+import ViewProfile from "@/components/UserManagement/ViewProfile.vue";
+import UpdateProfile from "@/components/UserManagement/UpdateProfile.vue";
+import DashBoard from "@/components/DashBoard.vue";
+import UpdatePassword from "@/components/UserManagement/UpdatePassword.vue";
+import ResetPassword from "@/components/Authentication/ResetPassword.vue";
+import TutorialDisplay from "@/components/Demontration/TutorialDisplay.vue";
+import PostsIndex from "@/components/Post/PostsIndex.vue";
+import PostView from "@/components/Post/PostView.vue";
+import PostCreate from "@/components/Post/PostCreate.vue";
+import PostEdit from "@/components/Post/PostEdit.vue";
+import FeedsIndex from "@/components/Connection/FeedsIndex.vue";
+import ConnectionIndex from "@/components/Connection/ConnectionIndex.vue";
+import FeedbackHistory from "@/components/AnalyticsReport/FeedbackHistory.vue";
+import DetailedAnalytics from "@/components/AnalyticsReport/DetailedAnalytics.vue";
+import TrainingPose from "@/components/Demontration/TrainingPose.vue";
 
 const routes = [
   { path: "/signin", name:"SignIn", component: () => SignIn },
@@ -25,7 +24,6 @@ const routes = [
   { path: "/dashboard", name:"DashBoard", component: () => DashBoard },
   { path: "/update-password", name:"UpdatePassword", component: () => UpdatePassword },
   { path: "/reset-password", name:"ResetPassword", component: () => ResetPassword },
-  { path: "/pose-counter", name:"PoseCounter",  component: () => PoseCounter},
   { path: "/tutorial-display/:tutorial/:name", name:"TutorialDisplay", component: () => TutorialDisplay, props: true},
   { path: "/posts", name:"PostsIndex", component: () => PostsIndex },
   { path: "/post/:index", name:"PostView", component: () => PostView, props: true },

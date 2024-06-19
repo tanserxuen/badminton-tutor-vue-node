@@ -52,12 +52,12 @@ import FeedbackService from "@/js/services/feedback";
 import { useStore } from "vuex";
 import getDateFromTimestamp from "@/js/services/date.js";
 // import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
-// import BackButton from "./BackButton.vue";
+// import BackButton from "@/components/BackButton.vue";
 
 export default {
   components: {
     // LottieAnimation,
-    BackButton: defineAsyncComponent(() => import("./BackButton.vue")),
+    BackButton: defineAsyncComponent(() => import("@/components/BackButton.vue")),
   },
   setup() {
     const store = useStore();

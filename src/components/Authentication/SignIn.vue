@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="auth_main-container">
-      <img class="auth_logo object-cover rounded-full m-auto" src="../assets/images/logo.png" alt="Badminton Tutor" />
+      <img class="auth_logo object-cover rounded-full m-auto" src="@/assets/images/logo.png" alt="Badminton Tutor" />
       <h1 class="auth-page__heading">Sign In</h1>
 
       <template v-if="error">
@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import AuthService from "../js/services/auth.js";
+import AuthService from "@/js/services/auth.js";
 import { ref } from "vue";
 import store from "@/js/store.js";
 import { useRouter } from "vue-router";

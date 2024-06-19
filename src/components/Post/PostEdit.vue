@@ -56,7 +56,7 @@ import { reactive, ref } from "vue";
 import PostService from "@/js/services/post.js";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import { uploadToFirebase } from "../js/services/firebaseUpload";
+import { uploadToFirebase } from "@/js/services/firebaseUpload";
 
 export default {
   props: {

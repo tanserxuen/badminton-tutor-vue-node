@@ -1,6 +1,6 @@
-import PostService from "../js/services/post.js";
-import UserService from "../js/services/user.js";
-import AuthService from "../js/services/auth.js";
+import PostService from "@/js/services/post.js";
+import UserService from "@/js/services/user.js";
+import AuthService from "@/js/services/auth.js";
 import { createStore } from "vuex";
 
 const store = createStore({

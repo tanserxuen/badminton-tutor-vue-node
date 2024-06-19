@@ -41,16 +41,14 @@
 import { computed, reactive, ref, defineAsyncComponent } from "vue";
 import { useStore } from "vuex";
 import PostService from "@/js/services/post.js";
-// import DetailedAnalytics from "./DetailedAnalytics.vue";
 import html2canvas from "html2canvas";
-// import BackButton from "./BackButton.vue";
-import { uploadToFirebase } from "../js/services/firebaseUpload";
+import { uploadToFirebase } from "@/js/services/firebaseUpload";
 import { useRouter } from "vue-router";
 
 export default {
   components: {
-    DetailedAnalytics: defineAsyncComponent(() => import("./DetailedAnalytics.vue")),
-    BackButton: defineAsyncComponent(() => import("./BackButton.vue")),
+    DetailedAnalytics: defineAsyncComponent(() => import("@/components/AnalyticsReport/DetailedAnalytics.vue")),
+    BackButton: defineAsyncComponent(() => import("@/components/BackButton.vue")),
   },
   setup() {
     const store = useStore();

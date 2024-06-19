@@ -49,7 +49,7 @@
 <script>
 import { computed } from "vue";
 import { useStore } from "vuex";
-import AuthService from "../js/services/auth.js";
+import AuthService from "@/js/services/auth.js";
 import { useRouter } from "vue-router";
 // import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
 

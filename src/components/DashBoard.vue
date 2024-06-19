@@ -43,7 +43,7 @@
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
 // import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
-import { snakeToTitleCase } from "../js/services/sentence";
+import { snakeToTitleCase } from "@/js/services/sentence";
 
 export default {
   // components: {

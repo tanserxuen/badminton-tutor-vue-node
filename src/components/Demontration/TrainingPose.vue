@@ -69,7 +69,7 @@
 <script>
 import TutorialService from "@/js/services/tutorials";
 import { onMounted, ref, reactive, computed } from "vue";
-import { uploadToFirebase } from "../js/services/firebaseUpload";
+import { uploadToFirebase } from "@/js/services/firebaseUpload";
 // import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
 
 export default {

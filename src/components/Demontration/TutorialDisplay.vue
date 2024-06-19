@@ -17,14 +17,12 @@
 </template>
 
 <script>
-
-import tutorialsJson from "../js/tutorialJson.json"
+import tutorialsJson from "@/assets/json/tutorialJson.json"
 import { ref, computed, defineAsyncComponent } from "vue";
-// import BackButton from "./BackButton.vue";
 
 export default {
   components: {
-    BackButton: defineAsyncComponent(() => import("./BackButton.vue")),
+    BackButton: defineAsyncComponent(() => import("@/components/BackButton.vue")),
   },
   props: {
     tutorial: {

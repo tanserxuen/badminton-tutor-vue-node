@@ -29,7 +29,7 @@ import { useStore } from "vuex";
 
 export default {
   components: {
-    PostView: defineAsyncComponent(() => import("./PostView.vue")),
+    PostView: defineAsyncComponent(() => import("@/components/Post/PostView.vue")),
     // LottieAnimation 
   },
   setup() {

@@ -28,11 +28,11 @@
 import { computed, ref, defineAsyncComponent } from "vue";
 import AuthService from "@/js/services/auth";
 import store from "@/js/store";
-// import BackButton from "./BackButton.vue";
+// import BackButton from "@/components/BackButton.vue";
 
 export default {
   components: {
-    BackButton: defineAsyncComponent(() => import("./BackButton.vue")),
+    BackButton: defineAsyncComponent(() => import("@/components/BackButton.vue")),
   },
   setup() {
     const oldPassword = ref("");

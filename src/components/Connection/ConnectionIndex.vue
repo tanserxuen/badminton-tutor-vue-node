@@ -81,7 +81,7 @@ import getDateFromTimestamp from "@/js/services/date.js";
 export default {
   components: {
     // LottieAnimation,
-    BackButton: defineAsyncComponent(() => import("./BackButton.vue")),
+    BackButton: defineAsyncComponent(() => import("@/components/BackButton.vue")),
   },
   setup() {
     const store = useStore();
