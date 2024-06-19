@@ -3,7 +3,7 @@
     <h2 class="base-page__heading-short" v-if="!isConnection">
       <BackButton />
       Post View
-      <router-link to="#" class="float-end"><i class="fas fa-trash"></i></router-link>
+      <button class="float-end" @click="deletePost()"><i class="fas fa-trash"></i></button>
       <router-link :to="{ name: 'PostEdit', params: { index: index } }" class="float-end me-3"><i
           class="fas fa-pencil-alt"></i></router-link>
     </h2>
@@ -89,6 +89,7 @@ import { computed, ref, defineAsyncComponent } from "vue";
 import { useStore } from "vuex";
 import PostServices from "../js/services/post";
 import getDateFromTimestamp from "../js/services/date";
+import { useRouter } from "vue-router";
 
 export default {
   components: {
@@ -105,6 +106,7 @@ export default {
     },
   },
   setup(props) {
+    const router = useRouter();
     const store = useStore();
     const comment = ref("");
     const post = ref(null);
@@ -121,6 +123,15 @@ export default {
       if (!post.value) return;
       return getDateFromTimestamp(post.value?.created_at);
     });
+
+    const deletePost = async () => {
+      if (!post.value) return;
+      console.log("del post");
+      PostServices.deletePost({ postId: post.value.id }).then((res) => {
+        console.log(res);
+        router.push({ name: "PostsIndex" })
+      });
+    };
 
     const updatePost = () => {
       if (!post.value) return;
@@ -171,7 +182,8 @@ export default {
       isCommentsTabOpen,
       comment,
       date,
-      likedPost
+      likedPost,
+      deletePost
     };
   },
 };
