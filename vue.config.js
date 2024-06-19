@@ -1,5 +1,21 @@
+// const BundleAnalyzerPlugin =
+//   require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+// module.exports = {
+//   configureWebpack: {
+//     plugins: [new BundleAnalyzerPlugin()],
+//   },
+// };
+
 const { defineConfig } = require("@vue/cli-service");
 module.exports = defineConfig({
+  configureWebpack: {
+    optimization: {
+      splitChunks: {
+        minSize: 10000,
+        maxSize: 250000,
+      },
+    },
+  },
   transpileDependencies: true,
   devServer: {
     allowedHosts: [
