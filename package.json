@@ -8,7 +8,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "postinstall": "if test \"$VUE_FAPP_MODE\" = \"prod\" ; then npm install && npm run build ; fi "
+    "postinstall": "if test \"$VUE_FAPP_MODE\" = \"prod\" ; then npm run build ; fi ",
+    "heroku-prebuild": "npm install"
   },
   "author": "Joan Tan",
   "dependencies": {
