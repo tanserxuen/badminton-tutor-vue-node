@@ -63,14 +63,17 @@ img {
 
 .d-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 20px;
+
   @media screen and (max-width: 640px) {
-  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
   }
 }
 
-.d-grid > div {
+.d-grid>div {
+  height: 250px;
+
   @media screen and (max-width: 640px) {
     width: 100%;
     height: 100%;
