@@ -111,13 +111,14 @@ export default {
     });
 
     const getBadgeNumbers = (status) => {
-      const num = userTypes[status].length;
+      if(!userTypes) return '';
+      const num = userTypes[status]?.length;
       if (status == "following" || status == "follower") return '';
       return num > 0 ? num : '';
     }
 
     const badgeNumberClass = (status) => {
-      const num = userTypes[status].length && !(status == "following" || status == "follower");
+      const num = userTypes[status]?.length && !(status == "following" || status == "follower");
       return num > 0 ? 'bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full' : '';
     }
 
@@ -159,7 +160,27 @@ export default {
         return;
       }
 
-      // to accept or cancel request, we need to change the status to connect
+      // to cancel request, we need to change the status to connect
+      if (activeTab == "requesting") {
+        console.log({
+          userId: userDetails.value?.id,
+          targetUserId,
+          newStatus: "",
+          oldStatus: activeTab,
+        });
+        UserService.updateConnects({
+          userId: userDetails.value?.id,
+          targetUserId,
+          newStatus: "",
+          oldStatus: activeTab,
+        }).then((response) => {
+          console.log(response);
+          fetchUserConnections();
+        });
+        return;
+      }
+
+      // to accept request, we need to change the status to connect
       const oldStatusIndex = statuses.indexOf(activeTab);
       const newStatus = statuses[oldStatusIndex + 1];
       console.log({
@@ -214,7 +235,8 @@ export default {
       isLoading,
       getBadgeNumbers,
       badgeNumberClass,
-      keyword, filteredUsers
+      keyword, 
+      filteredUsers
     };
   },
 };
