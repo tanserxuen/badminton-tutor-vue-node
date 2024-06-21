@@ -47,13 +47,14 @@ export default {
 </script>
 
 <style scoped>
-video,
 img {
   height: 270px;
   width: 480px;
 }
 
 video {
-  object-fit: contain;
+  /* object-fit: contain; */
+  /* height: 270px; */
+  width: 100%;
 }
 </style>

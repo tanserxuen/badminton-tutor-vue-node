@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="auth_main-container">
+    <form class="auth_main-container" @submit.prevent="submitForm()">
       <img class="auth_logo object-cover rounded-full m-auto" src="@/assets/images/logo.png" alt="Badminton Tutor" />
       <h1 class="auth-page__heading">Sign In</h1>
 
@@ -27,7 +27,7 @@
         error = null;
       }
         " required />
-      <button @click="submitForm" class="auth-page__submit-button">
+      <button class="auth-page__submit-button">
         Sign in
       </button>
 
@@ -35,7 +35,7 @@
         <router-link to="/signup">Register</router-link>
         <router-link to="/reset-password">Forget Password</router-link>
       </p>
-    </div>
+    </form>
   </div>
 </template>
 

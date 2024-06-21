@@ -21,7 +21,7 @@
           </button>
         </div>
       </div>
-      <template v-if="feedbacks.length != 0">
+      <template v-if="filteredFeedbacks.length != 0">
         <div v-show="!isLoading">
           <ol class="relative border-l-2 border-amber-200">
             <li class="mb-10 ms-4" v-for="(feedback, index) in filteredFeedbacks" :key="index">
@@ -40,6 +40,7 @@
         <!-- <lottie-animation path="images/loading.json" v-show="isLoading" :width="150" :height="150" /> -->
       </template>
       <template v-else>
+        <a href="http://localhost:3000/test.html" class="text-amber-500 text-xl font-semibold underline hover:underline-offset-4">Start Training Now!</a>
         <!-- <lottie-animation path="images/no_data_found.json" :width="256" :height="256" /> -->
       </template>
     </div>
@@ -84,11 +85,11 @@ export default {
             return feedbackDate >= startDate.value && feedbackDate <= endDate.value;
           });
         } else {
-          filteredFeedbacks.value = feedbacks.value;
+          filteredFeedbacks.value = Object.freeze(feedbacks.value);
         }
       } catch (error) {
         console.log(error);
-        filteredFeedbacks.value = feedbacks.value;
+        filteredFeedbacks.value = Object.freeze(feedbacks.value);
       }
     };
 
@@ -98,7 +99,7 @@ export default {
       }, 1500);
       FeedbackService.fetchFeedback(user.value?.id).then((res) => {
         feedbacks.value = JSON.stringify(res.data) == '{}' ? [] : res.data;
-        filteredFeedbacks.value = feedbacks.value;
+        filteredFeedbacks.value = Object.freeze(feedbacks.value);
       });
     });
 

@@ -109,7 +109,7 @@
                   class="fas fa-exclamation" title="Update Your Profile!"></i></span>
             </router-link>
           </li>
-          <li @click="toggleSidebar">
+          <!-- <li @click="toggleSidebar">
             <button @click="logoutUser" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-amber-50 group">
               <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1"
@@ -122,7 +122,7 @@
               </svg>
               <span class="flex-1 ms-3 whitespace-nowrap">Logout</span>
             </button>
-          </li>
+          </li> -->
         </ul>
       </div>
     </aside>

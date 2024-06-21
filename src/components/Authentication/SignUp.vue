@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="auth_main-container"> <img class="auth_logo object-cover rounded-full m-auto"
-        src="@/assets/images/logo.png" alt="Badminton Tutor" />
+    <form class="auth_main-container" @submit.prevent="submitForm()">
+      <img class="auth_logo object-cover rounded-full m-auto" src="@/assets/images/logo.png" alt="Badminton Tutor" />
       <h1 class="auth-page__heading">Sign Up</h1>
 
       <template v-if="error">
@@ -26,8 +26,9 @@
         password = event.target.value;
         error = null;
       }
-        " required />
-      <button @click="submitForm" class="auth-page__submit-button">
+        " required pattern="(?=.*\d)(?=.*[\W_]).{7,}"
+        title="Minimum of 7 characters. Should have at least one special character and one number." minlength="7" />
+      <button class="auth-page__submit-button">
         Submit
       </button>
 
@@ -35,7 +36,7 @@
         <router-link to="/signin">Login</router-link>
         <router-link to="/reset-password">Forget Password</router-link>
       </p>
-    </div>
+    </form>
   </div>
 </template>
 

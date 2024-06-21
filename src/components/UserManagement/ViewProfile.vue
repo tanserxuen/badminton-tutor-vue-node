@@ -24,14 +24,22 @@
           {{ userDetails.noOfFollowing }}
         </div>
       </div>
+      <div class="flex">
+        <span class="profile__description--icon"><i class="fab fa-linkedin"></i>{{ userDetails.linkedin
+          }}</span>
+        <span class="profile__description--icon"><i class="font-lg fab fa-square-instagram"></i>{{ userDetails.instagram
+          }}</span>
+        <span class="profile__description--icon"><i class="fab fa-twitter"></i>{{ userDetails.twitter }}</span>
+        <span class="profile__description--icon"><i class="fab fa-facebook"></i>{{ userDetails.facebook }}</span>
+      </div>
     </div>
     <div class="base-page__inner-margin">
       <span class="profile__settings_title">Settings</span>
-      <!-- <router-link to="/update-password">
-        <div class="profile__settings_bar">Update Password
+      <router-link to="/post-create" v-if="!userDetails.noOfPosts">
+        <div class="profile__settings_bar">Create a Post
           <i class="fas fa-chevron-right"></i>
         </div>
-      </router-link> -->
+      </router-link>
       <router-link to="/update-profile">
         <div class="profile__settings_bar">
           Update Profile
@@ -227,7 +235,37 @@ export default {
 }
 
 .profile__name,
-.profile__description {
+.profile__description,
+.profile__description--icon {
   font-size: large;
+}
+
+.profile__description--icon {
+  display: flex;
+  padding-right: 25px;
+  margin-bottom: 100px;
+}
+
+.fa-square-instagram {
+  color: #c32aa3;
+}
+
+.fa-facebook {
+  color: #1877f2;
+}
+
+.linkedin {
+  color: #0a66c2;
+}
+
+.fa-twitter {
+  color: #1da1f2;
+}
+
+[class^="fab"],
+.fa-square-instagram {
+  padding-right: 10px;
+  font-size: 30px;
+  margin-block: 3px;
 }
 </style>

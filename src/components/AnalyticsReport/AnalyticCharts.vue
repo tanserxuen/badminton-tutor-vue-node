@@ -1,10 +1,12 @@
 <template>
   <div>
-    <b>{{ snakeToTitleCase(title) }}</b>
-    <template v-if="!data">
+    <template v-if="!data || Object.values(data).length === 0">
+      <a href="http://localhost:3000/test.html"
+        class="text-amber-500 text-xl font-semibold underline hover:underline-offset-4">Start Training Now!</a>
       <!-- <lottie-animation path="images/no_data_found.json" :width="150" :height="150" /> -->
     </template>
     <template v-else-if="chartType === 'Bar' && data">
+      <b>{{ snakeToTitleCase(title) }}</b>
       <VueChart :data="data" :margin="margin" :direction="direction" :size="{ width: 300, height: 210 }">
         <template #layers>
           <Grid strokeDasharray="2,2" />

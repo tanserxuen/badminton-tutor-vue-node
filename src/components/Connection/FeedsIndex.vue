@@ -3,6 +3,7 @@
     <h2 class="base-page__heading-short">
       Feeds
       <router-link class="float-end" to="/connection"><i class="fas fa-user-plus"
+          :class="userDetails?.requests?.length> 0 ? 'notification' : null"
           title="Connect with others"></i></router-link>
     </h2>
     <div class="base-page__inner-margin">
@@ -35,14 +36,32 @@ export default {
   setup() {
     const store = useStore();
     const posts = computed(() => store.getters.getNonUserPosts);
+    const userDetails = computed(() => store.getters.getUserDetails);
     const isLoading = computed(() => !!posts.value);
 
     return {
       posts,
-      isLoading
+      isLoading,
+      userDetails
     };
   },
 };
 </script>
 
-<style></style>
+<style scoped>
+.fas.fa-user-plus {
+  position: relative;
+}
+
+.notification::after {
+  content: " ";
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background-color: red;
+  right: -5px;
+  top: -7px;
+  border-radius: 100%;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+}
+</style>
