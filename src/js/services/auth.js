@@ -45,11 +45,12 @@ async function resetPassword(email) {
   }
 }
 
-async function updatePassword(email, password) {
+async function updatePassword(email, newPassword, oldPassword) {
   try {
     const response = await axios.post("/auth/update-password", {
       email,
-      password,
+      newPassword,
+      oldPassword,
     });
     return response;
   } catch (error) {

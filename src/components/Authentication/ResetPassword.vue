@@ -11,7 +11,7 @@
       </template>
       <template v-if="success">
         <div class="success-text" role="info">
-          {{ success }} Check your email for the reset link.
+          {{ success }}
         </div>
       </template>
 
@@ -51,7 +51,7 @@ export default {
           if (response.status === 200) {
             success.value = response.data;
             setTimeout(() => {
-              router.push({ name: "SignIn" });
+              router.push({ name: "UpdatePassword", params: { email: email.value } });
             }, 1500);
           } else {
             throw new Error(response);
