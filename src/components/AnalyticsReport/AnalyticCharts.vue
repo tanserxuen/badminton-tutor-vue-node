@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div class="mt-5">
+    <b>{{ snakeToTitleCase(title) }}</b>
     <template v-if="!data || Object.values(data).length === 0">
       <a href="http://localhost:3000/test.html"
         class="text-amber-500 text-xl font-semibold underline hover:underline-offset-4">Start Training Now!</a>
       <!-- <lottie-animation path="images/no_data_found.json" :width="150" :height="150" /> -->
     </template>
     <template v-else-if="chartType === 'Bar' && data">
-      <b>{{ snakeToTitleCase(title) }}</b>
       <VueChart :data="data" :margin="margin" :direction="direction" :size="{ width: 300, height: 210 }">
         <template #layers>
           <Grid strokeDasharray="2,2" />
@@ -15,33 +15,11 @@
       </VueChart>
     </template>
     <template v-else-if="chartType === 'Line' && data">
-      <VueChart :size="{ width: 300, height: 210 }" :data="data" :margin="margin" :direction="direction" :axis="axis">
-        <template #layers>
-          <Grid strokeDasharray="2,2" />
-          <Area :dataKeys="['name', 'pl']" type="monotone" :areaStyle="{ fill: 'url(#grad)' }" />
-          <Line :dataKeys="['name', 'pl']" type="monotone" :lineStyle="{
-            stroke: '#9f7aea',
-          }" />
-          <Marker v-if="marker" :value="1000" label="Mean." color="green" strokeWidth="2" strokeDasharray="6 6" />
-          <defs>
-            <linearGradient id="grad" gradientTransform="rotate(90)">
-              <stop offset="0%" stop-color="#be90ff" stop-opacity="1" />
-              <stop offset="100%" stop-color="white" stop-opacity="0.4" />
-            </linearGradient>
-          </defs>
-        </template>
-
-        <template #widgets>
-          <Tooltip borderColor="#48CAE4" :config="{
-            pl: { color: '#9f7aea' },
-            avg: { hide: true },
-            inc: { hide: true },
-          }" />
-        </template>
-      </VueChart>
+      <canvas id="myLineChart" width="380" height="180">
+      </canvas>
     </template>
     <template v-else-if="chartType === 'PolarArea' && data">
-      <PolarAreaChart :chartData="testData" />
+      <PolarAreaChart :chartData="polarAreaData" />
     </template>
   </div>
 </template>
@@ -51,12 +29,8 @@ import {
   Chart as VueChart,
   Grid,
   Bar,
-  Line,
-  Tooltip,
-  Marker,
-  Area,
 } from "vue3-charts";
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 // import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
 import { PolarAreaChart } from 'vue-chart-3';
 import { Chart, registerables } from "chart.js";
@@ -71,10 +45,6 @@ export default {
     VueChart,
     Grid,
     Bar,
-    Line,
-    Tooltip,
-    Marker,
-    Area,
     // LottieAnimation,
     PolarAreaChart
   },
@@ -119,12 +89,10 @@ export default {
       "#FF4500"  // Orange Red
     ];
 
-    const testData = computed(() => {
-      if (!props.data) return null;
-      if (props.title !== 'movementAccuracyObj') return null;
+    const polarAreaData = computed(() => {
       const arrLength = Object.keys(props.data).length;
       return {
-        labels: Object.keys(props.data).map(e => snakeToTitleCase(e).replace("-", " ")),
+        labels: Object.keys(props.data),
         datasets: [
           {
             data: Object.values(props.data),
@@ -134,11 +102,42 @@ export default {
       }
     });
 
+    const createLineChart = () => {
+      const ctx = document.getElementById('myLineChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: props.data.noOfTrials,
+          datasets: props.data.datasets
+        }, options: {
+          scales: {
+            y: {
+              display: true,
+            },
+            x: {
+              display: true, ticks: {
+                // Include a dollar sign in the ticks
+                callback: function (value) {
+                  return '#' + value;
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+
+    onMounted(() => {
+      if (props.chartType === 'Line') {
+        createLineChart();
+      }
+    });
+
     return {
       direction,
       margin,
-      testData,
-      snakeToTitleCase
+      polarAreaData,
+      snakeToTitleCase,
     };
   },
 };

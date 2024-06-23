@@ -9,7 +9,7 @@
       </button>
     </h2>
 
-    <form class="mx-auto" style="max-width: 360px" encType="multipart/form-data">
+    <form class="mx-auto" style="max-width: 420px" encType="multipart/form-data">
       <div v-show="isChart">
         <DetailedAnalytics :isChart="isChart" />
       </div>

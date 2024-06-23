@@ -14,8 +14,8 @@
             <small>per {{ totalRegisteredDays }} days</small>
           </template>
           <template v-else-if="i == 1">
-            <p> {{ getHighestScore(userDetails?.[activity]) }} </p>
-            <small>{{ snakeToTitleCase(highestScoreTechnique) }}</small>
+            <p> {{ getHighestScore.maxValue }} </p>
+            <small>{{ snakeToTitleCase(getHighestScore.maxKey) }}</small>
           </template>
           <template v-else>
             <!-- <lottie-animation path="images/no_data_found.json" :width="150" :height="150" /> -->
@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { computed, ref } from "vue";
+import { computed } from "vue";
 import { useStore } from "vuex";
 // import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
 import { snakeToTitleCase } from "@/js/services/sentence";
@@ -54,17 +54,9 @@ export default {
     const userDetails = computed(() => store.state?.currentUserDetails ?? "");
     const activityNames = [
       "activeDays",
-      "movementAccuracyObj",
-      // "performance",
-      // "growth",
+      "movementAccuracy",
     ];
     const isLoading = computed(() => !userDetails.value);
-
-    const highestScoreTechnique = ref("");
-
-    const getHighestScoreTechnique = (obj, index) => {
-      highestScoreTechnique.value = Object.keys(obj)[index];
-    }
 
     const getLatestElement = (arr, activity) => {
       const ele = arr[arr.length - 1];
@@ -80,16 +72,30 @@ export default {
       return Math.floor(diffInDays);
     });
 
-    const getHighestScore = (obj) => {
-      if (!obj || Object.values(obj)?.length == 0) {
-        highestScoreTechnique.value = "No Data";
-        return "0";
+    const getHighestScore = computed(() => {
+      if (!userDetails.value?.movementAccuracy) return {
+        maxKey: 'No data found',
+        maxValue: 0
+      };
+      let maxKey = '';
+      let maxValue = 101;
+      const data = userDetails.value.movementAccuracy
+
+      for (const key in data) { // eslint-disable-next-line
+        if (data.hasOwnProperty(key)) {
+          const entry = data[key];
+          for (const subKey in entry) { // eslint-disable-next-line
+            if (entry.hasOwnProperty(subKey) && subKey !== 'created_at') {
+              if (entry[subKey] > maxValue) {
+                maxValue = entry[subKey].toFixed(2);
+                maxKey = subKey;
+              }
+            }
+          }
+        }
       }
-      const highestScore = Math.max(...Object.values(obj));
-      const scoreIndex = Object.values(obj).indexOf(highestScore);
-      getHighestScoreTechnique(obj, scoreIndex);
-      return highestScore.toFixed(2);
-    };
+      return { maxKey, maxValue };
+    });
 
     return {
       userDetails,
@@ -97,7 +103,6 @@ export default {
       activityNames,
       getLatestElement,
       getHighestScore,
-      highestScoreTechnique,
       totalRegisteredDays,
       snakeToTitleCase
     };
