@@ -33,7 +33,7 @@
       </div>
     </div>
     <div class="base-page__inner-margin">
-      <span class="profile__settings_title">Settings</span>
+      <p class="profile__settings_title">Settings</p>
       <router-link to="/post-create" v-if="!userDetails.noOfPosts">
         <div class="profile__settings_bar">Create a Post
           <i class="fas fa-chevron-right"></i>
@@ -110,7 +110,7 @@ export default {
 }
 
 .profile__settings_bar {
-  margin-block: 0.5rem;
+  margin-bottom: 0.75rem;
   padding-inline: 1.5rem;
   padding-block: 0.5rem;
   background: white;
@@ -127,9 +127,11 @@ export default {
 .profile__settings_title {
   font-size: 1.5rem;
   font-weight: 700;
+  margin-bottom: 1rem;
 
   @media screen and (max-width: 640px) {
     font-size: 16px;
+    margin-bottom: 0.5rem;
   }
 }
 
