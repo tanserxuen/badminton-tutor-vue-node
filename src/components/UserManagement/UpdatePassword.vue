@@ -3,8 +3,8 @@
     <form class="auth_main-container" @submit.prevent="submitForm()"> <img
         class="auth_logo object-cover rounded-full m-auto" src="@/assets/images/logo.png" alt="Badminton Tutor" />
       <h1 class="auth-page__heading">Update Password</h1>
-      <template v-if="error - text">
-        <p class="error">{{ error }}</p>
+      <template v-if="error">
+        <p class="error-text">{{ error }}</p>
       </template>
       <template v-if="success">
         <div class="success-text" role="info">
@@ -14,11 +14,13 @@
 
       <label for="old-password" class="auth-page__label">Old Password</label>
       <input type="password" name="old-password" placeholder="Old Password" class="auth-page__input"
-        :value="oldPassword" @input="(event) => (oldPassword = event.target.value)" />
+        :value="oldPassword" @input="(event) => (oldPassword = event.target.value)" required />
       <label for="new-password" class="auth-page__label">New Password</label>
       <input type="password" name="new-password" placeholder="New Password" class="auth-page__input"
-        :value="newPassword" @input="(event) => (newPassword = event.target.value)" />
-      <button @click="submitForm" class="auth-page__submit-button">
+        :value="newPassword" @input="(event) => (newPassword = event.target.value)" required
+        pattern="(?=.*\d)(?=.*[\W_]).{7,}"
+        title="Minimum of 7 characters. Should have at least one special character and one number." minlength="7" />
+      <button class="auth-page__submit-button">
         Update
       </button>
 
@@ -64,11 +66,11 @@ export default {
               router.push({ name: "SignIn" });
             }, 1500);
           } else {
+            error.value = response.response?.data?.code;
             throw new Error(response);
           }
         })
         .catch((e) => {
-          error.value = e;
           console.error(e);
         });
     };
