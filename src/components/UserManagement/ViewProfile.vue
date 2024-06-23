@@ -4,13 +4,12 @@
     <div class="profile">
       <b class="profile__name">{{ userDetails.name }}</b>
       <template v-if="userDetails.image == ''">
-        <!-- <lottie-animation path="images/profile.json" :width="220" :height="220" /> -->
+         <LottieAnimation path="images/profile.json" :width="300" :height="300" />
       </template>
       <template v-else>
         <img :src="userDetails.image" :alt="userDetails.name" class="profile__avatar" />
       </template>
 
-      <!-- <span class="styling"></span> -->
       <span class="profile__description">{{ userDetails.description }}</span>
       <div class="profile_details">
         <div class="profile_details__text1">Posts</div>
@@ -59,12 +58,12 @@ import { computed } from "vue";
 import { useStore } from "vuex";
 import AuthService from "@/js/services/auth.js";
 import { useRouter } from "vue-router";
-// import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
+import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
 
 export default {
-  // components: {
-  //   LottieAnimation,
-  // },
+  components: {
+    LottieAnimation,
+  },
   setup() {
     const store = useStore();
     const userDetails = computed(() => store.state?.currentUserDetails ?? "");

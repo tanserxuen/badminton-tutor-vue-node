@@ -6,7 +6,7 @@
       <!-- <button class="primary-button" @click="isEdit = !isEdit">
         isEdit {{ isEdit }}
       </button> -->
-      <div v-show="isEdit">
+      <!-- <div v-show="isEdit">
         <button class="primary-button" @click="createTutorials">
           Create Tutorials
         </button>
@@ -50,8 +50,8 @@
           </div>
           <button class="auth-page__submit-button">Update Training</button>
         </form>
-      </div>
-      <!-- <lottie-animation path="images/loading.json" v-show="isLoading" :width="150" :height="150" /> -->
+      </div> -->
+      <lottie-animation path="images/loading.json" v-show="isLoading" :width="150" :height="150" />
       <div v-for="name in tutorialKeys" :key="name" v-show="!isEdit && !isLoading">
         <h3 class="py-2 text-lg font-extrabold capitalize pt-10">{{ name }}</h3>
         <div class="grid">
@@ -70,12 +70,12 @@
 import TutorialService from "@/js/services/tutorials";
 import { onMounted, ref, reactive, computed } from "vue";
 import { uploadToFirebase } from "@/js/services/firebaseUpload";
-// import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
+import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
 
 export default {
-  // components: {
-  //   LottieAnimation,
-  // },
+  components: {
+    LottieAnimation,
+  },
   setup() {
     const tutorials = ref([]);
     const isEdit = ref(false);

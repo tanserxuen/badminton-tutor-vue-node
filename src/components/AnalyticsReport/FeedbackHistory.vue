@@ -36,12 +36,12 @@
             </li>
           </ol>
         </div>
-        <!-- <lottie-animation path="images/loading.json" v-show="isLoading" :width="150" :height="150" /> -->
+        <lottie-animation path="images/loading.json" v-show="isLoading" :width="150" :height="150" />
       </template>
       <template v-else>
         <a href="http://localhost:3000/test.html"
           class="text-amber-500 text-xl font-semibold underline hover:underline-offset-4">Start Training Now!</a>
-        <!-- <lottie-animation path="images/no_data_found.json" :width="256" :height="256" /> -->
+        <lottie-animation path="images/no_data_found.json" :width="350" :height="350" />
       </template>
     </div>
   </div>
@@ -52,12 +52,11 @@ import { computed, onMounted, ref, defineAsyncComponent, watch } from "vue";
 import FeedbackService from "@/js/services/feedback";
 import { useStore } from "vuex";
 import getDateFromTimestamp from "@/js/services/date.js";
-// import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
-// import BackButton from "@/components/BackButton.vue";
+import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
 
 export default {
   components: {
-    // LottieAnimation,
+    LottieAnimation,
     BackButton: defineAsyncComponent(() => import("@/components/BackButton.vue")),
   },
   setup() {

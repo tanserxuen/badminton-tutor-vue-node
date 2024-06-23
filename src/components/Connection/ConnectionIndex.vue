@@ -61,10 +61,10 @@
           </div>
         </template>
         <template v-else-if="isLoading">
-          <!-- <lottie-animation path="images/loading.json" :width="150" :height="150" /> -->
+          <lottie-animation path="images/loading.json" :width="150" :height="150" />
         </template>
         <template v-else>
-          <!-- <lottie-animation path="images/no_data_found.json" :width="256" :height="256" /> -->
+          <lottie-animation path="images/no_data_found.json" :width="350" :height="350" />
         </template>
       </div>
     </div>
@@ -76,11 +76,11 @@ import { computed, defineAsyncComponent, onMounted, reactive, ref } from "vue";
 import UserService from "@/js/services/user.js";
 import { useStore } from "vuex";
 import getDateFromTimestamp from "@/js/services/date.js";
-// import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
+import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
 
 export default {
   components: {
-    // LottieAnimation,
+    LottieAnimation,
     BackButton: defineAsyncComponent(() => import("@/components/BackButton.vue")),
   },
   setup() {

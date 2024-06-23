@@ -14,7 +14,7 @@
         </div>
       </template>
       <template v-else>
-        <!-- <lottie-animation path="images/no_data_found.json" /> -->
+        <lottie-animation path="images/no_data_found.json"  :width="350" :height="350" class="mx-auto"/>
       </template>
     </div>
   </div>
@@ -23,12 +23,12 @@
 <script>
 import { computed } from "vue";
 import { useStore } from "vuex";
-// import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
+import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
 
 export default {
-  // components: {
-  //   LottieAnimation,
-  // },
+  components: {
+    LottieAnimation,
+  },
   setup() {
     const store = useStore();
     const posts = computed(() => store.getters.getUserPosts);

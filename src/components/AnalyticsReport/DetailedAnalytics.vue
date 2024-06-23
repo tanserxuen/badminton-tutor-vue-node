@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- <button @click="getScreenShot">Get Canvas</button> -->
     <template v-if="!isChart">
       <div class="container mx-auto px-4 pt-10 pb-0">
         <h2 class="base-page__heading-short">
@@ -14,17 +13,17 @@
             <b>{{ snakeToTitleCase(Object.keys(analytics)[0]) }}</b>
             <p>{{ analytics[Object.keys(analytics)[0]] }}</p>
           </div>
-          <!-- <lottie-animation :path="randomLottie" :width="250" :height="250" /> -->
+          <lottie-animation :path="randomLottie" :width="250" :height="250" />
         </div>
         <h3 style="text-transform: capitalize">{{ snakeToTitleCase(title) }}</h3>
         <div class="card mt-10 pb-10">
           <AnalyticCharts :chartType="'PolarArea'" :data="analytics[Object.keys(analytics)[1]]"
             :title="Object.keys(analytics)[1]" />
           <AnalyticCharts :chartType="'Line'" :data="transformedData" :title="'Accuracy Over Trials'"
-            class="mx-auto py-5" />
+            class="mx-auto py-5" style="max-width: 50vw;"/>
         </div>
       </div>
-      <div v-else>No data found</div>
+      <lottie-animation v-else path="images/no_data_found.json" :width="350" :height="350" />
     </template>
     <template v-if="isChart">
       <div class="chart-post" id="canvasEl" v-if="analytics">
@@ -34,7 +33,7 @@
         <AnalyticCharts :chartType="'Line'" :data="transformedData" :title="'Accuracy Over Trials'"
           class="mx-auto py-5" />
       </div>
-      <div v-else>No data found</div>
+      <lottie-animation v-else path="images/no_data_found.json" :width="350" :height="350" />
     </template>
   </div>
 </template>
@@ -42,13 +41,13 @@
 <script>
 import { computed, defineAsyncComponent } from "vue";
 import { useStore } from "vuex";
-// import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
+import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
 import { snakeToTitleCase } from "@/js/services/sentence";
 
 export default {
   components: {
     AnalyticCharts: defineAsyncComponent(() => import("./AnalyticCharts.vue")),
-    // LottieAnimation,
+    LottieAnimation,
     BackButton: defineAsyncComponent(() => import("@/components/BackButton.vue")),
   },
   props: {

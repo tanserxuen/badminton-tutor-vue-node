@@ -13,10 +13,10 @@
         </div>
       </template>
       <template v-else-if="isLoading">
-        <!-- <lottie-animation path="images/loading.json" v-show="isLoading" :width="150" :height="150" /> -->
+        <lottie-animation path="images/loading.json" v-show="isLoading" :width="150" :height="150" />
       </template>
       <template v-else>
-        <!-- <lottie-animation path="images/no_data_found.json" /> -->
+        <lottie-animation path="images/no_data_found.json" />
       </template>
     </div>
   </div>
@@ -25,13 +25,12 @@
 <script>
 import { computed, defineAsyncComponent } from "vue";
 import { useStore } from "vuex";
-// import PostView from "./PostView.vue";
-// import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
+import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
 
 export default {
   components: {
     PostView: defineAsyncComponent(() => import("@/components/Post/PostView.vue")),
-    // LottieAnimation 
+    LottieAnimation 
   },
   setup() {
     const store = useStore();

@@ -4,7 +4,6 @@
     <template v-if="!data || Object.values(data).length === 0">
       <a href="http://localhost:3000/test.html"
         class="text-amber-500 text-xl font-semibold underline hover:underline-offset-4">Start Training Now!</a>
-      <!-- <lottie-animation path="images/no_data_found.json" :width="150" :height="150" /> -->
     </template>
     <template v-else-if="chartType === 'Bar' && data">
       <VueChart :data="data" :margin="margin" :direction="direction" :size="{ width: 300, height: 210 }">
@@ -31,21 +30,17 @@ import {
   Bar,
 } from "vue3-charts";
 import { computed, onMounted, ref } from "vue";
-// import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
 import { PolarAreaChart } from 'vue-chart-3';
 import { Chart, registerables } from "chart.js";
 import { snakeToTitleCase } from "@/js/services/sentence";
 
-
 Chart.register(...registerables);
 
-//create a props named type
 export default {
   components: {
     VueChart,
     Grid,
     Bar,
-    // LottieAnimation,
     PolarAreaChart
   },
   props: {
