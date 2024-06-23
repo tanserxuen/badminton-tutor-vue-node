@@ -21,7 +21,7 @@
         <b>{{ post?.userName }}</b>
         <br>
         <span>{{ post?.description }}</span>
-        {{ post?.id }}
+        <!-- {{ post?.id }} -->
       </div>
       <div class="flex items-center justify-between mx-4 mt-3 mb-2">
         <div class="flex gap-5">
@@ -47,8 +47,8 @@
         </h3>
         <form @submit.prevent="addComment()" class="my-5">
           <div>
-            <input class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg mb-2" id="comment"
-              @input="(event) => (comment = event.target.value)" :value="comment" />
+            <input class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg mb-2 w-64 me-3"
+              id="comment" @input="(event) => (comment = event.target.value)" :value="comment" />
             <button type="submit"
               class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm sm:w-auto px-5 py-2.5 text-center">
               Submit
@@ -58,26 +58,24 @@
 
         <!-- display list of comments -->
         <template v-if="post?.comments?.length > 0">
-          <div :class="isCommentsTabOpen ? null : 'hidden'" class="transition-all">
-            <div class="row" v-for="(comment, i) in post?.comments" :key="i">
-              <!-- <div class="mb-2">
-                <div class="d-inline me-3">
-                <img :src="comment.userName" :alt="post?.userId" class="avatar" /> 
-                </div> -->
-              <span>{{ comment.userName }}&nbsp;&nbsp;{{ comment.message }}</span>
-              <!-- </div>
-              <div class="col-sm-10"> -->
-              <!-- <p></p> -->
-              <!-- </div> -->
+          <div :class="isCommentsTabOpen ? null : 'hidden'" class="transition-all pt-3 pb-5">
+            <div class="px-2.5 row" v-for="(comment, i) in post?.comments" :key="i">
+              <div class="mb-2">
+                <div class="flex">
+                  <img
+                    :src="comment.userImg ?? 'https://firebasestorage.googleapis.com/v0/b/badmintonposecounter.appspot.com/o/Assets%2FplaceholderImg.jpg?alt=media&token=20cec767-fdf2-4de6-a4e3-7c154f2df6ee'"
+                    :alt="comment?.userName" class="avatar" />
+                  <b class="ms-4">{{ comment.userName ?? 'Unnamed User' }}</b>
+                </div>
+                <p style="padding-left:50px;">{{ comment.message }}</p>
+                <!-- <div class="col-sm-10"></div> -->
+                <!-- <span class="text-gray-500 text-xs">{{ comment.date }}</span> -->
+              </div>
             </div>
           </div>
         </template>
         <template v-else>
-          <div class="row">
-            <div class="col-sm-10">
-              <p>No comments yet</p>
-            </div>
-          </div>
+          <p class="pb-10">No comment yet</p>
         </template>
       </div>
     </div>
@@ -245,5 +243,11 @@ img {
   @media screen and (max-width: 640px) {
     font-size: 12px;
   }
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  object-fit: cover;
 }
 </style>
