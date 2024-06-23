@@ -63,9 +63,9 @@
               <div class="mb-2">
                 <div class="flex">
                   <img
-                    :src="comment.userImg ?? 'https://firebasestorage.googleapis.com/v0/b/badmintonposecounter.appspot.com/o/Assets%2FplaceholderImg.jpg?alt=media&token=20cec767-fdf2-4de6-a4e3-7c154f2df6ee'"
-                    :alt="comment?.userName" class="avatar" />
-                  <b class="ms-4">{{ comment.userName ?? 'Unnamed User' }}</b>
+                    :src="comment.userImg == '' ? 'https://firebasestorage.googleapis.com/v0/b/badmintonposecounter.appspot.com/o/Assets%2FplaceholderImg.jpg?alt=media&token=20cec767-fdf2-4de6-a4e3-7c154f2df6ee' : comment.userImg"
+                    :alt="comment?.userName == '' ? 'Unnamed User' : comment?.userName" class="avatar" />
+                  <b class="ms-4">{{ comment.userName == '' ? 'Unnamed User':comment?.userName }}</b>
                 </div>
                 <p style="padding-left:50px;">{{ comment.message }}</p>
                 <!-- <div class="col-sm-10"></div> -->
@@ -149,10 +149,13 @@ export default {
 
     const addComment = async () => {
       if (comment.value == "") return;
+      console.log(user.value.name, user.value.image, user.value);
       post.value.comments = post.value.comments ?? [];
       post.value?.comments.push({
         message: comment.value,
         userId: user.value.id,
+        userImg: user.value.image,
+        userName: user.value.name,
       });
       comment.value = "";
 
