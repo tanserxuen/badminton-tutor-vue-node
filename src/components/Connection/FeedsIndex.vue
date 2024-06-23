@@ -36,7 +36,7 @@ export default {
   setup() {
     const store = useStore();
     const posts = computed(() => store.getters.getNonUserPosts);
-    const userDetails = computed(() => store.getters.getUserDetails);
+    const userDetails = computed(() => store.state.currentUserDetails);
     const isLoading = computed(() => !!posts.value);
 
     return {
