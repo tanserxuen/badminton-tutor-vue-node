@@ -22,7 +22,7 @@
       }
         " required />
       <button class="auth-page__submit-button">
-        Reset Password
+        Submit
       </button>
 
       <p class="auth-page__link">

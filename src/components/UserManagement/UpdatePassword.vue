@@ -19,7 +19,7 @@
       <input type="password" name="new-password" placeholder="New Password" class="auth-page__input"
         :value="newPassword" @input="(event) => (newPassword = event.target.value)" />
       <button @click="submitForm" class="auth-page__submit-button">
-        Update Password
+        Update
       </button>
 
       <p class="auth-page__link">
