@@ -10,25 +10,24 @@
         <div>
           <label for="startDate" name="startDate">Start Date</label>
           <input type="date" class="datepicker-input" name="startDate" id="startDate" :value="startDate"
-            @input="startDate = $event.target.value" @focus="errorText = ''">
+            @input="startDate = $event.target.value" @focus="errorText = ''" :min="minDate" :max="maxDate">
         </div>
         <div>
           <label for="endDate" name="endDate">End Date</label>
           <input type="date" name="endDate" id="endDate" :value="endDate" @input="endDate = $event.target.value"
-            @focus="errorText = ''">
-          <button type="submit" class="float-end" @click="filterRange()">
+            :min="minDate" :max="maxDate" @focus="errorText = ''">
+          <button type="submit" class="float-end">
             <i class="fas fa-search m-auto"></i>
           </button>
         </div>
       </div>
-      <template v-if="filteredFeedbacks.length != 0">
-        <div v-show="!isLoading">
+      <template v-if="filteredFeedbacks?.length != 0 && !isLoading">
+        <div>
           <ol class="relative border-l-2 border-amber-200">
             <li class="mb-10 ms-4" v-for="(feedback, index) in filteredFeedbacks" :key="index">
               <div class="absolute w-5 h-5 bg-amber-200 rounded-full mt-1.5 -start-2.5 border border-white"></div>
-              <h3 class="mb-1 text-lg font-semibold leading-none text-amber-400">{{
-                getDateFromTimestamp(feedback.created_at)
-              }}</h3>
+              <h3 class="mb-1 text-lg font-semibold leading-none text-amber-400">{{ feedback?.title }}</h3>
+              <p class="text-sm font-semibold text-gray-500 mb-3">{{ getDateFromTimestamp(feedback.created_at) }}</p>
               <ol class="card">
                 <li class="text-base font-normal text-gray-500" v-for="(content, i) in feedback.content" :key="i">
                   {{ i + 1 }}. {{ content }} <br><br>
@@ -40,7 +39,8 @@
         <!-- <lottie-animation path="images/loading.json" v-show="isLoading" :width="150" :height="150" /> -->
       </template>
       <template v-else>
-        <a href="http://localhost:3000/test.html" class="text-amber-500 text-xl font-semibold underline hover:underline-offset-4">Start Training Now!</a>
+        <a href="http://localhost:3000/test.html"
+          class="text-amber-500 text-xl font-semibold underline hover:underline-offset-4">Start Training Now!</a>
         <!-- <lottie-animation path="images/no_data_found.json" :width="256" :height="256" /> -->
       </template>
     </div>
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { computed, onMounted, ref, defineAsyncComponent } from "vue";
+import { computed, onMounted, ref, defineAsyncComponent, watch } from "vue";
 import FeedbackService from "@/js/services/feedback";
 import { useStore } from "vuex";
 import getDateFromTimestamp from "@/js/services/date.js";
@@ -64,54 +64,64 @@ export default {
     const store = useStore();
     const user = computed(() => store.state.currentUserDetails);
     const feedbacks = ref([]);
-    const filteredFeedbacks = ref([]);
     const isLoading = ref(true);
     const startDate = ref("");
     const endDate = ref("");
     const errorText = ref("");
 
-    const filterRange = () => {
-      try {
-        console.log(startDate.value, endDate.value);
-        if (startDate.value && endDate.value) {
-          if (startDate.value > endDate.value) {
-            errorText.value = "Invalid date range";
-            return;
-          }
-          filteredFeedbacks.value = feedbacks.value.filter((feedback) => {
-            const feedbackDate = new Date(
-              feedback.created_at._seconds * 1000 + feedback.created_at._nanoseconds / 1000000
-            ).toISOString().split("T")[0];
-            return feedbackDate >= startDate.value && feedbackDate <= endDate.value;
-          });
-        } else {
-          filteredFeedbacks.value = Object.freeze(feedbacks.value);
-        }
-      } catch (error) {
-        console.log(error);
-        filteredFeedbacks.value = Object.freeze(feedbacks.value);
+    const filteredFeedbacks = computed(() => {
+      if (!startDate.value || !endDate.value || !feedbacks.value) {
+        return feedbacks.value ?? [];
       }
-    };
+      return feedbacks.value.filter((feedback) => {
+        const feedbackDate = new Date(
+          feedback.created_at._seconds * 1000 + feedback.created_at._nanoseconds / 1000000
+        ).toISOString().split("T")[0];
+        return feedbackDate >= startDate.value && feedbackDate <= endDate.value;
+      });
+    });
+
+    const minDate = computed(() => {
+      if (filteredFeedbacks.value.length == 0) return "";
+      const data = Object.assign(filteredFeedbacks.value)
+      const min = data.reduce((prev, current) => (prev.created_at._seconds < current.created_at._seconds ? prev : current));
+      return min ? new Date(min.created_at._seconds * 1000 + min.created_at._nanoseconds / 1000000).toISOString().split("T")[0] : '';
+    })
+
+    const maxDate = computed(() => {
+      if (filteredFeedbacks.value.length == 0) return "";
+      const data = Object.assign(filteredFeedbacks.value)
+      const max = data.reduce((prev, current) => (prev.created_at._seconds > current.created_at._seconds ? prev : current));
+      return max ? new Date(max.created_at._seconds * 1000 + max.created_at._nanoseconds / 1000000).toISOString().split("T")[0] : '';
+    })
 
     onMounted(() => {
-      setTimeout(() => {
-        isLoading.value = false;
-      }, 1500);
       FeedbackService.fetchFeedback(user.value?.id).then((res) => {
         feedbacks.value = JSON.stringify(res.data) == '{}' ? [] : res.data;
-        filteredFeedbacks.value = Object.freeze(feedbacks.value);
+        isLoading.value = false;
       });
+    });
+
+    watch([startDate, endDate], () => {
+      if (startDate.value && endDate.value) {
+        if (startDate.value > endDate.value)
+          errorText.value = "Start date should be less than end date";
+        else
+          errorText.value = "";
+      }
     });
 
     return {
       getDateFromTimestamp,
       feedbacks,
       isLoading,
-      filterRange,
+      // filterRange,
       startDate,
       endDate,
       filteredFeedbacks,
-      errorText
+      errorText,
+      minDate,
+      maxDate
     };
   },
 };
