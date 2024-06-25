@@ -32,7 +32,7 @@
       </div>
       <!--tab displays -->
       <div>
-        <template v-if="userTypes[activeTab]?.length">
+        <template v-if="userTypes[activeTab]?.length && filteredUsers.length">
           <div v-for="user in filteredUsers" :key="user?.id" class="card-bar">
             <div class="w-full">
               <div

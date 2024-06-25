@@ -85,7 +85,6 @@ export default {
         if (data.hasOwnProperty(key)) {
           const entry = data[key];
           for (const subKey in entry) { // eslint-disable-next-line
-          console.log(entry.hasOwnProperty(subKey), subKey)// eslint-disable-next-line
             if (entry.hasOwnProperty(subKey) && subKey !== 'created_at') {
               if (entry[subKey] > maxValue) {
                 maxValue = entry[subKey].toFixed(2);

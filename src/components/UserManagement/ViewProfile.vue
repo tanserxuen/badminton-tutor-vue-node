@@ -1,4 +1,4 @@
-<template>
+a<template>
   <div class="container mx-auto px-4 py-10">
     <h2 class="base-page__heading-short">Profile</h2>
     <div class="profile">
@@ -23,13 +23,12 @@
           {{ userDetails.noOfFollowing }}
         </div>
       </div>
-      <div class="flex">
-        <span class="profile__description--icon"><i class="fab fa-linkedin"></i>{{ userDetails.linkedin
-          }}</span>
-        <span class="profile__description--icon"><i class="font-lg fab fa-square-instagram"></i>{{ userDetails.instagram
-          }}</span>
-        <span class="profile__description--icon"><i class="fab fa-twitter"></i>{{ userDetails.twitter }}</span>
-        <span class="profile__description--icon"><i class="fab fa-facebook"></i>{{ userDetails.facebook }}</span>
+      <div class="gap-5 grid grid-cols-4 grid-flow-row-dense mb-10 text-center">
+        <span class="profile__description--icon"><i class="fab fa-linkedin"></i><br><a :href="userDetails.linkedin" class="text-blue-500 underline hover:underline-offset-4">linkedin.com/in/{{ userDetails.linkedin }}</a></span>
+          
+        <span class="profile__description--icon"><i class="font-lg fab fa-square-instagram"></i><br><a :href="userDetails.instagram" class="text-blue-500 underline hover:underline-offset-4">instagram.com/{{ userDetails.instagram }}</a></span>
+        <span class="profile__description--icon"><i class="fab fa-twitter"></i><br><a :href="userDetails.twitter" class="text-blue-500 underline hover:underline-offset-4">twitter.com/{{ userDetails.twitter }}</a></span>
+        <span class="profile__description--icon"><i class="fab fa-facebook"></i><br><a :href="userDetails.facebook" class="text-blue-500 underline hover:underline-offset-4">facebook.com/profile/{{ userDetails.facebook }}</a></span>
       </div>
     </div>
     <div class="base-page__inner-margin">
@@ -239,12 +238,7 @@ export default {
 .profile__description,
 .profile__description--icon {
   font-size: large;
-}
-
-.profile__description--icon {
-  display: flex;
-  padding-right: 25px;
-  margin-bottom: 100px;
+  word-break: break-word;
 }
 
 .fa-square-instagram {
