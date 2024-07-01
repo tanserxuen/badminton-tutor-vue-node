@@ -48,7 +48,7 @@
         <form @submit.prevent="addComment()" class="my-5">
           <div>
             <input class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg mb-2 w-64 me-3"
-              id="comment" @input="(event) => (comment = event.target.value)" :value="comment" />
+              id="comment" @input="(event) => (comment = event.target.value)" :value="comment" required/>
             <button type="submit"
               class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm sm:w-auto px-5 py-2.5 text-center">
               Submit

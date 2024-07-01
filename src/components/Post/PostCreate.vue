@@ -3,13 +3,13 @@
     <h2 class="base-page__heading-short">
       <BackButton />
       Create Post
-      <button class="float-end">
+      <button class="float-end" :style="{ display: userDetails?.movementAccuracy ? 'block' : 'none' }">
         <i @click="isChart = !isChart" :class="isChart ? 'fas fa-image' : 'fa fa-bar-chart'"
           :title="isChart ? 'Share Selected Image' : 'Share Your Analytics'" aria-hidden="true"></i>
       </button>
     </h2>
 
-    <form class="mx-auto" style="max-width: 420px" encType="multipart/form-data">
+    <form class="mx-auto" style="max-width: 420px" encType="multipart/form-data" @submit.prevent="submitForm">
       <div v-show="isChart">
         <DetailedAnalytics :isChart="isChart" />
       </div>
@@ -30,7 +30,7 @@
       <input type="text" name="description" placeholder="description" :value="formData.description"
         class="auth-page__input" @input="(event) => (formData.description = event.target.value)" required />
 
-      <button class="auth-page__submit-button" @click.prevent.stop="submitForm">
+      <button class="auth-page__submit-button">
         Create
       </button>
     </form>
@@ -94,7 +94,7 @@ export default {
       }
 
       //upload image to firebase storage
-      else formData.image = await uploadToFirebase(file.value, "Posts");
+      else if (file.value) formData.image = await uploadToFirebase(file.value, "Posts");
 
       try {
         PostService.createPost({
@@ -121,6 +121,7 @@ export default {
       submitForm,
       uploadImage,
       isChart,
+      userDetails
     };
   },
 };

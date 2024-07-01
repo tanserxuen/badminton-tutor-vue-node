@@ -6,15 +6,18 @@
           title="Create new posts"></i></router-link>
     </h2>
     <div class="d-grid base-page__inner-margin">
-      <template v-if="posts.length">
-        <div v-for="(post, index) in posts" :key="post.id" class="bg-white shadow-md rounded-lg p-4">
-          <router-link :to="{ name: 'PostView', params: { index: index } }">
-            <img :src="post.image" alt="Post Image" class="w-full" />
-          </router-link>
-        </div>
+      <template v-if="isLoading">
+        <lottie-animation path="images/loading.json" :width="150" :height="150" class="mx-auto" />
       </template>
-      <template v-else>
-        <lottie-animation path="images/no_data_found.json"  :width="350" :height="350" class="mx-auto"/>
+      <template v-else-if="!isLoading">
+        <template v-if="posts.length">
+          <div v-for="(post, index) in posts" :key="post.id" class="bg-white shadow-md rounded-lg p-4">
+            <router-link :to="{ name: 'PostView', params: { index: index } }">
+              <img :src="post.image" alt="Post Image" class="w-full" />
+            </router-link>
+          </div>
+        </template>
+        <lottie-animation v-else path="images/no_data_found.json" :width="350" :height="350" class="mx-auto" />
       </template>
     </div>
   </div>
@@ -31,10 +34,13 @@ export default {
   },
   setup() {
     const store = useStore();
-    const posts = computed(() => store.getters.getUserPosts);
+    const posts = computed(() => store.getters.getUserPosts ?? null);
+
+    const isLoading = computed(() => posts.value === null || posts.value === undefined);
 
     return {
       posts,
+      isLoading
     };
   },
 };

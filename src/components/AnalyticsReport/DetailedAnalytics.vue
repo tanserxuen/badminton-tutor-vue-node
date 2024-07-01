@@ -20,10 +20,14 @@
           <AnalyticCharts :chartType="'PolarArea'" :data="analytics[Object.keys(analytics)[1]]"
             :title="Object.keys(analytics)[1]" />
           <AnalyticCharts :chartType="'Line'" :data="transformedData" :title="'Accuracy Over Trials'"
-            class="mx-auto py-5" style="max-width: 50vw;"/>
+            class="mx-auto py-5" style="max-width: 50vw;" />
         </div>
       </div>
-      <lottie-animation v-else path="images/no_data_found.json" :width="350" :height="350" />
+      <template v-else>
+        <a href="http://localhost:80/test.html"
+          class="text-amber-500 text-xl font-semibold underline hover:underline-offset-4">Start Training Now!</a>
+        <lottie-animation path="images/no_data_found.json" :width="350" :height="350" />
+      </template>
     </template>
     <template v-if="isChart">
       <div class="chart-post" id="canvasEl" v-if="analytics">

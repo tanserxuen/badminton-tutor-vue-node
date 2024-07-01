@@ -2,7 +2,7 @@
   <div class="mt-5">
     <b>{{ snakeToTitleCase(title) }}</b>
     <template v-if="!data || Object.values(data).length === 0">
-      <a href="http://localhost:3000/test.html"
+      <a href="http://localhost:80/test.html"
         class="text-amber-500 text-xl font-semibold underline hover:underline-offset-4">Start Training Now!</a>
     </template>
     <template v-else-if="chartType === 'Bar' && data">
