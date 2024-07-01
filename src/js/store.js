@@ -47,11 +47,17 @@ const store = createStore({
     },
     setUserPosts: (state, userPosts) => {
       console.log({ userPosts });
-      state.userPosts = userPosts;
+      const sortedUserPosts = userPosts.sort((a, b) => {
+        return new Date(b.created_at._seconds * 1000) - new Date(a.created_at._seconds * 1000);
+      });
+      state.userPosts = sortedUserPosts;
     },
     setNonUserPosts: (state, nonUserPosts) => {
       console.log({ nonUserPosts });
-      state.nonUserPosts = nonUserPosts;
+      const sortedNonUserPosts = nonUserPosts.sort((a, b) => {
+        return new Date(b.created_at._seconds * 1000) - new Date(a.created_at._seconds * 1000);
+      });
+      state.nonUserPosts = sortedNonUserPosts;
     },
   },
   actions: {
@@ -83,11 +89,16 @@ const store = createStore({
         await PostService.getUserPosts().then((userPosts) => {
           commit(
             "setUserPosts",
-            userPosts.data.filter((post) => post.userId === userId)
+            userPosts.data
+              .filter((post) => post.userId === userId)
+              
           );
           commit(
             "setNonUserPosts",
-            userPosts.data.filter((post) => post.userId !== userId)
+            userPosts.data
+              .filter((post) => post.userId !== userId)
+              
+               
           );
         });
       } catch (error) {
