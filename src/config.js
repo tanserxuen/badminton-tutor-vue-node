@@ -1,12 +1,12 @@
 const axiosBaseURL =
   process.env.VUE_APP_MODE == "env"
-    ? "http://localhost/api/"
+    ? "http://localhost:3000/api/"
     : "https://badmintontutor-backend-f45eaf6b326e.herokuapp.com/api/";
 
 const baseURL =
-    process.env.VUE_APP_MODE == "env"
-      ? "http://localhost/"
-      : "https://badmintontutor-backend-f45eaf6b326e.herokuapp.com/";
+  process.env.VUE_APP_MODE == "env"
+    ? "http://localhost:3000/"
+    : "https://badmintontutor-backend-f45eaf6b326e.herokuapp.com/";
 
 const axiosHeaders = {
   "Content-Type": "application/json",
@@ -32,5 +32,5 @@ module.exports = {
   axiosBaseURL,
   axiosHeaders,
   firebaseConfig,
-  baseURL
+  baseURL,
 };

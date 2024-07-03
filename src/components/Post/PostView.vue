@@ -9,16 +9,22 @@
     </h2>
     <div class="bg-white border rounded-sm max-w-md mx-auto">
       <div class="flex items-center px-4 py-3">
-        <img class="h-8 w-8 rounded-full" :src="user.image == '' ? '/images/placeholderImg.jpg' : user.image" />
+        <img class="h-8 w-8 rounded-full"
+          :src="postUserDetails?.image == '' ? '/images/placeholderImg.jpg' : postUserDetails?.image" />
         <div class="ml-3">
-          <span class="text-sm font-semibold antialiased block leading-tight">{{
-            post?.userName
-          }}</span>
+          <span class="text-sm font-semibold antialiased block leading-tight underline underline-offset-4">
+            <router-link :to="{ name: 'Profile', params: { id: post?.userId ?? 0 } }">
+              {{ postUserDetails?.name }}
+            </router-link></span>
         </div>
       </div>
       <img :src="post?.image" :alt="post?.image" class="post-image" />
       <div class="m-4">
-        <b>{{ post?.userName }}</b>
+        <b class="underline underline-offset-4">
+          <router-link :to="{ name: 'Profile', params: { id: post?.userId ?? 0 } }">
+            {{ post?.userName }}
+          </router-link>
+        </b>
         <br>
         <span>{{ post?.description }}</span>
         <!-- {{ post?.id }} -->
@@ -48,7 +54,7 @@
         <form @submit.prevent="addComment()" class="my-5">
           <div>
             <input class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg mb-2 w-64 me-3"
-              id="comment" @input="(event) => (comment = event.target.value)" :value="comment" required/>
+              id="comment" @input="(event) => (comment = event.target.value)" :value="comment" required />
             <button type="submit"
               class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm sm:w-auto px-5 py-2.5 text-center">
               Submit
@@ -65,7 +71,7 @@
                   <img
                     :src="comment.userImg == '' ? 'https://firebasestorage.googleapis.com/v0/b/badmintonposecounter.appspot.com/o/Assets%2FplaceholderImg.jpg?alt=media&token=20cec767-fdf2-4de6-a4e3-7c154f2df6ee' : comment.userImg"
                     :alt="comment?.userName == '' ? 'Unnamed User' : comment?.userName" class="avatar" />
-                  <b class="ms-4">{{ comment.userName == '' ? 'Unnamed User':comment?.userName }}</b>
+                  <b class="ms-4">{{ comment.userName == '' ? 'Unnamed User' : comment?.userName }}</b>
                 </div>
                 <p style="padding-left:50px;">{{ comment.message }}</p>
                 <!-- <div class="col-sm-10"></div> -->
@@ -83,11 +89,12 @@
 </template>
 
 <script>
-import { computed, ref, defineAsyncComponent } from "vue";
+import { computed, ref, defineAsyncComponent, onMounted } from "vue";
 import { useStore } from "vuex";
 import PostServices from "@/js/services/post";
 import getDateFromTimestamp from "@/js/services/date";
 import { useRouter } from "vue-router";
+import UserServices from "@/js/services/user";
 
 export default {
   components: {
@@ -110,6 +117,13 @@ export default {
     const post = ref(null);
     const user = computed(() => store.state?.currentUserDetails ?? "");
     const isCommentsTabOpen = ref(false);
+    const postUserDetails = ref(null);
+
+    const fetchPostUserDetails = async () => {
+      if (!post.value) return;
+      postUserDetails.value = await UserServices.view(post.value.userId);
+      return postUserDetails;
+    };
 
     const fetchPost = async () => {
       post.value = (await props.isConnection)
@@ -173,7 +187,11 @@ export default {
       await updatePost();
     };
 
-    fetchPost();
+    onMounted(() => {
+      fetchPost().then(() => {
+        fetchPostUserDetails();
+      });
+    });
 
     return {
       post,
@@ -184,7 +202,8 @@ export default {
       comment,
       date,
       likedPost,
-      deletePost
+      deletePost,
+      postUserDetails,
     };
   },
 };

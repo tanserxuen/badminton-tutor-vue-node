@@ -3,7 +3,7 @@
     <h2 class="base-page__heading-short">
       Feeds
       <router-link class="float-end" to="/connection"><i class="fas fa-user-plus"
-          :class="userDetails?.requests?.length> 0 ? 'notification' : null"
+          :class="userDetails?.requests?.length > 0 ? 'notification' : null"
           title="Connect with others"></i></router-link>
     </h2>
     <div class="base-page__inner-margin">
@@ -30,11 +30,14 @@ import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
 export default {
   components: {
     PostView: defineAsyncComponent(() => import("@/components/Post/PostView.vue")),
-    LottieAnimation 
+    LottieAnimation
   },
   setup() {
     const store = useStore();
-    const posts = computed(() => store.getters.getNonUserPosts);
+    const posts = computed(() => {
+      let a = [...store.getters.getNonUserPosts]
+      return a.sort((a, b) => new Date(b.created_at._seconds * 1000) - new Date(a.created_at._seconds * 1000));
+    });
     const userDetails = computed(() => store.state.currentUserDetails);
     const isLoading = computed(() => !!posts.value);
 

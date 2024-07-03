@@ -39,7 +39,7 @@
         <lottie-animation path="images/loading.json" v-show="isLoading" :width="150" :height="150" />
       </template>
       <template v-else>
-        <a href="http://localhost:80/test.html"
+        <a :href="feedbackLink"
           class="text-amber-500 text-xl font-semibold underline hover:underline-offset-4">Start Training Now!</a>
         <lottie-animation path="images/no_data_found.json" :width="350" :height="350" />
       </template>
@@ -53,6 +53,7 @@ import FeedbackService from "@/js/services/feedback";
 import { useStore } from "vuex";
 import getDateFromTimestamp from "@/js/services/date.js";
 import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
+import { baseURL } from "@/config.js";
 
 export default {
   components: {
@@ -79,6 +80,8 @@ export default {
         return feedbackDate >= startDate.value && feedbackDate <= endDate.value;
       });
     });
+
+    const feedbackLink = computed(() => `${baseURL}test.html?id=${user.value?.id}`);
 
     const minDate = computed(() => {
       if (filteredFeedbacks.value.length == 0) return "";
@@ -114,7 +117,7 @@ export default {
       getDateFromTimestamp,
       feedbacks,
       isLoading,
-      // filterRange,
+      feedbackLink,
       startDate,
       endDate,
       filteredFeedbacks,

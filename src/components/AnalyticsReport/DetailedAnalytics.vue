@@ -24,7 +24,7 @@
         </div>
       </div>
       <template v-else>
-        <a href="http://localhost:80/test.html"
+        <a :href="feedbackLink"
           class="text-amber-500 text-xl font-semibold underline hover:underline-offset-4">Start Training Now!</a>
         <lottie-animation path="images/no_data_found.json" :width="350" :height="350" />
       </template>
@@ -47,6 +47,7 @@ import { computed, defineAsyncComponent } from "vue";
 import { useStore } from "vuex";
 import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
 import { snakeToTitleCase } from "@/js/services/sentence";
+import { baseURL } from "@/config.js";
 
 export default {
   components: {
@@ -77,6 +78,8 @@ export default {
       ];
       return lotties[Math.floor(Math.random() * lotties.length)];
     })
+
+    const feedbackLink = computed(() => `${baseURL}test.html?id=${userDetails.value?.id}`);
 
     const analytics = computed(() => {
       if (!userDetails.value?.movementAccuracy) return null;
@@ -166,7 +169,8 @@ export default {
       analytics,
       randomLottie,
       snakeToTitleCase,
-      transformedData
+      transformedData,
+      feedbackLink
     };
   },
 };

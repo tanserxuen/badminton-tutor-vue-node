@@ -34,7 +34,11 @@ export default {
   },
   setup() {
     const store = useStore();
-    const posts = computed(() => store.getters.getUserPosts ?? null);
+    const posts = computed(() => {
+      if (store.getters.getUserPosts === null) return null;
+      let a = [...store.getters.getUserPosts];
+      return a.sort((a, b) => new Date(b.created_at._seconds * 1000) - new Date(a.created_at._seconds * 1000));
+    });
 
     const isLoading = computed(() => posts.value === null || posts.value === undefined);
 

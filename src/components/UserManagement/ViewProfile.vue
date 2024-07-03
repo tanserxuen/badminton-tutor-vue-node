@@ -1,39 +1,49 @@
-a<template>
+<template>
   <div class="container mx-auto px-4 py-10">
-    <h2 class="base-page__heading-short">Profile</h2>
-    <div class="profile">
-      <b class="profile__name">{{ userDetails.name }}</b>
-      <template v-if="userDetails.image == ''">
-         <LottieAnimation path="images/profile.json" :width="300" :height="300" />
+    <h2 class="base-page__heading-short">
+      <BackButton v-if="otherUserId" />
+      Profile
+    </h2>
+    <div class="profile" v-show="!isLoading">
+      <b class="profile__name">{{ user?.name }}</b>
+      <template v-if="user?.image == ''">
+        <LottieAnimation path="images/profile.json" :width="300" :height="300" />
       </template>
       <template v-else>
-        <img :src="userDetails.image" :alt="userDetails.name" class="profile__avatar" />
+        <img :src="user?.image" :alt="user?.name" class="profile__avatar" />
       </template>
 
-      <span class="profile__description">{{ userDetails.description }}</span>
+      <span class="profile__description">{{ user?.description }}</span>
       <div class="profile_details">
         <div class="profile_details__text1">Posts</div>
         <div class="profile_details__text2">Followers</div>
         <div class="profile_details__text3">Following</div>
-        <div class="profile_details__numbers1">{{ userDetails.noOfPosts }}</div>
+        <div class="profile_details__numbers1">{{ user?.noOfPosts }}</div>
         <div class="profile_details__numbers2">
-          {{ userDetails.noOfFollowers }}
+          {{ user?.noOfFollowers }}
         </div>
         <div class="profile_details__numbers3">
-          {{ userDetails.noOfFollowing }}
+          {{ user?.noOfFollowing }}
         </div>
       </div>
       <div class="gap-5 grid grid-cols-4 grid-flow-row-dense mb-10 text-center">
-        <span class="profile__description--icon"><i class="fab fa-linkedin"></i><br><a :href="userDetails.linkedin" class="text-blue-500 underline hover:underline-offset-4">linkedin.com/in/{{ userDetails.linkedin }}</a></span>
-          
-        <span class="profile__description--icon"><i class="font-lg fab fa-square-instagram"></i><br><a :href="userDetails.instagram" class="text-blue-500 underline hover:underline-offset-4">instagram.com/{{ userDetails.instagram }}</a></span>
-        <span class="profile__description--icon"><i class="fab fa-twitter"></i><br><a :href="userDetails.twitter" class="text-blue-500 underline hover:underline-offset-4">twitter.com/{{ userDetails.twitter }}</a></span>
-        <span class="profile__description--icon"><i class="fab fa-facebook"></i><br><a :href="userDetails.facebook" class="text-blue-500 underline hover:underline-offset-4">facebook.com/profile/{{ userDetails.facebook }}</a></span>
+        <span class="profile__description--icon"><i class="fab fa-linkedin"></i><br><a :href="user?.linkedin"
+            class="text-blue-500 underline hover:underline-offset-4">linkedin.com/in/{{ user?.linkedin }}</a></span>
+
+        <span class="profile__description--icon"><i class="font-lg fab fa-square-instagram"></i><br><a
+            :href="user?.instagram" class="text-blue-500 underline hover:underline-offset-4">instagram.com/{{
+              user?.instagram }}</a></span>
+        <span class="profile__description--icon"><i class="fab fa-twitter"></i><br><a :href="user?.twitter"
+            class="text-blue-500 underline hover:underline-offset-4">twitter.com/{{ user?.twitter }}</a></span>
+        <span class="profile__description--icon"><i class="fab fa-facebook"></i><br><a :href="user?.facebook"
+            class="text-blue-500 underline hover:underline-offset-4">facebook.com/profile/{{ user?.facebook
+            }}</a></span>
       </div>
     </div>
-    <div class="base-page__inner-margin">
+    <lottie-animation path="images/loading.json" v-show="isLoading" :width="150" :height="150" />
+    <div class="base-page__inner-margin" v-if="otherUserId=='me'">
       <p class="profile__settings_title">Settings</p>
-      <router-link to="/post-create" v-if="!userDetails.noOfPosts">
+      <router-link to="/post-create" v-if="!user?.noOfPosts">
         <div class="profile__settings_bar">Create a Post
           <i class="fas fa-chevron-right"></i>
         </div>
@@ -53,20 +63,32 @@ a<template>
 </template>
 
 <script>
-import { computed } from "vue";
+import { computed, ref, onMounted } from "vue";
 import { useStore } from "vuex";
 import AuthService from "@/js/services/auth.js";
 import { useRouter } from "vue-router";
 import LottieAnimation from "lottie-vuejs/src/LottieAnimation.vue";
+import UserServices from "@/js/services/user.js";
+import BackButton from "../BackButton.vue";
 
 export default {
   components: {
     LottieAnimation,
+    BackButton,
   },
-  setup() {
+  props: {
+    id: {
+      type: String,
+      default: "me",
+      required: false,
+    },
+  },
+  setup(props) {
     const store = useStore();
-    const userDetails = computed(() => store.state?.currentUserDetails ?? "");
     const router = useRouter();
+    // const user = ref("me");
+    // const isLoading = ref(true);
+    const otherUser = ref("me");
 
     const logoutUser = (e) => {
       e.preventDefault();
@@ -75,7 +97,7 @@ export default {
       AuthService.logout()
         .then((response) => {
           if (response.status === 200) {
-            store.commit("setCurrentUser", null);
+            store.commit("setCurrentUser", "me");
             console.log({ currentUser: store.getters.getCurrentUser });
             console.log("Logged out");
             router.push({ name: "SignIn" });
@@ -86,9 +108,24 @@ export default {
         });
     };
 
+    const user = computed(() => props.id !== "me" ? otherUser.value : store.state.currentUserDetails);
+
+    const isLoading = computed(() => user.value === "me");
+
+    onMounted(async () => {
+      if (props.id !== "me") {
+        otherUser.value = await UserServices.view(props.id)
+      } else {
+        // user.value = store.state.currentUserDetails;
+        isLoading.value = false;
+      }
+    });
+
     return {
-      userDetails,
-      logoutUser
+      user,
+      logoutUser,
+      isLoading,
+      otherUserId: props.id,
     };
   },
 };

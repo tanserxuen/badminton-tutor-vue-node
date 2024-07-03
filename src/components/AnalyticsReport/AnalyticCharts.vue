@@ -2,7 +2,7 @@
   <div class="mt-5">
     <b>{{ snakeToTitleCase(title) }}</b>
     <template v-if="!data || Object.values(data).length === 0">
-      <a href="http://localhost:80/test.html"
+      <a :href="feedbackLink"
         class="text-amber-500 text-xl font-semibold underline hover:underline-offset-4">Start Training Now!</a>
     </template>
     <template v-else-if="chartType === 'Bar' && data">
@@ -33,6 +33,8 @@ import { computed, onMounted, ref } from "vue";
 import { PolarAreaChart } from 'vue-chart-3';
 import { Chart, registerables } from "chart.js";
 import { snakeToTitleCase } from "@/js/services/sentence";
+import { baseURL } from "@/config.js";
+import { useStore } from "vuex";
 
 Chart.register(...registerables);
 
@@ -83,6 +85,11 @@ export default {
       "#D2691E", // Chocolate
       "#FF4500"  // Orange Red
     ];
+    const store = useStore();
+
+    const userDetails = computed(() => store.state?.currentUserDetails ?? "");
+
+    const feedbackLink = computed(() => `${baseURL}test.html?id=${userDetails.value?.id}`);
 
     const polarAreaData = computed(() => {
       const arrLength = Object.keys(props.data).length;
@@ -133,6 +140,7 @@ export default {
       margin,
       polarAreaData,
       snakeToTitleCase,
+      feedbackLink
     };
   },
 };

@@ -19,7 +19,7 @@ import TrainingPose from "@/components/Demontration/TrainingPose.vue";
 const routes = [
   { path: "/signin", name:"SignIn", component: () => SignIn },
   { path: "/signup", name:"SignUp", component: () => SignUp },
-  { path: "/profile", name:"Profile", component: () => ViewProfile },
+  { path: "/profile/:id", name:"Profile", component: () => ViewProfile, props: true},
   { path: "/update-profile", name:"UpdateProfile", component: () => UpdateProfile },
   { path: "/dashboard", name:"DashBoard", component: () => DashBoard },
   { path: "/update-password/:email", name:"UpdatePassword", component: () => UpdatePassword, props: true },

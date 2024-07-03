@@ -1,9 +1,18 @@
 import axios from "axios";
 
-async function view(id){
+async function fetchAll() {
+  try {
+    const response = await axios.get("/user");
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+}
+
+async function view(id) {
   try {
     const response = await axios.get(`/user/view/${id}`);
-    return response;
+    return response.data;
   } catch (error) {
     return error;
   }
@@ -11,10 +20,7 @@ async function view(id){
 
 async function update(id, formdata) {
   try {
-    const response = await axios.post(
-      `/user/update/${id}`,
-      formdata
-    );
+    const response = await axios.post(`/user/update/${id}`, formdata);
     return response;
   } catch (error) {
     return error;
@@ -32,14 +38,14 @@ async function index() {
 
 async function getConnects(userId) {
   try {
-    const response = await axios.post(`/user/get-connects`, {userId});
+    const response = await axios.post(`/user/get-connects`, { userId });
     return response;
   } catch (error) {
     return error;
   }
 }
 
-async function updateConnects(data){
+async function updateConnects(data) {
   try {
     const response = await axios.post(`/user/update-connects`, data);
     return response;
@@ -48,15 +54,22 @@ async function updateConnects(data){
   }
 }
 
-async function updateActiveDays(){
+async function updateActiveDays() {
   try {
-    console.log("updateActiveDays")
+    console.log("updateActiveDays");
     const response = await axios.get(`/user/checkin`);
     return response;
   } catch (error) {
     return error;
   }
-
 }
 
-export default { update, index, getConnects, updateConnects, view, updateActiveDays };
+export default {
+  update,
+  index,
+  getConnects,
+  updateConnects,
+  view,
+  updateActiveDays,
+  fetchAll
+};

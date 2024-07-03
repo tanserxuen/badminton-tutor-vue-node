@@ -44,9 +44,10 @@
                       : user.image
                       " :alt="user.name" />
                     <div class="text-sm">
-                      <p class="text-gray-900 leading-none text-base font-semibold mb-1">
+                      <router-link :to="{ name: 'Profile', params: { id: user.id } }"
+                        class="text-gray-900 leading-none text-base font-semibold mb-1 underline underline-offset-4">
                         {{ user.name == "" ? "Badminton User" : user.name }}
-                      </p>
+                      </router-link>
                       <p class="text-gray-600 text-xs">
                         {{ user.email }}
                       </p>
@@ -111,7 +112,7 @@ export default {
     });
 
     const getBadgeNumbers = (status) => {
-      if(!userTypes) return '';
+      if (!userTypes) return '';
       const num = userTypes[status]?.length;
       if (status == "following" || status == "follower") return '';
       return num > 0 ? num : '';
@@ -235,7 +236,7 @@ export default {
       isLoading,
       getBadgeNumbers,
       badgeNumberClass,
-      keyword, 
+      keyword,
       filteredUsers
     };
   },
@@ -244,12 +245,14 @@ export default {
 
 <style scoped>
 a[href] {
-  text-transform: capitalize;
-
   @media screen and (max-width: 640px) {
     padding-inline: 10px;
     font-size: 13px;
   }
+}
+
+a[href*=\#] {
+  text-transform: capitalize;
 }
 
 img {
