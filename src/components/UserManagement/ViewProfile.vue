@@ -97,7 +97,7 @@ export default {
       AuthService.logout()
         .then((response) => {
           if (response.status === 200) {
-            store.commit("setCurrentUser", "me");
+            store.commit("setCurrentUser", null);
             console.log({ currentUser: store.getters.getCurrentUser });
             console.log("Logged out");
             router.push({ name: "SignIn" });
@@ -114,7 +114,7 @@ export default {
 
     onMounted(async () => {
       if (props.id !== "me") {
-        otherUser.value = await UserServices.view(props.id)
+        otherUser.value = (await UserServices.view(props.id)).data
       } else {
         // user.value = store.state.currentUserDetails;
         isLoading.value = false;

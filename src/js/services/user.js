@@ -12,7 +12,7 @@ async function fetchAll() {
 async function view(id) {
   try {
     const response = await axios.get(`/user/view/${id}`);
-    return response.data;
+    return response;
   } catch (error) {
     return error;
   }

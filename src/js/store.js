@@ -77,8 +77,8 @@ const store = createStore({
     },
     fetchUserDetails: async ({ commit }, id) => {
       try {
-        await UserService.view(id).then((userDetail) => {
-          commit("setCurrentUserDetails", userDetail.data);
+        await UserService.view(id).then((userDetails) => {
+          commit("setCurrentUserDetails", userDetails.data);
         });
       } catch (error) {
         console.error(error);

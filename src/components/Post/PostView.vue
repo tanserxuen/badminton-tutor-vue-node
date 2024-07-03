@@ -12,18 +12,19 @@
         <img class="h-8 w-8 rounded-full"
           :src="postUserDetails?.image == '' ? '/images/placeholderImg.jpg' : postUserDetails?.image" />
         <div class="ml-3">
-          <span class="text-sm font-semibold antialiased block leading-tight underline underline-offset-4">
-            <router-link :to="{ name: 'Profile', params: { id: post?.userId ?? 0 } }">
-              {{ postUserDetails?.name }}
-            </router-link></span>
+          <span class="text-sm font-semibold antialiased block leading-tight">
+            <!-- <router-link :to="{ name: 'Profile', params: { id: post?.userId ?? 0 } }"> -->
+            {{ postUserDetails?.name }}
+            <!-- </router-link>-->
+          </span>
         </div>
       </div>
       <img :src="post?.image" :alt="post?.image" class="post-image" />
       <div class="m-4">
-        <b class="underline underline-offset-4">
-          <router-link :to="{ name: 'Profile', params: { id: post?.userId ?? 0 } }">
-            {{ post?.userName }}
-          </router-link>
+        <b>
+          <!-- <router-link :to="{ name: 'Profile', params: { id: post?.userId ?? 0 } }"> -->
+          {{ postUserDetails?.name }}
+          <!-- </router-link> -->
         </b>
         <br>
         <span>{{ post?.description }}</span>
@@ -121,7 +122,7 @@ export default {
 
     const fetchPostUserDetails = async () => {
       if (!post.value) return;
-      postUserDetails.value = await UserServices.view(post.value.userId);
+      postUserDetails.value = (await UserServices.view(post.value.userId)).data;
       return postUserDetails;
     };
 
