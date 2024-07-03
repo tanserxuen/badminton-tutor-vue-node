@@ -26,8 +26,8 @@
         @input="(event) => (formData.twitter = event.target.value)" required />
       <div class="flex items-center space-x-6">
         <div class="shrink-0">
-          <img ref="avatar_preview" class="h-32 w-32 object-cover rounded-full" :src="formData.image"
-            alt="Current profile photo" />
+          <img ref="avatar_preview" class="h-32 w-32 object-cover rounded-full"
+            :src="formData.image == '' ? '/images/placeholderImg.jpg' : formData.image" alt="Current profile photo" />
         </div>
         <label class="block">
           <span class="sr-only">Choose profile photo</span>
