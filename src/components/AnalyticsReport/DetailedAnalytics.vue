@@ -82,7 +82,7 @@ export default {
     const feedbackLink = computed(() => `${baseURL}test.html?id=${userDetails.value?.id}`);
 
     const analytics = computed(() => {
-      if (!userDetails.value?.movementAccuracy) return null;
+      if (!userDetails.value?.movementAccuracy || Object.keys(userDetails.value?.movementAccuracy).length==0) return null;
       const user = userDetails.value;
       //get values of chartitlte from user
       return chartTitles.reduce((acc, title, i) => {

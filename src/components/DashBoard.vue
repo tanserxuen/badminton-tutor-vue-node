@@ -73,7 +73,7 @@ export default {
     });
 
     const getHighestScore = computed(() => {
-      if (!userDetails.value?.movementAccuracy) return {
+      if (!userDetails.value?.movementAccuracy || Object.keys(userDetails.value?.movementAccuracy).length == 0) return {
         maxKey: 'No data found',
         maxValue: 0
       };

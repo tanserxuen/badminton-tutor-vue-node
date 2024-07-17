@@ -9,21 +9,21 @@
       <label class="auth-page__label" for="name">Name</label>
       <input type="text" name="name" placeholder="Name" :value="formData.name" class="auth-page__input"
         @input="(event) => (formData.name = event.target.value)" required />
-      <label class="auth-page__label" for="description">Description</label>
-      <input type="text" name="description" placeholder="Description" :value="formData.description"
-        class="auth-page__input" @input="(event) => (formData.description = event.target.value)" required />
+      <label class="auth-page__label" for="description">About</label>
+      <input type="text" name="description" placeholder="About" :value="formData.description" class="auth-page__input"
+        @input="(event) => (formData.description = event.target.value)" required />
       <label class="auth-page__label" for="linkedin">LinkedIn</label>
       <input type="text" name="linkedin" placeholder="LinkedIn" :value="formData.linkedin" class="auth-page__input"
-        @input="(event) => (formData.linkedin = event.target.value)" required />
+        @input="(event) => (formData.linkedin = event.target.value)" />
       <label class="auth-page__label" for="facebook">Facebook</label>
       <input type="text" name="facebook" placeholder="Facebook" :value="formData.facebook" class="auth-page__input"
-        @input="(event) => (formData.facebook = event.target.value)" required />
+        @input="(event) => (formData.facebook = event.target.value)" />
       <label class="auth-page__label" for="instagram">Instagram</label>
       <input type="text" name="instagram" placeholder="Instagram" :value="formData.instagram" class="auth-page__input"
-        @input="(event) => (formData.instagram = event.target.value)" required />
+        @input="(event) => (formData.instagram = event.target.value)" />
       <label class="auth-page__label" for="twitter">Twitter</label>
       <input type="text" name="twitter" placeholder="Twitter" :value="formData.twitter" class="auth-page__input"
-        @input="(event) => (formData.twitter = event.target.value)" required />
+        @input="(event) => (formData.twitter = event.target.value)" />
       <div class="flex items-center space-x-6">
         <div class="shrink-0">
           <img ref="avatar_preview" class="h-32 w-32 object-cover rounded-full"
@@ -93,7 +93,7 @@ export default {
         })
           .then((response) => {
             if (response.status === 200) {
-              router.push({ name: "Profile" });
+              router.push({ name: "Profile", params: { id: "me" } });
             }
           })
           .catch((error) => {

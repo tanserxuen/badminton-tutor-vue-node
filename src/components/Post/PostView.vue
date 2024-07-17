@@ -23,7 +23,7 @@
       <div class="m-4">
         <b>
           <!-- <router-link :to="{ name: 'Profile', params: { id: post?.userId ?? 0 } }"> -->
-          {{ postUserDetails?.name }}
+          {{ post?.title }}
           <!-- </router-link> -->
         </b>
         <br>

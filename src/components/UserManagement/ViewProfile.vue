@@ -20,28 +20,37 @@
         <div class="profile_details__text3">Following</div>
         <div class="profile_details__numbers1">{{ user?.noOfPosts }}</div>
         <div class="profile_details__numbers2">
-          {{ user?.noOfFollowers }}
+          {{ user?.follower?.length }}
         </div>
         <div class="profile_details__numbers3">
-          {{ user?.noOfFollowing }}
+          {{ user?.following?.length }}
         </div>
       </div>
       <div class="gap-5 grid grid-cols-4 grid-flow-row-dense mb-10 text-center">
-        <span class="profile__description--icon"><i class="fab fa-linkedin"></i><br><a :href="user?.linkedin"
-            class="text-blue-500 underline hover:underline-offset-4">linkedin.com/in/{{ user?.linkedin }}</a></span>
+        <span class="profile__description--icon"><i class="fab fa-linkedin"></i><br><a
+            :href="user?.linkedin ? `https://www.linkedin.com/in/${user?.linkedin}/` : null" target="_blank"
+            :class="user?.linkedin ? 'text-blue-500 underline hover:underline-offset-4' : null">linkedin.com/in/{{
+              user?.linkedin
+            }}</a></span>
 
         <span class="profile__description--icon"><i class="font-lg fab fa-square-instagram"></i><br><a
-            :href="user?.instagram" class="text-blue-500 underline hover:underline-offset-4">instagram.com/{{
+            :href="user?.instagram ? `https://www.instagram.com/${user?.instagram}/` : null" target="_blank"
+            :class="user?.instagram ? 'text-blue-500 underline hover:underline-offset-4' : null">instagram.com/{{
               user?.instagram }}</a></span>
-        <span class="profile__description--icon"><i class="fab fa-twitter"></i><br><a :href="user?.twitter"
-            class="text-blue-500 underline hover:underline-offset-4">twitter.com/{{ user?.twitter }}</a></span>
-        <span class="profile__description--icon"><i class="fab fa-facebook"></i><br><a :href="user?.facebook"
-            class="text-blue-500 underline hover:underline-offset-4">facebook.com/profile/{{ user?.facebook
+        <span class="profile__description--icon"><i class="fab fa-twitter"></i><br><a
+            :href="user?.twitter ? `https://x.com/${user?.twitter}` : null" target="_blank"
+            :class="user?.twitter ? 'text-blue-500 underline hover:underline-offset-4' : null">twitter.com/{{
+              user?.twitter
+            }}</a></span>
+        <span class="profile__description--icon"><i class="fab fa-facebook"></i><br><a
+            :href="user?.facebook ? `https://www.facebook.com/${user?.facebook}` : null" target="_blank"
+            :class="user?.facebook ? 'text-blue-500 underline hover:underline-offset-4' : null">facebook.com/profile/{{
+              user?.facebook
             }}</a></span>
       </div>
     </div>
     <lottie-animation path="images/loading.json" v-show="isLoading" :width="150" :height="150" />
-    <div class="base-page__inner-margin" v-if="otherUserId=='me'">
+    <div class="base-page__inner-margin" v-if="otherUserId == 'me'">
       <p class="profile__settings_title">Settings</p>
       <router-link to="/post-create" v-if="!user?.noOfPosts">
         <div class="profile__settings_bar">Create a Post
@@ -108,13 +117,13 @@ export default {
         });
     };
 
-    const user = computed(() => props.id !== "me" ? otherUser.value : store.state.currentUserDetails);
+    const user = computed(() => props?.id !== "me" ? otherUser.value : store.state.currentUserDetails);
 
     const isLoading = computed(() => user.value === "me");
 
     onMounted(async () => {
-      if (props.id !== "me") {
-        otherUser.value = (await UserServices.view(props.id)).data
+      if (props?.id !== "me") {
+        otherUser.value = (await UserServices.view(props?.id)).data
       } else {
         // user.value = store.state.currentUserDetails;
         isLoading.value = false;
@@ -125,7 +134,7 @@ export default {
       user,
       logoutUser,
       isLoading,
-      otherUserId: props.id,
+      otherUserId: props?.id,
     };
   },
 };
